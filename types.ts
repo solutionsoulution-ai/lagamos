@@ -1,4 +1,6 @@
 
+export type Language = 'fr' | 'pl' | 'de' | 'nl' | 'it' | 'pt' | 'es';
+
 export type LoanType = 'personnel' | 'immobilier' | 'automobile' | 'entreprise' | 'rachat';
 
 export interface LoanInfo {
@@ -19,4 +21,12 @@ export interface Testimonial {
   content: string;
   rating: number;
   avatar: string;
+}
+
+export interface BlogPost {
+  id: string;
+  date: string;
+  category: string;
+  image: string;
+  readTime: string;
 }

@@ -1,11 +1,19 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FIXED_RATE } from '../constants';
 import { TrendingUp, Calendar, Euro, Zap } from 'lucide-react';
+import { Language } from '../types';
+import { translations } from '../translations';
 
-const LoanCalculator: React.FC = () => {
+interface LoanCalculatorProps {
+  language?: Language;
+  onApply?: () => void;
+}
+
+const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onApply }) => {
   const [amount, setAmount] = useState(15000);
   const [duration, setDuration] = useState(24);
+  const t = translations[language].calculator;
 
   const monthlyPayment = useMemo(() => {
     const r = (FIXED_RATE / 100) / 12;
@@ -20,78 +28,54 @@ const LoanCalculator: React.FC = () => {
 
   return (
     <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
-      <div className="bg-blue-600 p-8 text-white">
-        <h3 className="text-2xl font-bold flex items-center gap-3">
-          <Zap className="w-6 h-6 text-yellow-300 fill-yellow-300" />
-          Simulateur Express
+      <div className="bg-blue-600 p-5 sm:p-8 text-white">
+        <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+          <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-300 fill-yellow-300" />
+          {t.title}
         </h3>
-        <p className="text-blue-100 mt-2">Calculez votre mensualité instantanément au taux fixe de {FIXED_RATE}%.</p>
+        <p className="text-sm sm:text-base text-blue-100 mt-1 sm:mt-2">{t.subtitle} (2%)</p>
       </div>
       
-      <div className="p-8 space-y-10">
-        {/* Amount Slider */}
-        <div className="space-y-4">
+      <div className="p-5 sm:p-8 space-y-6 sm:space-y-10">
+        <div className="space-y-2 sm:space-y-4">
           <div className="flex justify-between items-center">
-            <label className="text-gray-700 font-semibold flex items-center gap-2">
-              <Euro className="w-5 h-5 text-blue-600" />
-              Montant du prêt
+            <label className="text-sm sm:text-base text-gray-700 font-semibold flex items-center gap-2">
+              <Euro className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              {t.amount}
             </label>
-            <span className="text-2xl font-bold text-blue-600">{amount.toLocaleString()} €</span>
+            <span className="text-xl sm:text-2xl font-bold text-blue-600">{amount.toLocaleString()} €</span>
           </div>
-          <input
-            type="range"
-            min="1000"
-            max="250000"
-            step="500"
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-          />
-          <div className="flex justify-between text-xs text-gray-400 font-medium">
-            <span>1 000 €</span>
-            <span>250 000 €</span>
-          </div>
+          <input type="range" min="1000" max="250000" step="500" value={amount} onChange={(e) => setAmount(Number(e.target.value))} className="w-full h-1.5 sm:h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
         </div>
 
-        {/* Duration Slider */}
-        <div className="space-y-4">
+        <div className="space-y-2 sm:space-y-4">
           <div className="flex justify-between items-center">
-            <label className="text-gray-700 font-semibold flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-blue-600" />
-              Durée du remboursement
+            <label className="text-sm sm:text-base text-gray-700 font-semibold flex items-center gap-2">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              {t.duration}
             </label>
-            <span className="text-2xl font-bold text-blue-600">{duration} mois</span>
+            <span className="text-xl sm:text-2xl font-bold text-blue-600">{duration} {t.months}</span>
           </div>
-          <input
-            type="range"
-            min="6"
-            max="120"
-            step="6"
-            value={duration}
-            onChange={(e) => setDuration(Number(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-          />
-          <div className="flex justify-between text-xs text-gray-400 font-medium">
-            <span>6 mois</span>
-            <span>120 mois</span>
+          <input type="range" min="6" max="120" step="6" value={duration} onChange={(e) => setDuration(Number(e.target.value))} className="w-full h-1.5 sm:h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div className="bg-blue-50 p-4 sm:p-6 rounded-2xl border border-blue-100 text-center">
+            <p className="text-[10px] sm:text-sm text-blue-600 font-bold uppercase tracking-wider mb-1">{t.monthly}</p>
+            <p className="text-2xl sm:text-4xl font-black text-blue-900">{monthlyPayment.toFixed(2)} €</p>
+          </div>
+          <div className="bg-green-50 p-4 sm:p-6 rounded-2xl border border-green-100 text-center">
+            <p className="text-[10px] sm:text-sm text-green-600 font-bold uppercase tracking-wider mb-1">{t.total}</p>
+            <p className="text-2xl sm:text-4xl font-black text-green-900">{totalCost.toFixed(2)} €</p>
           </div>
         </div>
 
-        {/* Results */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
-            <p className="text-sm text-blue-600 font-bold uppercase tracking-wider mb-1">Mensualité</p>
-            <p className="text-4xl font-black text-blue-900">{monthlyPayment.toFixed(2)} €</p>
-          </div>
-          <div className="bg-green-50 p-6 rounded-2xl border border-green-100">
-            <p className="text-sm text-green-600 font-bold uppercase tracking-wider mb-1">Coût total crédit</p>
-            <p className="text-4xl font-black text-green-900">{totalCost.toFixed(2)} €</p>
-          </div>
-        </div>
-
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 rounded-2xl font-bold text-lg shadow-xl shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
-          Demander ce prêt maintenant
-          <TrendingUp className="w-6 h-6" />
+        <button 
+          onClick={onApply}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 sm:py-5 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg shadow-xl shadow-blue-200 transition-all flex items-center justify-center gap-3"
+        >
+          {t.cta}
+          <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
     </div>

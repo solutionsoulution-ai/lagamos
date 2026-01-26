@@ -1,21 +1,24 @@
 
 import React, { useEffect } from 'react';
-import { LoanInfo } from '../types';
+import { LoanInfo, Language } from '../types';
 import { ICON_MAP, FIXED_RATE } from '../constants';
-import { ChevronLeft, CheckCircle2, ArrowRight, ShieldCheck, Calculator, UserCheck } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, ShieldCheck, Calculator, UserCheck } from 'lucide-react';
 import LoanCalculator from '../components/LoanCalculator';
+import { translations } from '../translations';
 
 interface LoanDetailProps {
   loan: LoanInfo;
   onBack: () => void;
+  language: Language;
 }
 
-const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack }) => {
+const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const IconComponent = ICON_MAP[loan.icon];
+  const t = translations[language].loan_detail;
 
   return (
     <div className="pt-24 pb-20">
@@ -25,7 +28,7 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack }) => {
           className="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold mb-12 transition-colors group"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          Retour aux offres
+          {t.back}
         </button>
 
         <div className="grid lg:grid-cols-2 gap-20 items-start">
@@ -37,27 +40,27 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack }) => {
               <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
                 {loan.title}
               </h1>
-              <p className="text-2xl text-blue-600 font-extrabold">Taux fixe unique : {FIXED_RATE}%</p>
+              <p className="text-2xl text-blue-600 font-extrabold">{translations[language].hero.badge.split(':')[0]}: {FIXED_RATE}%</p>
               <p className="text-xl text-gray-600 leading-relaxed">
-                {loan.longDescription}
+                {loan.description}
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-8">
               <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg">
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Montant Max</p>
+                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{t.labels.maxAmount}</p>
                 <p className="text-4xl font-black text-gray-900">{loan.maxAmount.toLocaleString()} €</p>
               </div>
               <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg">
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Durée Max</p>
-                <p className="text-4xl font-black text-gray-900">{loan.maxDuration} mois</p>
+                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{t.labels.maxDuration}</p>
+                <p className="text-4xl font-black text-gray-900">{loan.maxDuration} {translations[language].calculator.months}</p>
               </div>
             </div>
 
             <div className="space-y-8">
-              <h3 className="text-2xl font-bold text-gray-900">Vos avantages exclusifs</h3>
+              <h3 className="text-2xl font-bold text-gray-900">{t.advantages}</h3>
               <div className="grid gap-4">
-                {loan.features.map((feature, i) => (
+                {t.conditions.map((feature: string, i: number) => (
                   <div key={i} className="flex items-center gap-4 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
                     <CheckCircle2 className="w-7 h-7 text-green-500 flex-shrink-0" />
                     <span className="text-lg font-semibold text-gray-700">{feature}</span>
@@ -70,31 +73,34 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack }) => {
               <div className="absolute bottom-0 right-0 opacity-10">
                 <ShieldCheck className="w-48 h-48 -mr-10 -mb-10" />
               </div>
-              <h4 className="text-2xl font-bold">Conditions d'éligibilité</h4>
+              <h4 className="text-2xl font-bold">{t.eligibility}</h4>
               <ul className="space-y-4 text-gray-400">
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Résider fiscalement en Europe
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Avoir plus de 18 ans
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Justifier d'un revenu stable
-                </li>
+                {t.conditions.map((cond: string, idx: number) => (
+                  <li key={idx} className="flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    {cond}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
           <div className="lg:sticky lg:top-32 space-y-8">
-            <LoanCalculator />
+            <LoanCalculator 
+              language={language} 
+              onApply={() => {
+                // We need to trigger a navigation to the application form
+                // This will be handled by the App component as it provides handleNavigate('loan-application')
+                // For now, in this scope we'll assume App component passed the correct handler via a prop if we were in a real router.
+                // Since App.tsx is the parent, we'll make sure it's wired correctly.
+                window.dispatchEvent(new CustomEvent('navigate-to-application'));
+              }} 
+            />
             
             <div className="grid gap-4">
               {[
-                { icon: Calculator, title: "Simulation Gratuite", desc: "Aucun engagement de votre part" },
-                { icon: UserCheck, title: "Conseiller dédié", desc: "Accompagnement personnalisé" },
+                { icon: Calculator, title: t.sim_title, desc: t.sim_desc },
+                { icon: UserCheck, title: t.advisor_title, desc: t.advisor_desc },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-4 p-6 bg-blue-50 rounded-2xl border border-blue-100">
                   <div className="bg-white p-3 rounded-xl shadow-sm">
