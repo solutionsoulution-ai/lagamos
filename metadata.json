@@ -1,0 +1,8 @@
+{
+  "name": "FinancePlus - Solutions de Crédit",
+  "description": "Une plateforme moderne de services financiers offrant des prêts personnels, immobiliers, automobiles, entreprises et rachat de crédit avec un taux fixe de 2%.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
