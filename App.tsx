@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import About from './pages/About';
 import LoanDetail from './pages/LoanDetail';
 import Blog from './pages/Blog';
 import BlogPostDetail from './pages/BlogPostDetail';
 import Legal from './pages/Legal';
 import LoanApplication from './pages/LoanApplication';
 import Contact from './pages/Contact';
+import Success from './pages/Success';
 import LoanCalculator from './components/LoanCalculator';
 import { getLoansData } from './constants';
 import { Language } from './types';
@@ -22,12 +24,20 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const savedLang = localStorage.getItem('lang') as Language;
-    if (savedLang) setLanguage(savedLang);
+    // Validation de la langue pour éviter les erreurs si localStorage contient une valeur obsolète
+    if (savedLang && translations[savedLang]) {
+      setLanguage(savedLang);
+    } else {
+      setLanguage('fr');
+      localStorage.setItem('lang', 'fr');
+    }
   }, []);
 
   const handleLanguageChange = (lang: Language) => {
-    setLanguage(lang);
-    localStorage.setItem('lang', lang);
+    if (translations[lang]) {
+      setLanguage(lang);
+      localStorage.setItem('lang', lang);
+    }
   };
 
   const handleNavigate = (page: string) => {
@@ -62,10 +72,13 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
+    // Sécurité supplémentaire : s'assurer que translations[language] existe
+    const t = translations[language] || translations['fr'];
+
     if (currentPage === 'loan-detail' && selectedLoanId) {
       const loan = getLoansData(language).find(l => l.id === selectedLoanId);
       if (loan) {
-        return <LoanDetail loan={loan} onBack={() => handleNavigate('home')} language={language} />;
+        return <LoanDetail loan={loan} onBack={() => handleNavigate('home')} language={language} onApply={() => handleNavigate('loan-application')} />;
       }
     }
 
@@ -86,11 +99,19 @@ const App: React.FC = () => {
     }
 
     if (currentPage === 'loan-application') {
-      return <LoanApplication language={language} onBack={() => handleNavigate('home')} />;
+      return <LoanApplication language={language} onBack={() => handleNavigate('home')} onSuccess={() => setCurrentPage('success')} />;
     }
 
     if (currentPage === 'contact') {
       return <Contact language={language} />;
+    }
+
+    if (currentPage === 'success') {
+      return <Success language={language} onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'about') {
+      return <About language={language} onNavigate={handleNavigate} />;
     }
 
     switch (currentPage) {
@@ -99,12 +120,12 @@ const App: React.FC = () => {
       case 'blog':
         return <Blog language={language} onSelectPost={handleSelectPost} />;
       case 'simulator':
-        const t = translations[language].calculator;
+        const calcT = t.calculator;
         return (
           <div className="pt-32 pb-20 max-w-4xl mx-auto px-4">
              <div className="text-center mb-12 space-y-4">
-              <h1 className="text-5xl font-black text-gray-900">{t.title}</h1>
-              <p className="text-xl text-gray-600">{t.subtitle}</p>
+              <h1 className="text-5xl font-black text-gray-900">{calcT.title}</h1>
+              <p className="text-xl text-gray-600">{calcT.subtitle}</p>
             </div>
             <div className="max-w-2xl mx-auto">
               <LoanCalculator language={language} onApply={() => handleNavigate('loan-application')} />
@@ -122,7 +143,7 @@ const App: React.FC = () => {
       <main className="flex-grow">
         {renderContent()}
       </main>
-      <Footer language={language} onNavigate={handleNavigate} />
+      <Footer language={language} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} />
     </div>
   );
 };

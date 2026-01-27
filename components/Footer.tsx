@@ -8,11 +8,20 @@ import { getLoansData } from '../constants';
 interface FooterProps {
   language: Language;
   onNavigate: (page: string) => void;
+  onSelectLoan?: (loanId: string) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
+const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) => {
   const t = translations[language].footer;
   const loans = getLoansData(language);
+
+  const handleLoanClick = (loanId: string) => {
+    if (onSelectLoan) {
+      onSelectLoan(loanId);
+    } else {
+      onNavigate('home');
+    }
+  };
 
   return (
     <footer className="bg-gray-900 text-gray-300 py-20">
@@ -44,7 +53,7 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
             <ul className="space-y-4 font-medium">
               {loans.map((loan) => (
                 <li key={loan.id}>
-                  <button onClick={() => onNavigate('home')} className="hover:text-blue-500 transition-colors text-left">{loan.title}</button>
+                  <button onClick={() => handleLoanClick(loan.id)} className="hover:text-blue-500 transition-colors text-left">{loan.title}</button>
                 </li>
               ))}
             </ul>
@@ -53,11 +62,8 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate }) => {
           <div>
             <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t.titles.company}</h4>
             <ul className="space-y-4 font-medium">
-              <li><button onClick={() => onNavigate('home')} className="hover:text-blue-500 transition-colors">{t.links.about}</button></li>
+              <li><button onClick={() => onNavigate('about')} className="hover:text-blue-500 transition-colors">{t.links.about}</button></li>
               <li><button onClick={() => onNavigate('blog')} className="hover:text-blue-500 transition-colors">{t.links.blog}</button></li>
-              <li><button className="hover:text-blue-500 transition-colors opacity-50 cursor-not-allowed">{t.links.careers}</button></li>
-              <li><button className="hover:text-blue-500 transition-colors opacity-50 cursor-not-allowed">{t.links.press}</button></li>
-              <li><button className="hover:text-blue-500 transition-colors opacity-50 cursor-not-allowed">{t.links.help}</button></li>
             </ul>
           </div>
 

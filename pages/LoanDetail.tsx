@@ -10,9 +10,10 @@ interface LoanDetailProps {
   loan: LoanInfo;
   onBack: () => void;
   language: Language;
+  onApply: () => void;
 }
 
-const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language }) => {
+const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -88,13 +89,7 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language }) => {
           <div className="lg:sticky lg:top-32 space-y-8">
             <LoanCalculator 
               language={language} 
-              onApply={() => {
-                // We need to trigger a navigation to the application form
-                // This will be handled by the App component as it provides handleNavigate('loan-application')
-                // For now, in this scope we'll assume App component passed the correct handler via a prop if we were in a real router.
-                // Since App.tsx is the parent, we'll make sure it's wired correctly.
-                window.dispatchEvent(new CustomEvent('navigate-to-application'));
-              }} 
+              onApply={onApply} 
             />
             
             <div className="grid gap-4">

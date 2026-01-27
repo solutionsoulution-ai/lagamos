@@ -2,16 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
 import { translations } from '../translations';
-import { ChevronLeft, ShieldCheck, Lock, Send, CheckCircle, Info, Landmark, HelpCircle } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, Lock, Send, Info, Landmark, HelpCircle } from 'lucide-react';
 
 interface LoanApplicationProps {
   language: Language;
   onBack: () => void;
+  onSuccess: () => void;
 }
 
-const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack }) => {
+const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onSuccess }) => {
   const t = translations[language].form;
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -41,26 +41,8 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack }) =
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Logic for sending data would go here.
-    setIsSubmitted(true);
-    window.scrollTo(0, 0);
+    onSuccess();
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="pt-32 pb-24 px-4 flex flex-col items-center text-center space-y-8 animate-in fade-in zoom-in">
-        <div className="bg-green-100 p-8 rounded-full">
-          <CheckCircle className="w-20 h-20 text-green-600" />
-        </div>
-        <h2 className="text-4xl font-black text-gray-900 max-w-xl">{t.fields.success}</h2>
-        <button 
-          onClick={onBack}
-          className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:bg-blue-700 transition-all"
-        >
-          {translations[language].nav.home}
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="pt-32 pb-24 bg-gray-50 min-h-screen">
