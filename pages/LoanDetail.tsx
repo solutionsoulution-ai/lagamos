@@ -2,8 +2,10 @@
 import React, { useEffect } from 'react';
 import { LoanInfo, Language } from '../types';
 import { ICON_MAP, FIXED_RATE } from '../constants';
-import { ChevronLeft, CheckCircle2, ShieldCheck, Calculator, UserCheck } from 'lucide-react';
+import { ChevronLeft, CheckCircle2, ShieldCheck, Calculator, UserCheck, TrendingUp, Sparkles, PieChart } from 'lucide-react';
 import LoanCalculator from '../components/LoanCalculator';
+import FaqSection from '../components/FaqSection';
+import ReviewsSection from '../components/ReviewsSection';
 import { translations } from '../translations';
 
 interface LoanDetailProps {
@@ -16,13 +18,13 @@ interface LoanDetailProps {
 const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [loan.id]);
 
   const IconComponent = ICON_MAP[loan.icon];
   const t = translations[language].loan_detail;
 
   return (
-    <div className="pt-24 pb-20">
+    <div className="pt-24 pb-20 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <button 
           onClick={onBack}
@@ -34,52 +36,93 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
 
         <div className="grid lg:grid-cols-2 gap-20 items-start">
           <div className="space-y-12">
-            <div className="space-y-6">
-              <div className="bg-blue-600 w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-200">
-                <IconComponent className="w-10 h-10 text-white" />
+            <div className="bg-white rounded-[3rem] p-10 sm:p-12 border border-gray-100 shadow-xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                <IconComponent className="w-64 h-64" />
               </div>
-              <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
-                {loan.title}
-              </h1>
-              <p className="text-2xl text-blue-600 font-extrabold">{translations[language].hero.badge.split(':')[0]}: {FIXED_RATE}%</p>
-              <p className="text-xl text-gray-600 leading-relaxed">
-                {loan.description}
-              </p>
+              
+              <div className="space-y-6 relative z-10">
+                <div className="bg-blue-600 w-20 h-20 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-200">
+                  <IconComponent className="w-10 h-10 text-white" />
+                </div>
+                <h1 className="text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
+                  {loan.title}
+                </h1>
+                <div className="flex items-center gap-4">
+                  <div className="bg-blue-50 px-4 py-2 rounded-full border border-blue-100">
+                    <p className="text-lg text-blue-600 font-extrabold">{translations[language].hero.badge.split(':')[0]}: {FIXED_RATE}%</p>
+                  </div>
+                  <div className="bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-emerald-600" />
+                    <p className="text-sm text-emerald-600 font-bold">Meilleure offre</p>
+                  </div>
+                </div>
+                <p className="text-xl text-gray-600 leading-relaxed font-medium">
+                  {loan.description}
+                </p>
+              </div>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-8">
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg">
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{t.labels.maxAmount}</p>
-                <p className="text-4xl font-black text-gray-900">{loan.maxAmount.toLocaleString()} €</p>
+              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg group hover:bg-blue-600 transition-all duration-500">
+                <div className="flex justify-between items-start mb-6">
+                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest group-hover:text-blue-100 transition-colors">{t.labels.maxAmount}</p>
+                  <TrendingUp className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+                </div>
+                <p className="text-4xl font-black text-gray-900 group-hover:text-white transition-colors">{loan.maxAmount.toLocaleString()} €</p>
+                <div className="mt-4 h-1 w-full bg-gray-100 rounded-full group-hover:bg-blue-400/30">
+                  <div className="h-full w-2/3 bg-blue-600 rounded-full group-hover:bg-white animate-pulse"></div>
+                </div>
               </div>
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg">
-                <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">{t.labels.maxDuration}</p>
-                <p className="text-4xl font-black text-gray-900">{loan.maxDuration} {translations[language].calculator.months}</p>
+              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-lg group hover:bg-gray-900 transition-all duration-500">
+                <div className="flex justify-between items-start mb-6">
+                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest group-hover:text-gray-400 transition-colors">{t.labels.maxDuration}</p>
+                  <PieChart className="w-6 h-6 text-blue-600 group-hover:text-blue-400 transition-colors" />
+                </div>
+                <p className="text-4xl font-black text-gray-900 group-hover:text-white transition-colors">{loan.maxDuration} {translations[language].calculator.months}</p>
+                <div className="mt-4 h-1 w-full bg-gray-100 rounded-full group-hover:bg-gray-700">
+                  <div className="h-full w-1/2 bg-blue-600 rounded-full group-hover:bg-blue-500 animate-pulse"></div>
+                </div>
               </div>
             </div>
 
             <div className="space-y-8">
-              <h3 className="text-2xl font-bold text-gray-900">{t.advantages}</h3>
-              <div className="grid gap-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-50 p-3 rounded-xl">
+                  <Sparkles className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-2xl font-black text-gray-900">{t.advantages}</h3>
+              </div>
+              <div className="grid gap-6">
                 {t.conditions.map((feature: string, i: number) => (
-                  <div key={i} className="flex items-center gap-4 bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                    <CheckCircle2 className="w-7 h-7 text-green-500 flex-shrink-0" />
-                    <span className="text-lg font-semibold text-gray-700">{feature}</span>
+                  <div key={i} className="flex items-center gap-6 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+                    <div className="bg-emerald-50 w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-500 transition-colors">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-500 group-hover:text-white transition-colors" />
+                    </div>
+                    <span className="text-lg font-bold text-gray-700 group-hover:text-gray-900 transition-colors">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white space-y-6 relative overflow-hidden">
-              <div className="absolute bottom-0 right-0 opacity-10">
-                <ShieldCheck className="w-48 h-48 -mr-10 -mb-10" />
+            <div className="bg-gray-900 rounded-[3rem] p-10 sm:p-16 text-white space-y-8 relative overflow-hidden group shadow-2xl shadow-gray-900/20">
+              <div className="absolute bottom-0 right-0 opacity-10 group-hover:scale-110 transition-transform duration-1000">
+                <ShieldCheck className="w-64 h-64 -mr-16 -mb-16" />
               </div>
-              <h4 className="text-2xl font-bold">{t.eligibility}</h4>
-              <ul className="space-y-4 text-gray-400">
+              
+              <div className="space-y-4 relative z-10">
+                <div className="inline-flex items-center gap-2 bg-blue-600/30 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-blue-400">
+                  <ShieldCheck className="w-4 h-4" />
+                  Protection garantie
+                </div>
+                <h4 className="text-3xl font-black">{t.eligibility}</h4>
+              </div>
+              
+              <ul className="space-y-6 text-gray-400 relative z-10">
                 {t.conditions.map((cond: string, idx: number) => (
-                  <li key={idx} className="flex items-center gap-3">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                    {cond}
+                  <li key={idx} className="flex items-center gap-4 group/item">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 group-hover/item:scale-150 transition-transform"></div>
+                    <span className="text-lg font-medium group-hover/item:text-white transition-colors">{cond}</span>
                   </li>
                 ))}
               </ul>
@@ -87,28 +130,46 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
           </div>
 
           <div className="lg:sticky lg:top-32 space-y-8">
-            <LoanCalculator 
-              language={language} 
-              onApply={onApply} 
-            />
+            <div className="relative">
+               <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-100 rounded-full blur-3xl opacity-50 -z-10 animate-pulse"></div>
+               <LoanCalculator 
+                language={language} 
+                onApply={onApply} 
+              />
+            </div>
             
             <div className="grid gap-4">
               {[
-                { icon: Calculator, title: t.sim_title, desc: t.sim_desc },
-                { icon: UserCheck, title: t.advisor_title, desc: t.advisor_desc },
+                { icon: Calculator, title: t.sim_title, desc: t.sim_desc, color: "bg-blue-50 text-blue-600" },
+                { icon: UserCheck, title: t.advisor_title, desc: t.advisor_desc, color: "bg-emerald-50 text-emerald-600" },
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-4 p-6 bg-blue-50 rounded-2xl border border-blue-100">
-                  <div className="bg-white p-3 rounded-xl shadow-sm">
-                    <item.icon className="w-6 h-6 text-blue-600" />
+                <div key={i} className="flex items-center gap-6 p-8 bg-white rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
+                  <div className={`${item.color} p-5 rounded-[1.5rem] shadow-sm group-hover:scale-110 transition-transform`}>
+                    <item.icon className="w-8 h-8" />
                   </div>
                   <div>
-                    <p className="font-bold text-gray-900">{item.title}</p>
-                    <p className="text-sm text-gray-500">{item.desc}</p>
+                    <p className="text-xl font-black text-gray-900 group-hover:text-blue-600 transition-colors">{item.title}</p>
+                    <p className="text-gray-500 font-medium">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Sections Spécifiques */}
+        <div className="mt-20 sm:mt-32 space-y-20 sm:space-y-32">
+          {loan.specificTestimonials && (
+            <section>
+              <ReviewsSection language={language} customReviews={loan.specificTestimonials} />
+            </section>
+          )}
+
+          {loan.specificFaqs && (
+            <section className="bg-white rounded-[3rem] p-8 sm:p-16 border border-gray-100 shadow-sm">
+              <FaqSection language={language} customFaqs={loan.specificFaqs} />
+            </section>
+          )}
         </div>
       </div>
     </div>

@@ -2,38 +2,37 @@
 import React, { useRef, useEffect } from 'react';
 import { Star, Quote, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { TESTIMONIALS } from '../constants';
-import { Language } from '../types';
+import { Language, Testimonial } from '../types';
 import { translations } from '../translations';
 
-interface ReviewsSectionProps { language: Language; }
+interface ReviewsSectionProps { 
+  language: Language; 
+  customReviews?: Testimonial[];
+}
 
-const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language }) => {
+const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language, customReviews }) => {
   const t = translations[language].testimonials;
   const scrollRef = useRef<HTMLDivElement>(null);
+  const reviews = customReviews || TESTIMONIALS;
 
-  // Auto-slide effect
   useEffect(() => {
     const interval = setInterval(() => {
       if (scrollRef.current) {
         const { scrollLeft, clientWidth, scrollWidth } = scrollRef.current;
-        
-        // If we're at the end, scroll back to the beginning
         if (scrollLeft + clientWidth >= scrollWidth - 10) {
           scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
-          // Otherwise, scroll one card width
           scroll('right');
         }
       }
-    }, 4000); // Change slide every 4 seconds
-
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { scrollLeft, clientWidth } = scrollRef.current;
-      const cardWidth = 400; // Average card width + gap
+      const cardWidth = 400;
       const scrollTo = direction === 'left' ? scrollLeft - cardWidth : scrollLeft + cardWidth;
       scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
@@ -47,7 +46,6 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language }) => {
           <p className="text-sm sm:text-xl text-gray-600 font-medium">{t.p}</p>
         </div>
         
-        {/* Navigation Buttons */}
         <div className="flex gap-3">
           <button 
             onClick={() => scroll('left')}
@@ -66,13 +64,12 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language }) => {
         </div>
       </div>
 
-      {/* Horizontal Scroll Container */}
       <div 
         ref={scrollRef}
         className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory touch-pan-x"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {TESTIMONIALS.map((review) => (
+        {reviews.map((review) => (
           <div 
             key={review.id} 
             className="flex-none w-[300px] sm:w-[400px] snap-center"
@@ -108,13 +105,6 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language }) => {
               </div>
             </div>
           </div>
-        ))}
-      </div>
-      
-      {/* Visual Indicator (Mobile Only) */}
-      <div className="md:hidden flex justify-center gap-2 mt-4">
-        {TESTIMONIALS.map((_, i) => (
-          <div key={i} className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
         ))}
       </div>
     </div>

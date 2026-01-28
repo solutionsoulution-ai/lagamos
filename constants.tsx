@@ -11,11 +11,15 @@ import {
   ShieldCheck,
   TrendingDown
 } from 'lucide-react';
-import { LoanInfo, Testimonial, Language } from './types';
+import { LoanInfo, Testimonial, Language, LoanType } from './types';
+import { translations } from './translations';
 
 export const FIXED_RATE = 2; // 2%
 
 export const getLoansData = (lang: Language): LoanInfo[] => {
+  const t = translations[lang];
+  const loanSpecifics = t.loan_specifics;
+
   const titles: Record<Language, Record<string, string>> = {
     fr: { p: 'Prêt Personnel', i: 'Prêt Immobilier', a: 'Prêt Automobile', e: 'Prêt Entreprise', r: 'Rachat de Crédit' },
     pl: { p: 'Pożyczka osobista', i: 'Kredyt hipoteczny', a: 'Kredyt samochodowy', e: 'Kredyt dla firm', r: 'Konsolidacja kredytów' },
@@ -33,51 +37,36 @@ export const getLoansData = (lang: Language): LoanInfo[] => {
     nl: { p: 'Vrijheid voor uw plannen.', i: 'Word eigenaar.', a: 'Ga de weg op.', e: 'Boost uw groei.', r: 'Vereenvoudig uw financiën.' },
     it: { p: 'Progetti di vita in libertà.', i: 'Diventa proprietario.', a: 'Mettiti in viaggio.', e: 'Spingi la tua crescita.', r: 'Semplifica le tue finanze.' },
     pt: { p: 'Projetos de vida em liberdade.', i: 'Torne-se proprietário.', a: 'Faça-se à estrada.', e: 'Impulsione o seu crescimento.', r: 'Simplifique as suas finanças.' },
-    es: { p: 'Proyectos de vida em libertad.', i: 'Conviértete en propietario.', a: 'Sal a la carretera.', e: 'Impulsa tu crecimiento.', r: 'Simplifica tus finanzas.' }
+    es: { p: 'Proyectos de vida en libertad.', i: 'Conviértete en propietario.', a: 'Sal a la carretera.', e: 'Impulsa tu crecimiento.', r: 'Simplifica tus finanzas.' }
   };
 
-  return [
-    { id: 'personnel', title: titles[lang].p, description: descriptions[lang].p, longDescription: '', icon: 'User', features: [], maxAmount: 75000, maxDuration: 84 },
-    { id: 'immobilier', title: titles[lang].i, description: descriptions[lang].i, longDescription: '', icon: 'HomeIcon', features: [], maxAmount: 1500000, maxDuration: 300 },
-    { id: 'automobile', title: titles[lang].a, description: descriptions[lang].a, longDescription: '', icon: 'Car', features: [], maxAmount: 100000, maxDuration: 72 },
-    { id: 'entreprise', title: titles[lang].e, description: descriptions[lang].e, longDescription: '', icon: 'Briefcase', features: [], maxAmount: 5000000, maxDuration: 120 },
-    { id: 'rachat', title: titles[lang].r, description: descriptions[lang].r, longDescription: '', icon: 'RefreshCcw', features: [], maxAmount: 250000, maxDuration: 180 }
+  const baseData = [
+    { id: 'personnel' as LoanType, icon: 'User', maxAmount: 75000, maxDuration: 84 },
+    { id: 'immobilier' as LoanType, icon: 'HomeIcon', maxAmount: 1500000, maxDuration: 300 },
+    { id: 'automobile' as LoanType, icon: 'Car', maxAmount: 100000, maxDuration: 72 },
+    { id: 'entreprise' as LoanType, icon: 'Briefcase', maxAmount: 5000000, maxDuration: 120 },
+    { id: 'rachat' as LoanType, icon: 'RefreshCcw', maxAmount: 250000, maxDuration: 180 }
   ];
+
+  return baseData.map(base => {
+    const key = base.id === 'personnel' ? 'p' : base.id === 'immobilier' ? 'i' : base.id === 'automobile' ? 'a' : base.id === 'entreprise' ? 'e' : 'r';
+    return {
+      ...base,
+      title: titles[lang][key],
+      description: descriptions[lang][key],
+      longDescription: '',
+      features: [],
+      specificFaqs: loanSpecifics[base.id]?.faqs || [],
+      specificTestimonials: loanSpecifics[base.id]?.testimonials || []
+    };
+  });
 };
 
 export const TESTIMONIALS: Testimonial[] = [
-  { 
-    id: 1, 
-    name: 'Jean Dupont', 
-    role: 'Entrepreneur, France', 
-    content: 'Un accompagnement exceptionnel pour mon prêt entreprise. Le taux de 2% est imbattable sur le marché actuel.', 
-    rating: 5, 
-    avatar: 'https://i.pravatar.cc/150?u=jean' 
-  },
-  { 
-    id: 2, 
-    name: 'Marta Kowalska', 
-    role: 'Architecte, Pologne', 
-    content: 'Szybka odpowiedź i bardzo profesjonalna obsługa. Dzięki FinancePlus kupiłam wymarzony samochód bez zbędnych formalności.', 
-    rating: 5, 
-    avatar: 'https://i.pravatar.cc/150?u=marta' 
-  },
-  { 
-    id: 3, 
-    name: 'Luca Moretti', 
-    role: 'Enseignant, Italie', 
-    content: 'Ho consolidato i miei debiti in un unico prestito a tasso fisso. La mia rata mensile è diminuita drasticamente.', 
-    rating: 5, 
-    avatar: 'https://i.pravatar.cc/150?u=luca' 
-  },
-  { 
-    id: 4, 
-    name: 'Sophie Müller', 
-    role: 'Médecin, Allemagne', 
-    content: 'Einfacher Prozess, schnelle Auszahlung. Ich bin sehr zufrieden mit dem Service und der Transparenz.', 
-    rating: 5, 
-    avatar: 'https://i.pravatar.cc/150?u=sophie' 
-  }
+  { id: 1, name: 'Jean Dupont', role: 'Entrepreneur, France', content: 'Un accompagnement exceptionnel pour mon prêt entreprise. Le taux de 2% est imbattable sur le marché actuel.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=jean' },
+  { id: 2, name: 'Marta Kowalska', role: 'Architecte, Polska', content: 'Szybka odpowiedź i bardzo profesjonalna obsługa. Dzięki Europfy kupiłam wymarzony samochód bez zbędnych formalności.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=marta' },
+  { id: 3, name: 'Luca Moretti', role: 'Insegnante, Italia', content: 'Ho consolidato i miei debiti in un unico prestito a tasso fisso. La mia rata mensile è diminuita drasticamente.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=luca' },
+  { id: 4, name: 'Sophie Müller', role: 'Ärztin, Deutschland', content: 'Einfacher Prozess, schnelle Auszahlung. Ich bin sehr zufrieden mit dem Service und der Transparenz.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=sophie' }
 ];
 
 export const ICON_MAP: Record<string, any> = { User, HomeIcon, Car, Briefcase, RefreshCcw, CheckCircle, Clock, ShieldCheck, TrendingDown };

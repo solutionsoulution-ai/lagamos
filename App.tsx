@@ -11,9 +11,13 @@ import Legal from './pages/Legal';
 import LoanApplication from './pages/LoanApplication';
 import Contact from './pages/Contact';
 import Success from './pages/Success';
+import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import ClientDashboard from './pages/ClientDashboard';
+import Help from './pages/Help';
 import LoanCalculator from './components/LoanCalculator';
 import { getLoansData } from './constants';
-import { Language } from './types';
+import { Language, User } from './types';
 import { translations } from './translations';
 
 const App: React.FC = () => {
@@ -21,15 +25,20 @@ const App: React.FC = () => {
   const [selectedLoanId, setSelectedLoanId] = useState<string | null>(null);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [language, setLanguage] = useState<Language>('fr');
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const savedLang = localStorage.getItem('lang') as Language;
-    // Validation de la langue pour éviter les erreurs si localStorage contient une valeur obsolète
     if (savedLang && translations[savedLang]) {
       setLanguage(savedLang);
     } else {
       setLanguage('fr');
       localStorage.setItem('lang', 'fr');
+    }
+
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
   }, []);
 
@@ -38,6 +47,18 @@ const App: React.FC = () => {
       setLanguage(lang);
       localStorage.setItem('lang', lang);
     }
+  };
+
+  const handleLogin = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setCurrentPage(userData.role === 'admin' ? 'admin-dashboard' : 'client-dashboard');
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    setCurrentPage('home');
   };
 
   const handleNavigate = (page: string) => {
@@ -72,8 +93,31 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
-    // Sécurité supplémentaire : s'assurer que translations[language] existe
     const t = translations[language] || translations['fr'];
+
+    if (currentPage === 'login') {
+      return <Login language={language} onLogin={handleLogin} onBack={() => handleNavigate('home')} onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'help') {
+      return <Help language={language} onBack={() => handleNavigate('login')} />;
+    }
+
+    if (currentPage === 'admin-dashboard') {
+      if (user?.role !== 'admin') {
+        setCurrentPage('login');
+        return null;
+      }
+      return <AdminDashboard language={language} />;
+    }
+
+    if (currentPage === 'client-dashboard') {
+      if (!user) {
+        setCurrentPage('login');
+        return null;
+      }
+      return <ClientDashboard language={language} user={user} onNavigate={handleNavigate} />;
+    }
 
     if (currentPage === 'loan-detail' && selectedLoanId) {
       const loan = getLoansData(language).find(l => l.id === selectedLoanId);
@@ -99,7 +143,7 @@ const App: React.FC = () => {
     }
 
     if (currentPage === 'loan-application') {
-      return <LoanApplication language={language} onBack={() => handleNavigate('home')} onSuccess={() => setCurrentPage('success')} />;
+      return <LoanApplication language={language} onBack={() => handleNavigate('home')} onSuccess={() => setCurrentPage('success')} onNavigate={handleNavigate} />;
     }
 
     if (currentPage === 'contact') {
@@ -139,7 +183,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar onNavigate={handleNavigate} currentPage={currentPage} language={language} onLanguageChange={handleLanguageChange} />
+      <Navbar onNavigate={handleNavigate} currentPage={currentPage} language={language} onLanguageChange={handleLanguageChange} user={user} onLogout={handleLogout} />
       <main className="flex-grow">
         {renderContent()}
       </main>

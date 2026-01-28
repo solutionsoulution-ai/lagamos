@@ -1,16 +1,19 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
-import { Language } from '../types';
+import { Language, FaqItem } from '../types';
 import { translations } from '../translations';
 
-interface FaqSectionProps { language: Language; }
+interface FaqSectionProps { 
+  language: Language; 
+  customFaqs?: FaqItem[];
+}
 
-const FaqSection: React.FC<FaqSectionProps> = ({ language }) => {
+const FaqSection: React.FC<FaqSectionProps> = ({ language, customFaqs }) => {
   const t = translations[language].faq;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
+  const faqs = customFaqs || [
     { q: t.q1, a: t.a1 },
     { q: t.q2, a: t.a2 },
     { q: t.q3, a: t.a3 },

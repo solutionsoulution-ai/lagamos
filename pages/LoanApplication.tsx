@@ -1,16 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language } from '../types';
+import { Language, LoanApplicationData } from '../types';
 import { translations } from '../translations';
-import { ChevronLeft, ShieldCheck, Lock, Send, Info, Landmark, HelpCircle } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, Lock, Send, Info, Landmark, HelpCircle, FileCheck } from 'lucide-react';
 
 interface LoanApplicationProps {
   language: Language;
   onBack: () => void;
   onSuccess: () => void;
+  onNavigate: (page: string) => void;
 }
 
-const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onSuccess }) => {
+const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onSuccess, onNavigate }) => {
   const t = translations[language].form;
   const [formData, setFormData] = useState({
     firstName: '',
@@ -23,7 +24,8 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
     profession: '',
     income: '',
     reason: '',
-    consent: false
+    consent: false,
+    processingConsent: false
   });
 
   useEffect(() => {
@@ -40,7 +42,41 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic for sending data would go here.
+    if (!formData.processingConsent) {
+        const errorMsg = {
+          fr: "Veuillez accepter les frais de dossier pour continuer.",
+          pl: "Proszę zaakceptować koszty operacyjne, aby kontynuować.",
+          de: "Bitte akzeptieren Sie die Bearbeitungsgebühren, um fortzufahren.",
+          nl: "Accepteer de behandelingskosten om door te gaan.",
+          it: "Si prega di accettare le spese di istruttoria per continuare.",
+          pt: "Por favor, aceite os custos de processo para continuar.",
+          es: "Por favor, acepte los gastos de gestión para continuar."
+        };
+        alert(errorMsg[language] || errorMsg.fr);
+        return;
+    }
+
+    const application: LoanApplicationData = {
+      id: Math.random().toString(36).substr(2, 9),
+      date: new Date().toISOString(),
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      amount: Number(formData.amount),
+      duration: Number(formData.duration),
+      email: formData.email,
+      whatsapp: formData.whatsapp,
+      country: formData.country,
+      profession: formData.profession,
+      income: Number(formData.income),
+      reason: formData.reason,
+      status: 'pending',
+      feesAccepted: formData.processingConsent
+    };
+
+    const existingRaw = localStorage.getItem('loan_applications');
+    const existing = existingRaw ? JSON.parse(existingRaw) : [];
+    localStorage.setItem('loan_applications', JSON.stringify([application, ...existing]));
+
     onSuccess();
   };
 
@@ -59,7 +95,9 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
           
           {/* Form Section */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 border border-gray-100 shadow-2xl">
+            <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 border border-gray-100 shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+              
               <div className="mb-10 space-y-4">
                 <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">
                   {t.title}
@@ -69,13 +107,31 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                 </p>
               </div>
 
+              {/* Bloc Frais de Dossier */}
+              <div className="mb-10 bg-blue-50 border border-blue-100 rounded-3xl p-6 sm:p-8 space-y-4">
+                <div className="flex items-center gap-3">
+                   <div className="bg-blue-600 p-2 rounded-xl">
+                      <FileCheck className="w-6 h-6 text-white" />
+                   </div>
+                   <h3 className="text-xl font-black text-blue-900">{t.processing_fees.title}</h3>
+                </div>
+                <p className="text-gray-700 leading-relaxed font-medium">
+                    {t.processing_fees.text}
+                </p>
+                <div className="pt-2 border-t border-blue-200">
+                    <p className="text-sm font-black text-blue-600 italic">
+                        {t.processing_fees.detail}
+                    </p>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.firstName}</label>
                     <input 
                       required name="firstName" value={formData.firstName} onChange={handleChange}
-                      placeholder="Jean"
+                      placeholder="..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -83,7 +139,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.lastName}</label>
                     <input 
                       required name="lastName" value={formData.lastName} onChange={handleChange}
-                      placeholder="Dupont"
+                      placeholder="..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -113,7 +169,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.email}</label>
                     <input 
                       required type="email" name="email" value={formData.email} onChange={handleChange}
-                      placeholder="vous@exemple.com"
+                      placeholder="email@..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -121,7 +177,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.whatsapp}</label>
                     <input 
                       required name="whatsapp" value={formData.whatsapp} onChange={handleChange}
-                      placeholder="+33 6 12 34 56 78"
+                      placeholder="+..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -134,15 +190,9 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium"
                   >
                     <option value="">{t.fields.select_country}</option>
-                    <option value="FR">France</option>
-                    <option value="BE">Belgique</option>
-                    <option value="CH">Suisse</option>
-                    <option value="PL">Pologne</option>
-                    <option value="DE">Allemagne</option>
-                    <option value="IT">Italie</option>
-                    <option value="ES">Espagne</option>
-                    <option value="PT">Portugal</option>
-                    <option value="NL">Pays-Bas</option>
+                    {Object.entries(t.countries || {}).map(([code, name]) => (
+                      <option key={code} value={code}>{name as string}</option>
+                    ))}
                   </select>
                 </div>
 
@@ -151,7 +201,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.profession}</label>
                     <input 
                       required name="profession" value={formData.profession} onChange={handleChange}
-                      placeholder="Développeur"
+                      placeholder="..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -159,7 +209,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.income}</label>
                     <input 
                       required type="number" name="income" value={formData.income} onChange={handleChange}
-                      placeholder="3000"
+                      placeholder="..."
                       className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
@@ -175,8 +225,21 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                   ></textarea>
                 </div>
 
-                <div className="space-y-4 pt-4 border-t border-gray-50">
-                  <div className="flex gap-4">
+                <div className="space-y-6 pt-6 border-t border-gray-50">
+                  {/* Frais de dossier Checkbox */}
+                  <div className="flex gap-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100 items-start">
+                    <div className="pt-1">
+                      <input 
+                        type="checkbox" required name="processingConsent" checked={formData.processingConsent} onChange={handleChange}
+                        className="w-6 h-6 text-blue-600 rounded-lg focus:ring-blue-500 border-blue-200 cursor-pointer" 
+                      />
+                    </div>
+                    <label className="text-sm text-blue-900 font-bold leading-relaxed cursor-pointer">
+                      {t.fields.processing_consent}
+                    </label>
+                  </div>
+
+                  <div className="flex gap-4 items-start px-1">
                     <div className="pt-1">
                       <input 
                         type="checkbox" required name="consent" checked={formData.consent} onChange={handleChange}
@@ -187,13 +250,13 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                       {t.fields.consent1}
                     </label>
                   </div>
-                  <p className="text-xs text-gray-400 italic">
+                  <p className="text-[10px] text-gray-400 italic px-1">
                     {t.fields.consent2}
                   </p>
                 </div>
 
-                <div className="bg-orange-50 p-4 rounded-xl flex gap-3 items-center">
-                  <Info className="w-5 h-5 text-orange-600 shrink-0" />
+                <div className="bg-orange-50 p-5 rounded-2xl flex gap-4 items-center border border-orange-100">
+                  <Info className="w-6 h-6 text-orange-600 shrink-0" />
                   <p className="text-xs font-bold text-orange-800 leading-tight">
                     {t.fields.warning}
                   </p>
@@ -201,7 +264,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
 
                 <button 
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3"
+                  className="w-full bg-blue-600 text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-4 hover:scale-[1.01]"
                 >
                   <Send className="w-6 h-6" />
                   {t.fields.submit}
@@ -210,35 +273,42 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
             </div>
           </div>
 
-          {/* Sidebar Section */}
+          {/* Sidebar */}
           <div className="space-y-8 sticky top-32">
-             <div className="bg-gray-900 rounded-[2.5rem] p-8 text-white space-y-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
+             <div className="bg-gray-900 rounded-[2.5rem] p-8 text-white space-y-8 relative overflow-hidden shadow-2xl">
+                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                    <Lock className="w-32 h-32" />
                 </div>
                 <h3 className="text-2xl font-black relative z-10">{t.trust_title}</h3>
                 <p className="text-gray-400 font-medium relative z-10 leading-relaxed">
                   {t.trust_text}
                 </p>
-                <div className="space-y-4 relative z-10">
-                   <div className="flex items-center gap-3">
-                      <div className="bg-blue-600/20 p-2 rounded-lg"><ShieldCheck className="w-5 h-5 text-blue-500" /></div>
-                      <span className="text-sm font-bold">Sécurisation SSL 256 bits</span>
+                <div className="space-y-4 relative z-10 pt-4">
+                   <div className="flex items-center gap-4">
+                      <div className="bg-blue-600/30 p-2.5 rounded-xl"><ShieldCheck className="w-5 h-5 text-blue-400" /></div>
+                      <span className="text-sm font-bold">SSL 256 bits Secured</span>
                    </div>
-                   <div className="flex items-center gap-3">
-                      <div className="bg-blue-600/20 p-2 rounded-lg"><Landmark className="w-5 h-5 text-blue-500" /></div>
-                      <span className="text-sm font-bold">Conformité ACPR & ORIAS</span>
+                   <div className="flex items-center gap-4">
+                      <div className="bg-blue-600/30 p-2.5 rounded-xl"><Landmark className="w-5 h-5 text-blue-400" /></div>
+                      <span className="text-sm font-bold">ACPR & ORIAS Registry</span>
                    </div>
                 </div>
              </div>
 
-             <div className="bg-blue-600 rounded-[2.5rem] p-8 text-white text-center space-y-4">
-                <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+             <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-[2.5rem] p-8 text-white text-center space-y-6 shadow-xl">
+                <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto backdrop-blur-md">
                    <HelpCircle className="w-8 h-8 text-white" />
                 </div>
-                <h4 className="text-xl font-black">Besoin d'aide ?</h4>
-                <p className="text-blue-100 text-sm font-medium">Nos experts sont là pour vous accompagner dans votre démarche.</p>
-                <button className="w-full bg-white text-blue-600 py-3 rounded-xl font-black shadow-sm">Parler à un conseiller</button>
+                <h4 className="text-xl font-black">{t.help_sidebar.title}</h4>
+                <p className="text-blue-100 text-sm font-medium leading-relaxed">
+                  {t.help_sidebar.desc}
+                </p>
+                <button 
+                    onClick={() => onNavigate('contact')}
+                    className="w-full bg-white text-blue-600 py-4 rounded-2xl font-black shadow-lg hover:bg-blue-50 transition-all active:scale-95"
+                >
+                    {t.help_sidebar.cta}
+                </button>
              </div>
           </div>
 
