@@ -16,9 +16,9 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
   return (
     <div 
       onClick={onClick}
-      className="group relative bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[4/5] sm:aspect-square lg:aspect-[4/5]"
+      className="group relative bg-gray-900 rounded-xl sm:rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[18/5] sm:aspect-square lg:aspect-[4/5]"
     >
-      {/* Background Image - Occupies full card now */}
+      {/* Background Image */}
       <img 
         src={loan.image} 
         alt={loan.title} 
@@ -26,29 +26,29 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
       />
       
       {/* Dynamic Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-teal-950 via-teal-900/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-teal-950/90 via-teal-900/10 to-transparent opacity-80 group-hover:opacity-95 transition-opacity"></div>
       
-      {/* Top Badge: Taux Fixe */}
-      <div className="absolute top-6 left-6">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full flex items-center gap-2">
-          <Sparkles className="w-3 h-3 text-emerald-400" />
-          <span className="text-[10px] font-black text-white uppercase tracking-widest">Taux 2% Fixe</span>
+      {/* Top Badge: Taux Fixe - Ultra compact on mobile */}
+      <div className="absolute top-2 left-2 sm:top-6 sm:left-6">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 sm:gap-2">
+          <Sparkles className="w-2 h-2 sm:w-3 sm:h-3 text-emerald-400" />
+          <span className="text-[7px] sm:text-[10px] font-black text-white uppercase tracking-widest">2% Fixe</span>
         </div>
       </div>
 
-      {/* Content Overlay */}
-      <div className="absolute inset-x-0 bottom-0 p-8 space-y-4 translate-y-2 group-hover:translate-y-0 transition-transform">
-        <div className="flex items-center gap-4">
-          <div className="bg-emerald-500 p-3 rounded-2xl shadow-lg shadow-emerald-900/40 text-white transform group-hover:rotate-12 transition-transform">
-            <IconComponent className="w-6 h-6" />
+      {/* Content Overlay - Ultra compact on mobile */}
+      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-8 space-y-1 sm:space-y-4 translate-y-0.5 group-hover:translate-y-0 transition-transform">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="bg-emerald-500 p-1.5 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg shadow-emerald-900/40 text-white transform group-hover:rotate-12 transition-transform">
+            <IconComponent className="w-3 h-3 sm:w-6 sm:h-6" />
           </div>
-          <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
+          <h3 className="text-sm sm:text-2xl lg:text-3xl font-black text-white leading-tight">
             {loan.title}
           </h3>
         </div>
         
-        {/* Subtle separator and action */}
-        <div className="pt-4 flex items-center justify-between border-t border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
+        {/* Desktop only elements */}
+        <div className="hidden sm:flex pt-4 items-center justify-between border-t border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
           <span className="text-emerald-400 text-xs font-black uppercase tracking-[0.2em]">Découvrir l'offre</span>
           <div className="bg-white text-emerald-600 p-2 rounded-full">
             <ArrowRight className="w-4 h-4" />
