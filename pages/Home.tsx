@@ -117,15 +117,16 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
 
   return (
     <div className="space-y-12 sm:space-y-24 pb-20 overflow-x-hidden">
-      {/* Hero Section Mobile-First Adaptation */}
-      <section className="relative h-[70vh] sm:h-[90vh] min-h-[550px] flex items-center overflow-hidden bg-gray-900">
+      {/* Hero Section Mobile-First Adaptation - Height reduced to 55vh */}
+      <section className="relative h-[55vh] sm:h-[90vh] min-h-[480px] flex items-center overflow-hidden bg-gray-900">
         {/* Carrousel as Background */}
         <div className="absolute inset-0 z-0">
           {carouselImages.map((img, idx) => (
             <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
+              {/* No scale (zoom) on mobile */}
               <img src={img.url} className="w-full h-full object-cover object-center scale-100" alt={img.label} />
-              {/* Lighter overlays for mobile visibility */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/10 to-black/80"></div>
+              {/* Balanced overlays for mobile clarity */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/5 to-black/70"></div>
             </div>
           ))}
         </div>
@@ -135,12 +136,12 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
            <div className="h-full bg-emerald-500 transition-all duration-50 ease-linear" style={{ width: `${progress}%` }} />
         </div>
 
-        {/* Content Overlay - Optimized for mobile position */}
+        {/* Content Overlay - Centered and compact */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center">
           <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
             
-            <div className="space-y-6 sm:space-y-10 text-center lg:text-left pt-12">
-              <div className="inline-flex items-center gap-2 bg-emerald-500/30 backdrop-blur-md text-white px-4 py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest border border-white/20 shadow-lg mx-auto lg:mx-0">
+            <div className="space-y-4 sm:space-y-10 text-center lg:text-left pt-16 sm:pt-12">
+              <div className="inline-flex items-center gap-2 bg-emerald-500/30 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-widest border border-white/20 shadow-lg mx-auto lg:mx-0">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -148,10 +149,10 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                 {t.badge}
               </div>
               
-              <div className="min-h-[120px] sm:min-h-[220px]">
-                <h1 className="text-3xl sm:text-6xl lg:text-7xl font-black text-white leading-tight sm:leading-[1.1] tracking-tight drop-shadow-2xl">
+              <div className="min-h-[100px] sm:min-h-[220px]">
+                <h1 className="text-2xl sm:text-6xl lg:text-7xl font-black text-white leading-tight sm:leading-[1.1] tracking-tight drop-shadow-2xl">
                   {displayedText}
-                  <span className="inline-block w-1 h-7 sm:w-1.5 sm:h-16 bg-emerald-500 ml-1 animate-pulse"></span>
+                  <span className="inline-block w-1 h-6 sm:w-1.5 sm:h-16 bg-emerald-500 ml-1 animate-pulse"></span>
                 </h1>
               </div>
 
@@ -159,12 +160,12 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                 {t.p}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center lg:justify-start max-w-xs sm:max-w-none mx-auto sm:mx-0">
-                <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-6 py-4 sm:px-10 sm:py-5 rounded-2xl font-black text-sm sm:text-lg hover:bg-emerald-700 transition-all shadow-2xl shadow-emerald-900/40 flex items-center justify-center gap-3 active:scale-95">
-                  {t.cta1} <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="flex flex-row gap-2 pt-2 justify-center lg:justify-start max-w-xs sm:max-w-none mx-auto sm:mx-0">
+                <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-5 py-3.5 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-lg hover:bg-emerald-700 transition-all shadow-2xl shadow-emerald-900/40 flex items-center justify-center gap-2 active:scale-95">
+                  {t.cta1} <ChevronRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                 </button>
-                <button onClick={() => onNavigate('simulator')} className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-4 sm:px-10 sm:py-5 rounded-2xl font-black text-sm sm:text-lg flex items-center justify-center gap-3 hover:bg-white/20 transition-all active:scale-95">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" /> Simulateur
+                <button onClick={() => onNavigate('simulator')} className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-5 py-3.5 sm:px-10 sm:py-5 rounded-xl sm:rounded-2xl font-black text-xs sm:text-lg flex items-center justify-center gap-2 hover:bg-white/20 transition-all active:scale-95">
+                  <TrendingUp className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400" /> {language === 'fr' ? 'Simu' : 'Sim'}
                 </button>
               </div>
             </div>
@@ -192,18 +193,18 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
 
         {/* Indicators for mobile visibility */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-30 lg:hidden">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30 lg:hidden">
            {carouselImages.map((_, idx) => (
-             <button key={idx} onClick={() => goToSlide(idx)} className={`h-1 transition-all duration-500 rounded-full ${idx === currentSlide ? 'w-10 bg-emerald-500 shadow-lg shadow-emerald-500/50' : 'w-2 bg-white/40'}`} />
+             <button key={idx} onClick={() => goToSlide(idx)} className={`h-1 transition-all duration-500 rounded-full ${idx === currentSlide ? 'w-8 bg-emerald-500' : 'w-1.5 bg-white/40'}`} />
            ))}
         </div>
       </section>
 
       {/* Main Content Start */}
-      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3rem] sm:mt-[-5vh] relative z-20">
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-4">
-          <h2 className="text-2xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
-          <p className="text-sm sm:text-xl text-gray-600">{tl.p}</p>
+      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3.5rem] sm:mt-[-5vh] relative z-20">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16 space-y-2 sm:space-y-4">
+          <h2 className="text-xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
+          <p className="text-xs sm:text-xl text-gray-600">{tl.p}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {getLoansData(language).map((loan) => (
@@ -220,9 +221,9 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* Trust & Stats Section */}
+      {/* Rest of the sections remain unchanged */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-[2.5rem] sm:rounded-[4rem] p-8 sm:p-20 shadow-xl border border-gray-100">
+        <div className="bg-white rounded-[2rem] sm:rounded-[4rem] p-6 sm:p-20 shadow-xl border border-gray-100">
            <TrustWidgets language={language} />
         </div>
       </div>
