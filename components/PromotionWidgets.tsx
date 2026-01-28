@@ -9,32 +9,32 @@ interface WidgetProps { language: Language; }
 export const RateComparison: React.FC<WidgetProps> = ({ language }) => {
   const t = translations[language].comparison;
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 lg:p-12 border border-gray-100 shadow-2xl">
-      <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-12 border border-gray-100 shadow-2xl">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
         <div>
-          <h3 className="text-3xl font-black text-gray-900 mb-6">{t.h3.split(' ')[0]} <span className="text-emerald-600">{t.h3.split(' ').slice(1).join(' ')}</span></h3>
-          <p className="text-gray-600 text-lg mb-8">{t.p}</p>
+          <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mb-6">{t.h3.split(' ')[0]} <span className="text-emerald-600">{t.h3.split(' ').slice(1).join(' ')}</span></h3>
+          <p className="text-sm sm:text-lg text-gray-600 mb-8 font-medium leading-relaxed">{t.p}</p>
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="flex justify-between text-sm font-bold text-gray-500 uppercase">
+              <div className="flex justify-between text-[10px] font-black text-gray-400 uppercase tracking-widest">
                 <span>{t.market}</span>
                 <span>5.45%</span>
               </div>
-              <div className="w-full bg-gray-100 h-4 rounded-full overflow-hidden"><div className="bg-gray-400 h-full w-[85%]"></div></div>
+              <div className="w-full bg-gray-100 h-3 rounded-full overflow-hidden"><div className="bg-gray-300 h-full w-[85%]"></div></div>
             </div>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm font-bold text-emerald-600 uppercase">
+              <div className="flex justify-between text-[10px] font-black text-emerald-600 uppercase tracking-widest">
                 <span>{t.ours}</span>
                 <span>2.00%</span>
               </div>
-              <div className="w-full bg-emerald-100 h-4 rounded-full overflow-hidden"><div className="bg-emerald-600 h-full w-[35%] animate-pulse"></div></div>
+              <div className="w-full bg-emerald-100 h-3 rounded-full overflow-hidden"><div className="bg-emerald-600 h-full w-[35%] animate-pulse"></div></div>
             </div>
           </div>
         </div>
-        <div className="bg-emerald-50 rounded-3xl p-8 flex flex-col justify-center items-center text-center space-y-4">
-          <div className="bg-white p-4 rounded-2xl shadow-sm"><ArrowDownToLine className="w-10 h-10 text-emerald-600" /></div>
-          <p className="text-4xl font-black text-teal-900">-3.45%</p>
-          <p className="text-teal-700 font-semibold italic text-lg">{t.saving}</p>
+        <div className="bg-emerald-50 rounded-3xl p-6 sm:p-10 flex flex-col justify-center items-center text-center space-y-4">
+          <div className="bg-white p-4 rounded-2xl shadow-sm"><ArrowDownToLine className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600" /></div>
+          <p className="text-3xl sm:text-4xl font-black text-teal-900">-3.45%</p>
+          <p className="text-teal-700 font-bold italic text-sm sm:text-lg">{t.saving}</p>
         </div>
       </div>
     </div>
@@ -50,12 +50,12 @@ export const StepByStep: React.FC<WidgetProps> = ({ language }) => {
   ];
 
   return (
-    <div className="grid md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
       {steps.map((step, i) => (
-        <div key={i} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl relative z-10">
-          <div className={`${step.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6`}><step.icon className="w-8 h-8" /></div>
-          <h4 className="text-xl font-bold text-gray-900 mb-2">0{i+1}. {step.title}</h4>
-          <p className="text-gray-500 font-medium">{step.desc}</p>
+        <div key={i} className="bg-white p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-xl relative">
+          <div className={`${step.color} w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6`}><step.icon className="w-7 h-7 sm:w-8 sm:h-8" /></div>
+          <h4 className="text-lg sm:text-xl font-black text-gray-900 mb-2">0{i+1}. {step.title}</h4>
+          <p className="text-sm sm:text-base text-gray-500 font-medium leading-relaxed">{step.desc}</p>
         </div>
       ))}
     </div>
@@ -65,11 +65,11 @@ export const StepByStep: React.FC<WidgetProps> = ({ language }) => {
 export const SecurityBanner: React.FC<WidgetProps> = ({ language }) => {
   const t = translations[language].security;
   return (
-    <div className="bg-gray-50 border-y border-gray-200 py-10">
-      <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-12 lg:gap-24 grayscale opacity-60">
-        <div className="flex items-center gap-3"><ShieldCheck className="w-8 h-8 text-emerald-600" /> <span className="font-bold text-gray-900 tracking-tight">{t.rgpd}</span></div>
-        <div className="flex items-center gap-3"><Zap className="w-8 h-8 text-emerald-600" /> <span className="font-bold text-gray-900 tracking-tight">{t.h24}</span></div>
-        <div className="flex items-center gap-3"><Landmark className="w-8 h-8 text-emerald-600" /> <span className="font-bold text-gray-900 tracking-tight">{t.orias}</span></div>
+    <div className="bg-gray-50 border-y border-gray-200 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center gap-8 sm:gap-12 lg:gap-24 opacity-60">
+        <div className="flex items-center gap-2 sm:gap-3"><ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600" /> <span className="text-[10px] sm:text-sm font-black text-gray-900 tracking-widest">{t.rgpd}</span></div>
+        <div className="flex items-center gap-2 sm:gap-3"><Zap className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600" /> <span className="text-[10px] sm:text-sm font-black text-gray-900 tracking-widest">{t.h24}</span></div>
+        <div className="flex items-center gap-2 sm:gap-3"><Landmark className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600" /> <span className="text-[10px] sm:text-sm font-black text-gray-900 tracking-widest">{t.orias}</span></div>
       </div>
     </div>
   );
