@@ -183,7 +183,15 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar onNavigate={handleNavigate} currentPage={currentPage} language={language} onLanguageChange={handleLanguageChange} user={user} onLogout={handleLogout} />
+      <Navbar 
+        onNavigate={handleNavigate} 
+        currentPage={currentPage} 
+        language={language} 
+        onLanguageChange={handleLanguageChange} 
+        user={user} 
+        onLogout={handleLogout} 
+        isTransparent={currentPage === 'loan-detail'}
+      />
       <main className="flex-grow">
         {renderContent()}
       </main>

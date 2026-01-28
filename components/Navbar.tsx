@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, Globe, LogOut, User } from 'lucide-react';
 import { Language, User as UserType } from '../types';
 import { translations } from '../translations';
@@ -12,11 +12,35 @@ interface NavbarProps {
   onLanguageChange: (lang: Language) => void;
   user: UserType | null;
   onLogout: () => void;
+  isTransparent?: boolean;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLanguageChange, user, onLogout }) => {
+const Navbar: React.FC<NavbarProps> = ({ 
+  onNavigate, 
+  currentPage, 
+  language, 
+  onLanguageChange, 
+  user, 
+  onLogout,
+  isTransparent = false
+}) => {
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const t = translations[language].nav;
+
+  // Gestion du scroll pour changer l'apparence de la navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const languages: { code: Language; label: string; flag: string }[] = [
     { code: 'fr', label: 'Français', flag: '🇫🇷' },
@@ -36,52 +60,75 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
     { label: t.contact, id: 'contact' },
   ];
 
+  // La navbar est réellement transparente seulement si on est en haut de la page ET que le mode transparent est activé
+  const isActuallyTransparent = isTransparent && !isScrolled;
+
+  const bgColor = isActuallyTransparent 
+    ? 'bg-transparent' 
+    : 'bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm';
+  
+  const textColor = isActuallyTransparent 
+    ? 'text-white' 
+    : 'text-gray-600';
+  
+  const activeColor = isActuallyTransparent 
+    ? 'text-emerald-400' 
+    : 'text-emerald-600';
+  
+  const logoTextColor = isActuallyTransparent 
+    ? 'text-white' 
+    : 'text-gray-900';
+  
+  const langBg = isActuallyTransparent 
+    ? 'bg-white/10 backdrop-blur-md border-white/20 text-white' 
+    : 'bg-gray-50 border-gray-100 text-gray-700';
+
   return (
-    <nav className="fixed w-full z-[100] bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <nav className={`fixed w-full z-[100] transition-all duration-500 ${bgColor}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center space-x-2 cursor-pointer group" onClick={() => onNavigate('home')}>
             <Logo className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-300" />
-            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900">
+            <span className={`text-xl sm:text-2xl font-extrabold tracking-tight transition-colors ${logoTextColor}`}>
               Europ<span className="text-emerald-600">fy</span>
             </span>
           </div>
 
-          {/* Menu Desktop uniquement */}
+          {/* Menu Desktop */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button 
                 key={item.id} 
                 onClick={() => onNavigate(item.id)} 
-                className={`text-sm font-semibold transition-colors ${currentPage === item.id ? 'text-emerald-600' : 'text-gray-600 hover:text-emerald-600'}`}
+                className={`text-sm font-semibold transition-colors ${currentPage === item.id ? activeColor : `${textColor} hover:${activeColor}`}`}
               >
                 {item.label}
               </button>
             ))}
 
-            <div className="h-6 w-px bg-gray-200 mx-2"></div>
+            <div className={`h-6 w-px mx-2 ${isActuallyTransparent ? 'bg-white/20' : 'bg-gray-200'}`}></div>
 
             {user ? (
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => onNavigate(user.role === 'admin' ? 'admin-dashboard' : 'client-dashboard')}
-                  className="flex items-center gap-2 text-sm font-bold text-gray-900 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200"
+                  className={`flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full transition-colors ${isActuallyTransparent ? 'bg-white/10 text-white hover:bg-white/20' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}
                 >
                   <User className="w-4 h-4" />
                   {user.role === 'admin' ? 'Admin' : t.my_space}
                 </button>
-                <button onClick={onLogout} className="text-gray-400 hover:text-red-500">
+                <button onClick={onLogout} className={isActuallyTransparent ? 'text-white/60 hover:text-red-400' : 'text-gray-400 hover:text-red-500'}>
                   <LogOut className="w-5 h-5" />
                 </button>
               </div>
             ) : (
-              <button onClick={() => onNavigate('login')} className="text-sm font-bold text-gray-600 hover:text-emerald-600">
+              <button onClick={() => onNavigate('login')} className={`text-sm font-bold transition-colors ${textColor} hover:${activeColor}`}>
                 {t.login}
               </button>
             )}
 
             <div className="relative">
-              <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-2 text-sm font-bold text-gray-700 bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors">
+              <button onClick={() => setIsLangOpen(!isLangOpen)} className={`flex items-center gap-2 text-sm font-bold px-3 py-2 rounded-lg border transition-colors ${langBg}`}>
                 <Globe className="w-4 h-4" />
                 {languages.find(l => l.code === language)?.flag}
                 <ChevronDown className="w-4 h-4" />
@@ -106,10 +153,10 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
             </button>
           </div>
 
-          {/* Sélecteur de langue mobile toujours visible, mais pas de bouton Menu */}
+          {/* Menu Mobile simplifié */}
           <div className="md:hidden flex items-center gap-4">
             <div className="relative">
-              <button onClick={() => setIsLangOpen(!isLangOpen)} className="text-xl p-2 bg-gray-50 rounded-lg">
+              <button onClick={() => setIsLangOpen(!isLangOpen)} className={`text-xl p-2 rounded-lg transition-colors ${isActuallyTransparent ? 'bg-white/10 text-white' : 'bg-gray-50 text-gray-700'}`}>
                  {languages.find(l => l.code === language)?.flag}
               </button>
               {isLangOpen && (
