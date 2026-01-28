@@ -30,7 +30,6 @@ const Help: React.FC<HelpProps> = ({ language, onBack }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitted(true);
     }, 500);
@@ -41,19 +40,19 @@ const Help: React.FC<HelpProps> = ({ language, onBack }) => {
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold mb-12 transition-colors group"
+          className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-12 transition-colors group"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           {translations[language].nav.login}
         </button>
 
         <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden relative">
-          <div className="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
+          <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
           
           <div className="p-8 sm:p-12">
             <div className="text-center mb-10 space-y-4">
-              <div className="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <HelpCircle className="w-8 h-8 text-blue-600" />
+              <div className="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <HelpCircle className="w-8 h-8 text-emerald-600" />
               </div>
               <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tight">{t.title}</h1>
               <p className="text-gray-500 font-medium max-w-md mx-auto">{t.subtitle}</p>
@@ -70,7 +69,7 @@ const Help: React.FC<HelpProps> = ({ language, onBack }) => {
                 </div>
                 <button 
                   onClick={onBack}
-                  className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-blue-100 hover:bg-blue-700 transition-all"
+                  className="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black shadow-xl shadow-emerald-100 hover:bg-emerald-700 transition-all"
                 >
                   Retour à la connexion
                 </button>
@@ -80,36 +79,36 @@ const Help: React.FC<HelpProps> = ({ language, onBack }) => {
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2">
-                      <User className="w-4 h-4 text-blue-600" />
+                      <User className="w-4 h-4 text-emerald-600" />
                       {t.fields.name}
                     </label>
                     <input 
                       required name="name" value={formData.name} onChange={handleChange}
                       placeholder="Jean Dupont"
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-blue-600" />
+                      <Mail className="w-4 h-4 text-emerald-600" />
                       {t.fields.email}
                     </label>
                     <input 
                       required type="email" name="email" value={formData.email} onChange={handleChange}
                       placeholder="vous@exemple.com"
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium" 
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-blue-600" />
+                    <AlertCircle className="w-4 h-4 text-emerald-600" />
                     {t.fields.subject}
                   </label>
                   <select 
                     required name="subject" value={formData.subject} onChange={handleChange}
-                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium appearance-none"
+                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium appearance-none"
                   >
                     <option value="password">{t.subjects.password}</option>
                     <option value="account">{t.subjects.account}</option>
@@ -119,20 +118,20 @@ const Help: React.FC<HelpProps> = ({ language, onBack }) => {
 
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-gray-700 ml-1 flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-blue-600" />
+                    <MessageSquare className="w-4 h-4 text-emerald-600" />
                     {t.fields.message}
                   </label>
                   <textarea 
                     required name="message" value={formData.message} onChange={handleChange}
                     placeholder="Précisez votre problème..."
                     rows={5}
-                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium resize-none"
+                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium resize-none"
                   ></textarea>
                 </div>
 
                 <button 
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3"
+                  className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-xl shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"
                 >
                   <Send className="w-6 h-6" />
                   {t.fields.submit}

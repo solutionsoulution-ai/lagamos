@@ -21,11 +21,9 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
     e.preventDefault();
     setError(false);
 
-    // Mock Authentication Logic
     if (email === 'admin@europfy.com' && password === 'admin123') {
       onLogin({ email, role: 'admin', name: 'Administrateur' });
     } else if (email && password) {
-      // Simulate client login with any valid-looking data
       onLogin({ email, role: 'client', name: email.split('@')[0] });
     } else {
       setError(true);
@@ -37,18 +35,18 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
       <div className="max-w-md w-full space-y-8">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold transition-colors group"
+          className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold transition-colors group"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           {translations[language].nav.home}
         </button>
 
         <div className="bg-white p-8 sm:p-12 rounded-[2.5rem] shadow-2xl border border-gray-100 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-2 bg-blue-600"></div>
+          <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
           
           <div className="text-center space-y-4 mb-10">
-            <div className="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-               <LogIn className="w-8 h-8 text-blue-600" />
+            <div className="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+               <LogIn className="w-8 h-8 text-emerald-600" />
             </div>
             <h1 className="text-3xl font-black text-gray-900 tracking-tight">{t.title}</h1>
             <p className="text-gray-500 font-medium">{t.subtitle}</p>
@@ -68,7 +66,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
                 <input 
                   type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
                   placeholder="exemple@email.com"
-                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium"
                 />
               </div>
             </div>
@@ -80,14 +78,14 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
                 <input 
                   type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all font-medium"
+                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium"
                 />
               </div>
             </div>
 
             <button 
               type="submit"
-              className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3"
+              className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"
             >
               <LogIn className="w-5 h-5" />
               {t.submit}
@@ -97,7 +95,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
           <div className="mt-8 text-center space-y-6">
             <button 
               onClick={() => onNavigate('help')}
-              className="text-sm text-blue-600 font-black hover:text-blue-800 transition-colors flex items-center justify-center gap-2 mx-auto"
+              className="text-sm text-emerald-600 font-black hover:text-emerald-800 transition-colors flex items-center justify-center gap-2 mx-auto"
             >
               <HelpCircle className="w-4 h-4" />
               {t.forgot}
@@ -106,7 +104,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
             <div className="pt-6 border-t border-gray-100">
                <button 
                  onClick={() => onNavigate('loan-application')}
-                 className="w-full bg-gray-50 text-gray-600 py-4 px-6 rounded-2xl font-bold text-sm hover:bg-blue-50 hover:text-blue-600 transition-all flex items-center justify-center gap-3 group"
+                 className="w-full bg-gray-50 text-gray-600 py-4 px-6 rounded-2xl font-bold text-sm hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center justify-center gap-3 group"
                >
                  <span className="text-left">{t.noAccount}</span>
                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

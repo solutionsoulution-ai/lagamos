@@ -23,8 +23,8 @@ const FaqSection: React.FC<FaqSectionProps> = ({ language, customFaqs }) => {
   return (
     <div className="py-12">
       <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-        <div className="bg-blue-50 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <HelpCircle className="w-6 h-6 text-blue-600" />
+        <div className="bg-emerald-50 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <HelpCircle className="w-6 h-6 text-emerald-600" />
         </div>
         <h2 className="text-3xl sm:text-4xl font-black text-gray-900">{t.h2}</h2>
         <p className="text-sm sm:text-xl text-gray-600">{t.p}</p>
@@ -44,7 +44,7 @@ const FaqSection: React.FC<FaqSectionProps> = ({ language, customFaqs }) => {
                 {faq.q}
               </span>
               <div className="bg-gray-50 p-2 rounded-full shrink-0">
-                {openIndex === i ? <ChevronUp className="w-5 h-5 text-blue-600" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                {openIndex === i ? <ChevronUp className="w-5 h-5 text-emerald-600" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
               </div>
             </button>
             {openIndex === i && (

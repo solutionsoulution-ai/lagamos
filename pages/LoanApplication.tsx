@@ -85,7 +85,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold mb-12 transition-colors group"
+          className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-12 transition-colors group"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           {translations[language].nav.home}
@@ -96,7 +96,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
           {/* Form Section */}
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 border border-gray-100 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-blue-400"></div>
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-600 to-teal-400"></div>
               
               <div className="mb-10 space-y-4">
                 <h1 className="text-4xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">
@@ -108,18 +108,18 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
               </div>
 
               {/* Bloc Frais de Dossier */}
-              <div className="mb-10 bg-blue-50 border border-blue-100 rounded-3xl p-6 sm:p-8 space-y-4">
+              <div className="mb-10 bg-emerald-50 border border-emerald-100 rounded-3xl p-6 sm:p-8 space-y-4">
                 <div className="flex items-center gap-3">
-                   <div className="bg-blue-600 p-2 rounded-xl">
+                   <div className="bg-emerald-600 p-2 rounded-xl">
                       <FileCheck className="w-6 h-6 text-white" />
                    </div>
-                   <h3 className="text-xl font-black text-blue-900">{t.processing_fees.title}</h3>
+                   <h3 className="text-xl font-black text-teal-900">{t.processing_fees.title}</h3>
                 </div>
                 <p className="text-gray-700 leading-relaxed font-medium">
                     {t.processing_fees.text}
                 </p>
-                <div className="pt-2 border-t border-blue-200">
-                    <p className="text-sm font-black text-blue-600 italic">
+                <div className="pt-2 border-t border-emerald-200">
+                    <p className="text-sm font-black text-emerald-600 italic">
                         {t.processing_fees.detail}
                     </p>
                 </div>
@@ -132,7 +132,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required name="firstName" value={formData.firstName} onChange={handleChange}
                       placeholder="..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -140,7 +140,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required name="lastName" value={formData.lastName} onChange={handleChange}
                       placeholder="..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                 </div>
@@ -151,7 +151,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required type="number" name="amount" value={formData.amount} onChange={handleChange}
                       placeholder="50000"
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -159,7 +159,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required type="number" name="duration" value={formData.duration} onChange={handleChange}
                       placeholder="120"
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                 </div>
@@ -170,7 +170,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required type="email" name="email" value={formData.email} onChange={handleChange}
                       placeholder="email@..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -178,7 +178,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required name="whatsapp" value={formData.whatsapp} onChange={handleChange}
                       placeholder="+..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                 </div>
@@ -187,7 +187,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                   <label className="text-sm font-bold text-gray-700 ml-1">{t.fields.country}</label>
                   <select 
                     required name="country" value={formData.country} onChange={handleChange}
-                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium"
+                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium"
                   >
                     <option value="">{t.fields.select_country}</option>
                     {Object.entries(t.countries || {}).map(([code, name]) => (
@@ -202,7 +202,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required name="profession" value={formData.profession} onChange={handleChange}
                       placeholder="..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                   <div className="space-y-2">
@@ -210,7 +210,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <input 
                       required type="number" name="income" value={formData.income} onChange={handleChange}
                       placeholder="..."
-                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium" 
+                      className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium" 
                     />
                   </div>
                 </div>
@@ -221,20 +221,20 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     required name="reason" value={formData.reason} onChange={handleChange}
                     placeholder={t.fields.reason_placeholder}
                     rows={4}
-                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all text-gray-900 font-medium resize-none"
+                    className="w-full bg-gray-50 border-none px-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all text-gray-900 font-medium resize-none"
                   ></textarea>
                 </div>
 
                 <div className="space-y-6 pt-6 border-t border-gray-50">
                   {/* Frais de dossier Checkbox */}
-                  <div className="flex gap-4 p-5 bg-blue-50/50 rounded-2xl border border-blue-100 items-start">
+                  <div className="flex gap-4 p-5 bg-emerald-50/50 rounded-2xl border border-emerald-100 items-start">
                     <div className="pt-1">
                       <input 
                         type="checkbox" required name="processingConsent" checked={formData.processingConsent} onChange={handleChange}
-                        className="w-6 h-6 text-blue-600 rounded-lg focus:ring-blue-500 border-blue-200 cursor-pointer" 
+                        className="w-6 h-6 text-emerald-600 rounded-lg focus:ring-emerald-500 border-emerald-200 cursor-pointer" 
                       />
                     </div>
-                    <label className="text-sm text-blue-900 font-bold leading-relaxed cursor-pointer">
+                    <label className="text-sm text-emerald-900 font-bold leading-relaxed cursor-pointer">
                       {t.fields.processing_consent}
                     </label>
                   </div>
@@ -243,7 +243,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                     <div className="pt-1">
                       <input 
                         type="checkbox" required name="consent" checked={formData.consent} onChange={handleChange}
-                        className="w-5 h-5 text-blue-600 rounded-lg focus:ring-blue-500" 
+                        className="w-5 h-5 text-emerald-600 rounded-lg focus:ring-emerald-500" 
                       />
                     </div>
                     <label className="text-sm text-gray-500 leading-relaxed font-medium">
@@ -264,7 +264,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
 
                 <button 
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-4 hover:scale-[1.01]"
+                  className="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-4 hover:scale-[1.01]"
                 >
                   <Send className="w-6 h-6" />
                   {t.fields.submit}
@@ -285,27 +285,27 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                 </p>
                 <div className="space-y-4 relative z-10 pt-4">
                    <div className="flex items-center gap-4">
-                      <div className="bg-blue-600/30 p-2.5 rounded-xl"><ShieldCheck className="w-5 h-5 text-blue-400" /></div>
+                      <div className="bg-emerald-600/30 p-2.5 rounded-xl"><ShieldCheck className="w-5 h-5 text-emerald-400" /></div>
                       <span className="text-sm font-bold">SSL 256 bits Secured</span>
                    </div>
                    <div className="flex items-center gap-4">
-                      <div className="bg-blue-600/30 p-2.5 rounded-xl"><Landmark className="w-5 h-5 text-blue-400" /></div>
+                      <div className="bg-emerald-600/30 p-2.5 rounded-xl"><Landmark className="w-5 h-5 text-emerald-400" /></div>
                       <span className="text-sm font-bold">ACPR & ORIAS Registry</span>
                    </div>
                 </div>
              </div>
 
-             <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-[2.5rem] p-8 text-white text-center space-y-6 shadow-xl">
+             <div className="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[2.5rem] p-8 text-white text-center space-y-6 shadow-xl">
                 <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto backdrop-blur-md">
                    <HelpCircle className="w-8 h-8 text-white" />
                 </div>
                 <h4 className="text-xl font-black">{t.help_sidebar.title}</h4>
-                <p className="text-blue-100 text-sm font-medium leading-relaxed">
+                <p className="text-emerald-100 text-sm font-medium leading-relaxed">
                   {t.help_sidebar.desc}
                 </p>
                 <button 
                     onClick={() => onNavigate('contact')}
-                    className="w-full bg-white text-blue-600 py-4 rounded-2xl font-black shadow-lg hover:bg-blue-50 transition-all active:scale-95"
+                    className="w-full bg-white text-emerald-600 py-4 rounded-2xl font-black shadow-lg hover:bg-emerald-50 transition-all active:scale-95"
                 >
                     {t.help_sidebar.cta}
                 </button>

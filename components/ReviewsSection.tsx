@@ -49,14 +49,14 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language, customReviews
         <div className="flex gap-3">
           <button 
             onClick={() => scroll('left')}
-            className="p-4 rounded-2xl bg-white border border-gray-100 shadow-lg hover:bg-blue-600 hover:text-white transition-all group"
+            className="p-4 rounded-2xl bg-white border border-gray-100 shadow-lg hover:bg-emerald-600 hover:text-white transition-all group"
             aria-label="Previous"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <button 
             onClick={() => scroll('right')}
-            className="p-4 rounded-2xl bg-white border border-gray-100 shadow-lg hover:bg-blue-600 hover:text-white transition-all group"
+            className="p-4 rounded-2xl bg-white border border-gray-100 shadow-lg hover:bg-emerald-600 hover:text-white transition-all group"
             aria-label="Next"
           >
             <ChevronRight className="w-6 h-6" />
@@ -75,7 +75,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language, customReviews
             className="flex-none w-[300px] sm:w-[400px] snap-center"
           >
             <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl relative overflow-hidden group hover:shadow-2xl transition-all h-full flex flex-col">
-              <Quote className="absolute -top-4 -right-4 w-20 h-20 text-gray-50 group-hover:text-blue-50 transition-colors" />
+              <Quote className="absolute -top-4 -right-4 w-20 h-20 text-gray-50 group-hover:text-emerald-50 transition-colors" />
               
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex text-yellow-400 mb-6">
@@ -97,7 +97,7 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ language, customReviews
                   <div>
                     <p className="font-bold text-gray-900 flex items-center gap-1 text-lg">
                       {review.name}
-                      <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                     </p>
                     <p className="text-xs text-gray-500 font-black uppercase tracking-widest">{review.role}</p>
                   </div>

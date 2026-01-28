@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Landmark, ChevronDown, Globe, LogIn, LogOut, User } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe, LogIn, LogOut, User } from 'lucide-react';
 import { Language, User as UserType } from '../types';
 import { translations } from '../translations';
+import Logo from './Logo';
 
 interface NavbarProps {
   onNavigate: (page: string) => void;
@@ -41,17 +42,15 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center space-x-2 cursor-pointer group" onClick={() => onNavigate('home')}>
-            <div className="bg-blue-600 p-2 rounded-lg group-hover:bg-blue-700 transition-colors">
-              <Landmark className="text-white w-6 h-6" />
-            </div>
-            <span className="text-2xl font-extrabold tracking-tight text-blue-900">
-              Europ<span className="text-blue-600">fy</span>
+            <Logo className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" />
+            <span className="text-2xl font-extrabold tracking-tight text-teal-900">
+              Europ<span className="text-emerald-600">fy</span>
             </span>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <button key={item.id} onClick={() => onNavigate(item.id)} className={`text-sm font-semibold transition-colors flex items-center gap-1 ${currentPage === item.id ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600'}`}>
+              <button key={item.id} onClick={() => onNavigate(item.id)} className={`text-sm font-semibold transition-colors flex items-center gap-1 ${currentPage === item.id ? 'text-emerald-600' : 'text-gray-600 hover:text-emerald-600'}`}>
                 {item.label}
                 {item.dropdown && <ChevronDown className="w-4 h-4" />}
               </button>
@@ -59,7 +58,6 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
 
             <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
-            {/* User Controls */}
             {user ? (
               <div className="flex items-center gap-4">
                 <button 
@@ -76,16 +74,15 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
             ) : (
               <button 
                 onClick={() => onNavigate('login')}
-                className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-blue-600"
+                className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-emerald-600"
               >
                 <LogIn className="w-4 h-4" />
                 {t.login}
               </button>
             )}
 
-            {/* Language Selector */}
             <div className="relative">
-              <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-blue-600 transition-colors bg-gray-50 px-3 py-2 rounded-lg">
+              <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-emerald-600 transition-colors bg-gray-50 px-3 py-2 rounded-lg">
                 <Globe className="w-4 h-4" />
                 {languages.find(l => l.code === language)?.flag}
                 <ChevronDown className="w-4 h-4" />
@@ -96,7 +93,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
                     <button
                       key={lang.code}
                       onClick={() => { onLanguageChange(lang.code); setIsLangOpen(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm font-medium hover:bg-blue-50 transition-colors flex items-center gap-3 ${language === lang.code ? 'text-blue-600 bg-blue-50' : 'text-gray-700'}`}
+                      className={`w-full text-left px-4 py-2 text-sm font-medium hover:bg-emerald-50 transition-colors flex items-center gap-3 ${language === lang.code ? 'text-emerald-600 bg-emerald-50' : 'text-gray-700'}`}
                     >
                       <span>{lang.flag}</span>
                       {lang.label}
@@ -106,7 +103,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
               )}
             </div>
 
-            <button onClick={() => onNavigate('loan-application')} className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200">
+            <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg hover:shadow-emerald-200">
               {t.cta}
             </button>
           </div>
@@ -138,7 +135,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
               {t.logout}
             </button>
           )}
-          <button onClick={() => { onNavigate('loan-application'); setIsOpen(false); }} className="block w-full text-center bg-blue-600 text-white px-4 py-3 text-lg font-bold rounded-xl">
+          <button onClick={() => { onNavigate('loan-application'); setIsOpen(false); }} className="block w-full text-center bg-emerald-600 text-white px-4 py-3 text-lg font-bold rounded-xl">
              {t.cta}
           </button>
         </div>
