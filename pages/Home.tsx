@@ -8,7 +8,7 @@ import FaqSection from '../components/FaqSection';
 import ReviewsSection from '../components/ReviewsSection';
 import PartnersSection from '../components/PartnersSection';
 import { RateComparison, StepByStep, SecurityBanner } from '../components/PromotionWidgets';
-import { ChevronRight, Star, Zap, CheckCircle2, Users2, Sparkles, TrendingUp, ChevronLeft, ShieldCheck, Clock, Wallet, Shield } from 'lucide-react';
+import { ChevronRight, Star, Zap, CheckCircle2, Users2, Sparkles, TrendingUp, ChevronLeft, ShieldCheck, Clock, Wallet, Shield, HeartHandshake, Award } from 'lucide-react';
 import { Language } from '../types';
 import { translations } from '../translations';
 
@@ -23,6 +23,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
   const tl = translations[language].loans_section;
   const tp = translations[language].process;
   const tc = translations[language].cta_footer;
+  const tw = translations[language].who_we_are;
 
   const carouselImages = [
     { url: 'https://i.postimg.cc/wM0BTvww/side-view-man-working-as-real-estate-agent.jpg' },
@@ -137,7 +138,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* 2. Section Preuve de fiabilité (Placée après Solutions) */}
+      {/* 2. Section Preuve de fiabilité */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="bg-white rounded-[2rem] sm:rounded-[4rem] p-8 sm:p-20 shadow-xl border border-gray-100">
            <div className="text-left mb-12 sm:mb-20 space-y-4 sm:space-y-6">
@@ -157,7 +158,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </div>
 
-      {/* Calculator Section */}
+      {/* 3. Calculator Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 relative overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -166,6 +167,71 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
               <p className="text-base sm:text-xl text-gray-600 font-medium">{translations[language].calculator.subtitle}</p>
             </div>
             <LoanCalculator language={language} onApply={() => onNavigate('loan-application')} />
+          </div>
+        </div>
+      </section>
+
+      {/* 4. NOUVELLE SECTION QUI SOMMES NOUS - IMAGE/TEXTE */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-32">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Côté Image */}
+          <div className="relative order-2 lg:order-1">
+            <div className="absolute -top-10 -left-10 w-full h-full border-2 border-dashed border-emerald-200 rounded-[3rem] -z-10 animate-pulse hidden sm:block"></div>
+            <div className="relative rounded-[2.5rem] sm:rounded-[3.5rem] overflow-hidden shadow-2xl h-[400px] sm:h-[600px] group">
+              <img 
+                src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=1200" 
+                alt="Europfy Team" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[2000ms]"
+              />
+              <div className="absolute inset-0 bg-emerald-900/10 backdrop-blur-[1px]"></div>
+              
+              {/* Badge flottant institutionnel */}
+              <div className="absolute bottom-10 right-10 bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl space-y-2 max-w-[200px] animate-bounce duration-[3000ms]">
+                <Award className="w-10 h-10 text-emerald-600" />
+                <p className="text-sm font-black text-gray-900 leading-tight">Expert Finance Européen 2024</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Côté Texte */}
+          <div className="space-y-8 sm:space-y-12 order-1 lg:order-2">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-100">
+                <Users2 className="w-4 h-4" />
+                {tw.title}
+              </div>
+              <h2 className="text-3xl sm:text-6xl font-black text-gray-900 leading-tight">
+                {tw.subtitle}
+              </h2>
+              <p className="text-base sm:text-xl text-gray-600 leading-relaxed font-medium">
+                {tw.p1} {tw.p2}
+              </p>
+            </div>
+
+            <div className="grid gap-6">
+              {[
+                { icon: ShieldCheck, title: "Intégrité Totale", desc: "Aucun frais caché, aucune surprise contractuelle." },
+                { icon: HeartHandshake, title: "Proximité Humaine", desc: "Des conseillers dédiés qui comprennent vos projets." },
+                { icon: Zap, title: "Rapidité Agile", desc: "Une technologie de pointe pour des fonds débloqués en 48h." }
+              ].map((val, i) => (
+                <div key={i} className="flex gap-5 group">
+                  <div className="bg-emerald-50 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 transition-all duration-300">
+                    <val.icon className="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-black text-gray-900 mb-1">{val.title}</h4>
+                    <p className="text-sm text-gray-500 font-medium">{val.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button 
+              onClick={() => onNavigate('about')}
+              className="inline-flex items-center gap-3 text-emerald-600 font-black text-lg hover:gap-5 transition-all"
+            >
+              {tw.btn} <ChevronRight className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </section>

@@ -69,10 +69,10 @@ const generateFaq = (lang: string) => {
       q1: 'Como fazer um pedido de empréstimo na Europfy?',
       a1: 'É muito simples: utilize o nosso simulador online para definir a sua necessidade e, em seguida, preencha o formulário de pedido. Receberá uma resposta de princípio immediata.',
       q2: 'Qual é o prazo para receber os fundos na minha conta?',
-      a2: 'Após a assinatura eletrónica do seu contrato de empréstimo e o fim do prazo legal de reflexão, os fundos são transferidos em 48 horas úteis.',
+      a2: 'Após a assinatura eletrónica do seu contrato de empréstimo e o fim do prazo legal de reflexão, os fundos sont transferidos em 48 horas úteis.',
       q3: 'A taxa de 2% é realmente fixa durante todo o período?',
       a3: 'Sim, absolutamente. A taxa de juro nominal de 2% é garantida contratualmente para toda a duração do seu empréstimo, sem qualquer variação possível.',
-      q4: 'Quais são os documentos comprovativos necessários?',
+      q4: 'Quais são os documents comprovativos necessários?',
       a4: 'Para analisar o seu processo, precisaremos geralmente de um documento de identidade válido, um comprovativo de morada e os seus últimos comprovativos de rendimentos.'
     },
     es: {
@@ -93,7 +93,7 @@ const generateFaq = (lang: string) => {
 
 const frPack = {
   nav: { home: 'Accueil', loans: 'Prêts', simulator: 'Simulateur', about: 'À propos', contact: 'Contact', cta: 'Demande en ligne', login: 'Connexion', logout: 'Déconnexion', my_space: 'Mon Espace' },
-  login: { title: 'Espace Membre', subtitle: 'Accédez à votre compte Europfy', email: 'Adresse Email', password: 'Mot de passe', submit: 'Se connecter', error: 'Identifiants invalides', forgot: 'Mot de passe oublié ?', noAccount: 'Pas encore de compte ? Faites une demande.' },
+  login: { title: 'Espace Member', subtitle: 'Accédez à votre compte Europfy', email: 'Adresse Email', password: 'Mot de passe', submit: 'Se connecter', error: 'Identifiants invalides', forgot: 'Mot de passe oublié ?', noAccount: 'Pas encore de compte ? Faites une demande.' },
   support: { title: 'Besoin d\'aide ?', subtitle: 'Contactez notre support pour vos problèmes de connexion.', form_title: 'Formulaire d\'assistance', fields: { name: 'Nom complet', email: 'Email', subject: 'Sujet', message: 'Message', submit: 'Envoyer', success: 'Envoyé !' }, subjects: { password: 'Mot de passe', account: 'Compte', other: 'Autre' } },
   admin: { title: 'Tableau de Bord', subtitle: 'Gestion des demandes', stats: { total: 'Total', pending: 'En attente', approved: 'Approuvées', totalVolume: 'Volume' }, table: { client: 'Client', amount: 'Montant', income: 'Revenu', country: 'Pays', status: 'Statut', date: 'Date', fees: 'Frais', actions: 'Actions' }, status: { pending: 'En attente', approved: 'Approuvé', rejected: 'Refusé' } },
   client_dashboard: { title: 'Espace Client', welcome: 'Bienvenue', status_card: 'Statut de la demande', details: 'Détails du prêt', next_steps: 'Étapes suivantes', no_loan: 'Aucun prêt trouvé.', cta_new: 'Nouveau prêt', steps: ['Analyse', 'Documents', 'Signature', 'Fonds'] },
@@ -118,7 +118,31 @@ const frPack = {
     fields: { firstName: 'Prénom', lastName: 'Nom', amount: 'Montant (€)', duration: 'Durée (mois)', email: 'Email', whatsapp: 'WhatsApp', country: 'Pays', profession: 'Profession', income: 'Revenu (€)', reason: 'Motif du prêt', reason_placeholder: 'Décrivez votre projet...', consent1: 'Je certifie l\'exactitude des informations.', consent2: 'Les données sont traitées pour l\'étude du dossier.', processing_consent: 'J\'accepte les frais de dossier après accord.', warning: 'Un crédit vous engage.', submit: 'Envoyer ma demande', select_country: 'Choisir un pays', success: 'Demande envoyée !' }, 
     countries: { FR: 'France', BE: 'Belgique', CH: 'Suisse', PL: 'Pologne', DE: 'Allemagne', IT: 'Italie', ES: 'Espagne', PT: 'Portugal', NL: 'Pays-Bas' } 
   },
-  loan_detail: { back: 'Retour aux offres', advantages: 'Vos avantages', eligibility: 'Conditions d\'éligibilité', conditions: ['Résider en Europe', 'Être majeur (18+)', 'Revenu stable'], labels: { maxAmount: 'Montant Max', maxDuration: 'Durée Max' }, sim_title: 'Simulation Rapide', sim_desc: 'Calculez votre prêt.', advisor_title: 'Expert Dédié', advisor_desc: 'À vos côtés.', protection: "Protection garantie", best_offer: "Meilleure offre" },
+  loan_detail: { 
+    back: 'Retour aux offres', 
+    advantages: 'Vos avantages', 
+    eligibility: 'Conditions d\'éligibilité', 
+    conditions: ['Résider en Europe', 'Être majeur (18+)', 'Revenu stable'], 
+    labels: { maxAmount: 'Montant Max', maxDuration: 'Durée Max' }, 
+    sim_title: 'Simulation Rapide', 
+    sim_desc: 'Calculez votre prêt.', 
+    advisor_title: 'Expert Dédié', 
+    advisor_desc: 'À vos côtés.', 
+    protection: "Protection garantie", 
+    best_offer: "Meilleure offre",
+    why_title: "Pourquoi souscre ce prêt ?",
+    why_subtitle: "Le financement pensé pour votre succès.",
+    why_p: "Bénéficiez d'une transparence totale et d'un taux de 2% bloqué pendant toute la durée de votre contrat. Pas de mauvaises surprises, juste vos projets qui avancent.",
+    journey_title: "Votre parcours avec Europfy",
+    journey_subtitle: "Un accompagnement humain de A à Z.",
+    steps: [
+      { t: "Demande Simplifiée", d: "Remplissez votre dossier en ligne en 5 minutes avec notre interface sécurisée." },
+      { t: "Analyse en 24h", d: "Nos experts analysent votre solvabilité pour vous donner une réponse immédiate." },
+      { t: "Signature Digitale", d: "Signez vos contrats de manière sécurisée sans vous déplacer." },
+      { t: "Déblocage des Fonds", d: "Les fonds sont versés sur votre compte en moins de 48 heures." },
+      { t: "Gestion Flexible", d: "Modifiez vos mensualités ou effectuez des remboursements anticipés sans frais." }
+    ]
+  },
   success_page: { title: 'Félicitations !', subtitle: 'Demande enregistrée avec succès.', message: 'Un expert analyse votre dossier actuellement.', steps_title: 'Prochaines étapes', steps: ['Analyse de solvabilité', 'Contact téléphonique', 'Signature du contrat', 'Déblocage des fonds'], trust_labels: { secured: 'Sécurisé', email: 'Email reçu', advisor: 'Conseiller' }, cta_home: 'Retour Accueil', cta_blog: 'Voir nos conseils' },
   contact_page: { title: 'Contactez-nous', subtitle: 'Une équipe à votre écoute.', form_title: 'Envoyez un message', form_desc: 'Réponse sous 24h.', fields: { name: 'Nom complet', email: 'Adresse Email', subject: 'Sujet', message: 'Votre message', submit: 'Envoyer', success: 'Message transmis !' }, info: { title: 'Nos coordonnées', address: '1 Place de la Bourse, Lyon, France', phone: '+33 4 72 40 58 58', email: 'contact@europfy.com', hours: '9h - 18h' } },
   about_page: { title: 'Qui sommes-nous ?', subtitle: 'Redéfinir le crédit pour un avenir plus juste.', mission_title: 'Notre Mission', mission_text: 'Démocratiser l\'accès au crédit éthique pour tous les européens.', vision_title: 'Vision Européenne', vision_text: 'Présent dans 27 pays pour vous accompagner.', values_title: 'Nos Valeurs', values: [{ title: 'Intégrité', desc: 'Clarté contractuelle sans frais cachés.' }, { title: 'Innovation', desc: 'Une plateforme agile et performante.' }, { title: 'Proximité', desc: 'Des experts dédiés à votre écoute.' }], stats: { years: 'Années d\'expertise', countries: 'Pays couverts', loans: 'Prêts accordés' } },
@@ -135,77 +159,71 @@ const createLanguagePack = (lang: Language, base: any) => {
   pack.faq = generateFaq(lang);
   
   if (lang === 'pl') {
-    pack.calculator = { title: 'Szybki Symulator', subtitle: 'Oblicz swój budżet natychmiast.', amount: 'Pożądana kwota', duration: 'Okres pożyczki', months: 'miesięcy', monthly: 'Szacowana rata', total: 'Całkowity koszt kredytu', cta: 'Rozpocznij wniosek' };
-    pack.form = {
-      title: 'Wniosek o Pożyczkę',
-      subtitle: 'Szybko i w 100% bezpiecznie.',
-      trust_title: 'Bezpieczeństwo danych',
-      trust_text: 'Twoje informacje są przetwarzane zgodnie z RODO i chronione przez szyfrowanie.',
-      processing_fees: { title: 'Koszty operacyjne', text: 'Koszty te pokrywają analizę techniczną i prawną Twojej dokumentacji.', detail: 'Opłata wymagana wyłącznie po wstępnej akceptacji.' },
-      help_sidebar: { title: 'Potrzebujesz pomocy?', desc: 'Nasi doradcy służą pomocą.', cta: 'Porozmawiaj z doradcą' },
-      fields: { firstName: 'Imię', lastName: 'Nazwisko', amount: 'Kwota (€)', duration: 'Okres (miesiące)', email: 'Email', whatsapp: 'WhatsApp', country: 'Kraj', profession: 'Zawód', income: 'Dochód (€)', reason: 'Cel pożyczki', reason_placeholder: 'Opisz swój projekt...', consent1: 'Oświadczam, że podane informacje są prawdziwe.', consent2: 'Dane są przetwarzane w celu analizy wniosku.', processing_consent: 'Akceptuję koszty operacyjne po wstępnej zgodzie.', warning: 'Kredyt to zobowiązanie.', submit: 'Wyślij wniosek', select_country: 'Wybierz kraj', success: 'Wniosek wysłany!' },
-      countries: { FR: 'Francja', BE: 'Belgia', CH: 'Szwajcaria', PL: 'Polska', DE: 'Niemcy', IT: 'Włochy', ES: 'Hiszpania', PT: 'Portugalia', NL: 'Holandia' }
-    };
+    pack.loan_detail.why_title = "Dlaczego warto wziąć tę pożyczkę?";
+    pack.loan_detail.why_subtitle = "Finansowanie zaprojektowane z myślą o Twoim sukcesie.";
+    pack.loan_detail.journey_title = "Twoja ścieżka z Europfy";
+    pack.loan_detail.steps = [
+      { t: "Uproszczony wniosek", d: "Wypełnij wniosek online w 5 minut." },
+      { t: "Analiza w 24h", d: "Nasi eksperci natychmiast analizują Twój wniosek." },
+      { t: "Podpis cyfrowy", d: "Podpisuj umowy bezpiecznie online." },
+      { t: "Wypłata środków", d: "Środki na Twoim koncie w mniej niż 48h." },
+      { t: "Elastyczne zarządzanie", d: "Zmieniaj raty bez dodatkowych kosztów." }
+    ];
   } else if (lang === 'de') {
-    pack.calculator = { title: 'Express-Rechner', subtitle: 'Berechnen Sie Ihr Budget sofort.', amount: 'Wunschbetrag', duration: 'Laufzeit', months: 'Monate', monthly: 'Geschätzte Monatsrate', total: 'Gesamtkosten des Kredits', cta: 'Antrag starten' };
-    pack.form = {
-      title: 'Kreditantrag',
-      subtitle: 'Schnell und 100% sicher.',
-      trust_title: 'Datensicherheit',
-      trust_text: 'Ihre Informationen werden gemäß DSGVO verarbeitet und durch Verschlüsselung geschützt.',
-      processing_fees: { title: 'Bearbeitungsgebühren', text: 'Diese Gebühren decken die technische und rechtliche Analyse Ihres Dossiers ab.', detail: 'Gebühr erst nach vorläufiger Zusage fällig.' },
-      help_sidebar: { title: 'Brauchen Sie Hilfe?', desc: 'Unsere Berater begleiten Sie.', cta: 'Mit einem Berater sprechen' },
-      fields: { firstName: 'Vorname', lastName: 'Nachname', amount: 'Betrag (€)', duration: 'Laufzeit (Monate)', email: 'E-Mail', whatsapp: 'WhatsApp', country: 'Land', profession: 'Beruf', income: 'Einkommen (€)', reason: 'Grund des Kredits', reason_placeholder: 'Beschreiben Sie Ihr Projekt...', consent1: 'Ich bestätige die Richtigkeit der Angaben.', consent2: 'Die Daten werden zur Prüfung des Antrags verarbeitet.', processing_consent: 'Ich akzeptiere die Bearbeitungsgebühren nach der Zusage.', warning: 'Ein Kredit verpflichtet Sie.', submit: 'Antrag senden', select_country: 'Land auswählen', success: 'Antrag gesendet!' },
-      countries: { FR: 'Frankreich', BE: 'Belgien', CH: 'Schweiz', PL: 'Polen', DE: 'Deutschland', IT: 'Italien', ES: 'Spanien', PT: 'Portugal', NL: 'Niederlande' }
-    };
+    pack.loan_detail.why_title = "Warum diesen Kredit wählen?";
+    pack.loan_detail.why_subtitle = "Finanzierung für Ihren Erfolg konzipiert.";
+    pack.loan_detail.journey_title = "Ihre Reise mit Europfy";
+    pack.loan_detail.steps = [
+      { t: "Vereinfachter Antrag", d: "Online-Antrag in nur 5 Minuten." },
+      { t: "Analyse in 24h", d: "Schnelle Prüfung durch unsere Experten." },
+      { t: "Digitale Signatur", d: "Verträge sicher von überall unterschreiben." },
+      { t: "Auszahlung", d: "Geld in weniger als 48 Stunden auf Ihrem Konto." },
+      { t: "Flexible Verwaltung", d: "Raten ohne Gebühren anpassen." }
+    ];
   } else if (lang === 'nl') {
-    pack.calculator = { title: 'Express Simulator', subtitle: 'Bereken direct uw budget.', amount: 'Gewenst bedrag', duration: 'Looptijd', months: 'maanden', monthly: 'Geschatte maandlast', total: 'Totale kosten krediet', cta: 'Aanvraag starten' };
-    pack.form = {
-      title: 'Lening Aanvraag',
-      subtitle: 'Snel en 100% veilig.',
-      trust_title: 'Gegevensbeveiliging',
-      trust_text: 'Uw informatie wordt verwerkt in overeenstemming met de AVG en beschermd door versleuteling.',
-      processing_fees: { title: 'Behandelingskosten', text: 'Deze kosten dekken de technische en juridische analyse van uw dossier.', detail: 'Kosten pas verschuldigd na voorlopig akkoord.' },
-      help_sidebar: { title: 'Hulp nodig?', desc: 'Onze adviseurs begeleiden u.', cta: 'Spreek met een adviseur' },
-      fields: { firstName: 'Voornaam', lastName: 'Achternaam', amount: 'Bedrag (€)', duration: 'Looptijd (maanden)', email: 'E-mail', whatsapp: 'WhatsApp', country: 'Land', profession: 'Beroep', income: 'Inkomen (€)', reason: 'Reden voor lening', reason_placeholder: 'Beschrijf uw project...', consent1: 'Ik bevestig de juistheid van de informatie.', consent2: 'De gegevens worden verwerkt voor de bestudering van het dossier.', processing_consent: 'Ik accepteer de behandelingskosten na akkoord.', warning: 'Een lening kost geld.', submit: 'Verstuur aanvraag', select_country: 'Kies een land', success: 'Aanvraag verzonden!' },
-      countries: { FR: 'Frankrijk', BE: 'België', CH: 'Zwitserland', PL: 'Polen', DE: 'Duitsland', IT: 'Italië', ES: 'Spanje', PT: 'Portugal', NL: 'Nederland' }
-    };
+    pack.loan_detail.why_title = "Waarom deze lening kiezen?";
+    pack.loan_detail.why_subtitle = "Financiering ontworpen voor uw succes.";
+    pack.loan_detail.journey_title = "Uw traject met Europfy";
+    pack.loan_detail.steps = [
+      { t: "Eenvoudige aanvraag", d: "Vul uw online dossier in 5 minuten in." },
+      { t: "Analyse in 24u", d: "Directe beoordeling door onze experts." },
+      { t: "Digitale handtekening", d: "Veilig contracten tekenen vanuit huis." },
+      { t: "Uitbetaling", d: "Geld binnen 48 uur op uw rekening." },
+      { t: "Flexibel beheer", d: "Pas uw maandlasten kosteloos aan." }
+    ];
   } else if (lang === 'it') {
-    pack.calculator = { title: 'Simulatore Express', subtitle: 'Calcola il tuo budget istantaneamente.', amount: 'Importo desiderato', duration: 'Durata del prestito', months: 'mesi', monthly: 'Rata mensile stimata', total: 'Costo totale del credito', cta: 'Inizia la richiesta' };
-    pack.form = {
-      title: 'Richiesta di Prestito',
-      subtitle: 'Rapida e sicura al 100%.',
-      trust_title: 'Sicurezza dei dati',
-      trust_text: 'Le tue informazioni sono trattate in conformità con il GDPR e protette da crittografia.',
-      processing_fees: { title: 'Spese di istruttoria', text: 'Le spese coprono l\'analisi tecnica e legale della tua pratica.', detail: 'Spese dovute solo dopo l\'accordo di massima.' },
-      help_sidebar: { title: 'Serve aiuto?', desc: 'I nostri consulenti ti accompagnano.', cta: 'Parla con un consulente' },
-      fields: { firstName: 'Nome', lastName: 'Cognome', amount: 'Importo (€)', duration: 'Durata (mesi)', email: 'Email', whatsapp: 'WhatsApp', country: 'Paese', profession: 'Professione', income: 'Reddito (€)', reason: 'Motivo del prestito', reason_placeholder: 'Descrivi il tuo progetto...', consent1: 'Certifico la correttezza delle informazioni.', consent2: 'I dati sono trattati per lo studio della pratica.', processing_consent: 'Accetto le spese di istruttoria dopo l\'accordo.', warning: 'Un prestito ti impegna.', submit: 'Invia richiesta', select_country: 'Scegli un paese', success: 'Richiesta inviata!' },
-      countries: { FR: 'Francia', BE: 'Belgio', CH: 'Svizzera', PL: 'Polonia', DE: 'Germania', IT: 'Italia', ES: 'Spagna', PT: 'Portogallo', NL: 'Paesi Bassi' }
-    };
+    pack.loan_detail.why_title = "Perché sottoscrivere questo prestito?";
+    pack.loan_detail.why_subtitle = "Il finanziamento pensato per il tuo successo.";
+    pack.loan_detail.journey_title = "Il tuo percorso con Europfy";
+    pack.loan_detail.steps = [
+      { t: "Richiesta Semplificata", d: "Completa la pratica online in 5 minuti." },
+      { t: "Analisi in 24 ore", d: "Risposta rapida dai nostri esperti." },
+      { t: "Firma Digitale", d: "Firma i contratti in totale sicurezza." },
+      { t: "Erogazione Fondi", d: "Fondi sul conto in meno di 48 ore." },
+      { t: "Gestione Flessibile", d: "Modifica le rate senza penali." }
+    ];
   } else if (lang === 'pt') {
-    pack.calculator = { title: 'Simulador Expresso', subtitle: 'Calcule o seu orçamento instantaneamente.', amount: 'Montante pretendido', duration: 'Duração do empréstimo', months: 'meses', monthly: 'Mensalidade estimada', total: 'Custo total do crédito', cta: 'Iniciar pedido' };
-    pack.form = {
-      title: 'Pedido de Empréstimo',
-      subtitle: 'Rápido e 100% seguro.',
-      trust_title: 'Segurança de dados',
-      trust_text: 'As suas informações são tratadas de acordo com o RGPD e protegidas por encriptação.',
-      processing_fees: { title: 'Custos de processo', text: 'Os custos cobrem a análise técnica e jurídica do seu processo.', detail: 'Custos devidos apenas após acordo de princípio.' },
-      help_sidebar: { title: 'Precisa de ajuda?', desc: 'Os nossos consultores acompanham-no.', cta: 'Falar com um consultor' },
-      fields: { firstName: 'Nome', lastName: 'Apelido', amount: 'Montante (€)', duration: 'Duração (meses)', email: 'E-mail', whatsapp: 'WhatsApp', country: 'País', profession: 'Profissão', income: 'Rendimento (€)', reason: 'Motivo do empréstimo', reason_placeholder: 'Descreva o seu projeto...', consent1: 'Certifico a exatidão das informações.', consent2: 'Os dados sont tratados para o estudo do processo.', processing_consent: 'Aceito os custos de processo após o acordo.', warning: 'Um crédito compromete-o.', submit: 'Enviar pedido', select_country: 'Escolha um país', success: 'Pedido enviado!' },
-      countries: { FR: 'França', BE: 'Bélgica', CH: 'Suíça', PL: 'Polónia', DE: 'Alemanha', IT: 'Itália', ES: 'Espanha', PT: 'Portugal', NL: 'Países Baixos' }
-    };
+    pack.loan_detail.why_title = "Porquê subscrever este empréstimo?";
+    pack.loan_detail.why_subtitle = "O financiamento pensado para o seu sucesso.";
+    pack.loan_detail.journey_title = "O seu percurso com a Europfy";
+    pack.loan_detail.steps = [
+      { t: "Pedido Simplificado", d: "Preencha o seu dossier online em 5 minutos." },
+      { t: "Análise em 24h", d: "Resposta imediata dos nossos especialistas." },
+      { t: "Assinatura Digital", d: "Assine contratos de forma segura." },
+      { t: "Desbloqueio de Fundos", d: "Fundos na conta em menos de 48 horas." },
+      { t: "Gestão Flexível", d: "Altere as suas mensalidades sem custos." }
+    ];
   } else if (lang === 'es') {
-    pack.calculator = { title: 'Simulador Express', subtitle: 'Calcule su presupuesto al instante.', amount: 'Monto deseado', duration: 'Plazo del préstamo', months: 'meses', monthly: 'Mensualidad estimada', total: 'Coste total del crédito', cta: 'Iniciar solicitud' };
-    pack.form = {
-      title: 'Solicitud de Préstamo',
-      subtitle: 'Rápida y 100% segura.',
-      trust_title: 'Seguridad de datos',
-      trust_text: 'Su información se trata conforme al RGPD e se protege mediante cifrado.',
-      processing_fees: { title: 'Gastos de gestión', text: 'Los gastos cubren el análisis técnico y jurídico de su expediente.', detail: 'Gastos debidos solo tras acuerdo de principio.' },
-      help_sidebar: { title: '¿Necesita ayuda?', desc: 'Nuestros asesores le acompañan.', cta: 'Hablar con un asesor' },
-      fields: { firstName: 'Nombre', lastName: 'Apellido', amount: 'Monto (€)', duration: 'Plazo (meses)', email: 'Email', whatsapp: 'WhatsApp', country: 'País', profession: 'Profesión', income: 'Ingresos (€)', reason: 'Motivo del préstamo', reason_placeholder: 'Describa su proyecto...', consent1: 'Certifico la exactitud de la información.', consent2: 'Los datos se tratan para el estudio del expediente.', processing_consent: 'Acepto los gastos de gestión tras el acuerdo.', warning: 'Un crédito le compromete.', submit: 'Enviar solicitud', select_country: 'Elegir un país', success: '¡Solicitud enviada!' },
-      countries: { FR: 'Francia', BE: 'Bélgica', CH: 'Suiza', PL: 'Polonia', DE: 'Alemania', IT: 'Italia', ES: 'España', PT: 'Portugal', NL: 'Países Baixos' }
-    };
+    pack.loan_detail.why_title = "¿Por qué contratar este préstamo?";
+    pack.loan_detail.why_subtitle = "La financiación pensada para su éxito.";
+    pack.loan_detail.journey_title = "Su recorrido con Europfy";
+    pack.loan_detail.steps = [
+      { t: "Solicitud Simplificada", d: "Complete su expediente online en 5 minutos." },
+      { t: "Análisis en 24h", d: "Respuesta inmediata de nuestros expertos." },
+      { t: "Firma Digital", d: "Firme sus contratos de forma segura." },
+      { t: "Entrega de Fondos", d: "Fondos en su cuenta en menos de 48 horas." },
+      { t: "Gestión Flexible", d: "Cambie sus mensualidades sin comisiones." }
+    ];
   }
   return pack;
 };
