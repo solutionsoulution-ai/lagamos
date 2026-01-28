@@ -23,6 +23,7 @@ export interface LoanInfo {
   description: string;
   longDescription: string;
   icon: string;
+  image: string;
   features: string[];
   maxAmount: number;
   maxDuration: number;

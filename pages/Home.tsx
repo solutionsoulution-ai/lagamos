@@ -247,37 +247,37 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
       </section>
 
       {/* NEW: Loan Calculator Section (Just after Solutions) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-emerald-50 rounded-[3rem] p-8 sm:p-16 border border-emerald-100 shadow-sm overflow-hidden relative group">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 shadow-sm overflow-hidden relative group">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-200/40 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
-          <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-3xl sm:text-5xl font-black text-gray-900 leading-tight">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center relative z-10">
+            <div className="space-y-6 sm:space-y-8">
+              <div className="space-y-2 sm:space-y-4">
+                <h2 className="text-2xl sm:text-5xl font-black text-gray-900 leading-tight">
                   {translations[language].calculator.title}
                 </h2>
-                <p className="text-lg sm:text-xl text-gray-600 font-medium leading-relaxed">
+                <p className="text-base sm:text-xl text-gray-600 font-medium leading-relaxed">
                   {translations[language].calculator.subtitle}
                 </p>
               </div>
               
-              <div className="grid gap-6">
-                <div className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm">
-                   <div className="bg-emerald-100 p-2.5 rounded-xl">
-                      <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+              <div className="grid gap-3 sm:gap-6">
+                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-2xl shadow-sm">
+                   <div className="bg-emerald-100 p-2 sm:p-2.5 rounded-xl">
+                      <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
                    </div>
                    <div>
-                      <p className="font-bold text-gray-900">100% Sans engagement</p>
-                      <p className="text-sm text-gray-500 font-medium">Testez différents scénarios sans frais.</p>
+                      <p className="font-bold text-gray-900 text-sm sm:text-base">100% Sans engagement</p>
+                      <p className="text-xs sm:text-sm text-gray-500 font-medium">Testez différents scénarios sans frais.</p>
                    </div>
                 </div>
-                <div className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm">
-                   <div className="bg-emerald-100 p-2.5 rounded-xl">
-                      <Zap className="w-6 h-6 text-emerald-600" />
+                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-2xl shadow-sm">
+                   <div className="bg-emerald-100 p-2 sm:p-2.5 rounded-xl">
+                      <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
                    </div>
                    <div>
-                      <p className="font-bold text-gray-900">Réponse de principe immédiate</p>
-                      <p className="text-sm text-gray-500 font-medium">Recevez un premier avis dès la fin de votre simulation.</p>
+                      <p className="font-bold text-gray-900 text-sm sm:text-base">Réponse de principe immédiate</p>
+                      <p className="text-xs sm:text-sm text-gray-500 font-medium">Recevez un premier avis dès la fin de votre simulation.</p>
                    </div>
                 </div>
               </div>

@@ -41,11 +41,41 @@ export const getLoansData = (lang: Language): LoanInfo[] => {
   };
 
   const baseData = [
-    { id: 'personnel' as LoanType, icon: 'User', maxAmount: 75000, maxDuration: 84 },
-    { id: 'immobilier' as LoanType, icon: 'HomeIcon', maxAmount: 1500000, maxDuration: 300 },
-    { id: 'automobile' as LoanType, icon: 'Car', maxAmount: 100000, maxDuration: 72 },
-    { id: 'entreprise' as LoanType, icon: 'Briefcase', maxAmount: 5000000, maxDuration: 120 },
-    { id: 'rachat' as LoanType, icon: 'RefreshCcw', maxAmount: 250000, maxDuration: 180 }
+    { 
+      id: 'personnel' as LoanType, 
+      icon: 'User', 
+      maxAmount: 75000, 
+      maxDuration: 84, 
+      image: 'https://i.postimg.cc/GhFrb9SK/pexels-mizunokozuki-12912114.jpg' 
+    },
+    { 
+      id: 'immobilier' as LoanType, 
+      icon: 'HomeIcon', 
+      maxAmount: 1500000, 
+      maxDuration: 300, 
+      image: 'https://i.postimg.cc/wM0BTvww/side-view-man-working-as-real-estate-agent.jpg' 
+    },
+    { 
+      id: 'automobile' as LoanType, 
+      icon: 'Car', 
+      maxAmount: 100000, 
+      maxDuration: 72, 
+      image: 'https://i.postimg.cc/LX4K4Vww/young-family-choosing-car-car-showroom.jpg' 
+    },
+    { 
+      id: 'entreprise' as LoanType, 
+      icon: 'Briefcase', 
+      maxAmount: 5000000, 
+      maxDuration: 120, 
+      image: 'https://i.postimg.cc/g0NtsbtD/pexels-vlada-karpovich-7433905.jpg' 
+    },
+    { 
+      id: 'rachat' as LoanType, 
+      icon: 'RefreshCcw', 
+      maxAmount: 250000, 
+      maxDuration: 180, 
+      image: 'https://i.postimg.cc/fywxrV3X/pexels-rdne-7414047.jpg' 
+    }
   ];
 
   return baseData.map(base => {
