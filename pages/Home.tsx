@@ -116,17 +116,30 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
   }, [displayedText, isDeleting, phraseIndex, phrases, typingSpeed]);
 
   return (
-    <div className="space-y-6 sm:space-y-24 pb-20 overflow-x-hidden">
-      <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center pt-24 sm:pt-32 overflow-hidden bg-white">
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[120px] -z-0"></div>
-        <div className="absolute top-1/4 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[100px] -z-0"></div>
+    <div className="space-y-12 sm:space-y-24 pb-20 overflow-x-hidden">
+      {/* Immersive Hero Section */}
+      <section className="relative h-[65vh] sm:h-[90vh] min-h-[500px] flex items-center overflow-hidden bg-gray-900">
+        {/* Carrousel as Background */}
+        <div className="absolute inset-0 z-0">
+          {carouselImages.map((img, idx) => (
+            <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
+              <img src={img.url} className="w-full h-full object-cover scale-105" alt={img.label} />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"></div>
+            </div>
+          ))}
+        </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        {/* Floating progress bar top */}
+        <div className="absolute top-0 left-0 right-0 h-1 z-30 opacity-50">
+           <div className="h-full bg-emerald-500 transition-all duration-50 ease-linear" style={{ width: `${progress}%` }} />
+        </div>
+
+        {/* Content Overlay */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             
-            {/* Left Content Column */}
-            <div className="space-y-6 sm:space-y-10 order-1">
-              <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest border border-emerald-100 shadow-sm">
+            <div className="space-y-6 sm:space-y-10 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md text-emerald-400 px-4 py-2 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-widest border border-emerald-500/30 shadow-lg mx-auto lg:mx-0">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -134,119 +147,64 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                 {t.badge}
               </div>
               
-              <div className="min-h-[100px] sm:min-h-[220px]">
-                <h1 className="text-3xl sm:text-6xl lg:text-7xl font-black text-gray-900 leading-[1.05] tracking-tight">
+              <div className="min-h-[140px] sm:min-h-[220px]">
+                <h1 className="text-3xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.1] tracking-tight drop-shadow-2xl">
                   {displayedText}
                   <span className="inline-block w-1.5 h-8 sm:h-16 bg-emerald-500 ml-1 animate-pulse"></span>
                 </h1>
               </div>
 
-              <p className="text-base sm:text-2xl text-gray-600 leading-relaxed max-w-xl font-medium">
+              <p className="hidden sm:block text-base sm:text-2xl text-gray-300 leading-relaxed max-w-xl font-medium mx-auto lg:mx-0">
                 {t.p}
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-emerald-700 transition-all shadow-2xl shadow-emerald-100 flex items-center justify-center gap-3 hover:scale-105 active:scale-95">
-                  {t.cta1} <ChevronRight className="w-6 h-6" />
+              <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+                <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-black text-base sm:text-lg hover:bg-emerald-700 transition-all shadow-2xl shadow-emerald-900/40 flex items-center justify-center gap-3 hover:scale-105 active:scale-95">
+                  {t.cta1} <ChevronRight className="w-5 h-5" />
                 </button>
-                <button onClick={() => onNavigate('simulator')} className="bg-gray-50 text-gray-900 border border-gray-200 px-10 py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 hover:bg-gray-100 transition-all active:scale-95">
-                  <TrendingUp className="w-6 h-6 text-emerald-600" /> Simulateur
+                <button onClick={() => onNavigate('simulator')} className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 sm:px-10 sm:py-5 rounded-2xl font-black text-base sm:text-lg flex items-center justify-center gap-3 hover:bg-white/20 transition-all active:scale-95">
+                  <TrendingUp className="w-5 h-5 text-emerald-400" /> Simulateur
                 </button>
-              </div>
-
-              {/* Stats Section (Moved above carousel on mobile via natural flow) */}
-              <div className="flex items-center gap-6 pt-8 border-t border-gray-100">
-                <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map(i => (
-                    <img key={i} src={`https://i.pravatar.cc/100?u=${i}`} className="w-10 h-10 rounded-full border-2 border-white shadow-sm hover:scale-110 transition-transform cursor-pointer" alt="User" />
-                  ))}
-                </div>
-                <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-black text-gray-900">4.9/5 satisfaction</p>
-                    <div className="flex text-yellow-400"><Star className="w-3 h-3 fill-yellow-400" /></div>
-                  </div>
-                  <p className="text-xs text-gray-500 font-medium">{t.reviews}</p>
-                </div>
               </div>
             </div>
 
-            {/* Right Enhanced Carousel Column */}
-            <div className="relative order-2 group mt-8 lg:mt-0">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-emerald-100/30 to-blue-100/30 rounded-[3rem] sm:rounded-[5rem] blur-2xl -z-10 group-hover:scale-110 transition-transform duration-1000"></div>
-
-              {/* aspect-[16/10] on mobile for medium height, aspect-[4/5] on desktop */}
-              <div className="relative aspect-[16/10] sm:aspect-square lg:aspect-[4/5] rounded-[2.5rem] sm:rounded-[4rem] overflow-hidden shadow-[0_32px_80px_-16px_rgba(0,0,0,0.18)] border border-gray-100 bg-white">
-                
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gray-100/20 z-30">
-                  <div className="h-full bg-emerald-500 transition-all duration-50 ease-linear" style={{ width: `${progress}%` }} />
-                </div>
-
-                {carouselImages.map((img, idx) => (
-                  <div key={idx} className={`absolute inset-0 transition-all duration-1000 ease-in-out ${idx === currentSlide ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-                    <img src={img.url} className={`w-full h-full object-cover transition-transform duration-[10000ms] ease-out ${idx === currentSlide ? 'scale-110' : 'scale-100'}`} alt={img.label} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 via-gray-900/10 to-transparent"></div>
-                    
-                    <div className={`absolute bottom-6 sm:bottom-12 left-6 sm:left-8 transition-all duration-700 delay-300 transform ${idx === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 px-4 sm:px-6 py-2 sm:py-4 rounded-2xl sm:rounded-3xl text-white shadow-2xl">
-                        <div className="flex items-center gap-2 sm:gap-3 mb-0.5 sm:mb-1">
-                          {img.icon}
-                          <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400">{img.badge}</span>
-                        </div>
-                        <p className="text-base sm:text-xl font-black">{img.info}</p>
-                      </div>
-                    </div>
-
-                    <div className={`absolute top-6 sm:top-10 left-6 sm:left-8 transition-all duration-700 delay-100 transform ${idx === currentSlide ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'}`}>
-                       <div className="bg-emerald-600 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full text-white font-black text-[10px] sm:text-sm uppercase tracking-[0.2em] shadow-lg">
-                          {img.label}
-                       </div>
-                    </div>
+            {/* Desktop only sidebar on hero */}
+            <div className="hidden lg:flex flex-col gap-6 items-end">
+               <div className="bg-white/10 backdrop-blur-xl border border-white/10 p-8 rounded-[3rem] text-white w-full max-w-sm space-y-6 shadow-2xl">
+                  <div className="flex items-center gap-4">
+                     <div className="bg-emerald-500/20 p-3 rounded-2xl"><ShieldCheck className="w-6 h-6 text-emerald-400" /></div>
+                     <div>
+                        <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Sécurité</p>
+                        <p className="text-lg font-black">100% Garanti</p>
+                     </div>
                   </div>
-                ))}
-
-                <div className="absolute bottom-6 sm:bottom-8 right-6 sm:right-8 flex flex-col gap-2 sm:gap-3 z-30">
-                  {carouselImages.map((_, idx) => (
-                    <button key={idx} onClick={() => goToSlide(idx)} className="group relative flex items-center justify-end transition-all duration-300">
-                      <span className={`mr-2 sm:mr-3 text-[8px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${idx === currentSlide ? 'text-white opacity-100 translate-x-0' : 'text-white/0 opacity-0 translate-x-4'}`}>
-                        0{idx + 1}
-                      </span>
-                      <div className={`h-1.5 transition-all duration-500 rounded-full ${idx === currentSlide ? 'w-6 sm:w-10 bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'w-1.5 bg-white/40 group-hover:bg-white/60'}`} />
-                    </button>
-                  ))}
-                </div>
-
-                <div className="absolute inset-x-4 sm:inset-x-8 bottom-6 sm:bottom-8 flex gap-2 sm:gap-3 opacity-0 group-hover:opacity-100 transition-opacity z-40">
-                  <button onClick={() => goToSlide((currentSlide - 1 + carouselImages.length) % carouselImages.length)} className="p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-xl text-white border border-white/20 hover:bg-white hover:text-emerald-600 transition-all active:scale-90">
-                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
-                  <button onClick={() => goToSlide((currentSlide + 1) % carouselImages.length)} className="p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-xl text-white border border-white/20 hover:bg-white hover:text-emerald-600 transition-all active:scale-90">
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="absolute -top-6 -right-6 w-24 h-24 bg-yellow-400/10 rounded-full blur-2xl animate-pulse"></div>
-              <div className="absolute -bottom-10 -left-10 bg-white p-5 rounded-[2rem] shadow-2xl border border-gray-100 animate-float hidden lg:block">
-                 <div className="flex items-center gap-3">
-                    <div className="bg-emerald-100 p-2 rounded-xl"><ShieldCheck className="w-5 h-5 text-emerald-600" /></div>
-                    <div>
-                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Garantie</p>
-                       <p className="text-xs font-black text-gray-900">100% Sécurisé</p>
-                    </div>
-                 </div>
-              </div>
+                  <div className="flex items-center gap-4">
+                     <div className="bg-blue-500/20 p-3 rounded-2xl"><Clock className="w-6 h-6 text-blue-400" /></div>
+                     <div>
+                        <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">Rapidité</p>
+                        <p className="text-lg font-black">Fonds en 48h</p>
+                     </div>
+                  </div>
+               </div>
             </div>
           </div>
         </div>
+
+        {/* Carousel indicators mobile */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-30 lg:hidden">
+           {carouselImages.map((_, idx) => (
+             <button key={idx} onClick={() => goToSlide(idx)} className={`h-1.5 transition-all duration-500 rounded-full ${idx === currentSlide ? 'w-8 bg-emerald-500' : 'w-2 bg-white/30'}`} />
+           ))}
+        </div>
       </section>
 
-      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-2rem] sm:mt-[-5vh] relative z-20">
-        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-16 space-y-1 sm:space-y-4">
-          <h2 className="text-xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
-          <p className="text-xs sm:text-xl text-gray-600">{tl.p}</p>
+      {/* Main Content Start */}
+      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3rem] sm:mt-[-5vh] relative z-20">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-4">
+          <h2 className="text-2xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
+          <p className="text-sm sm:text-xl text-gray-600">{tl.p}</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {getLoansData(language).map((loan) => (
             <LoanCard key={loan.id} loan={loan} onClick={() => onSelectLoan(loan.id)} language={language} />
           ))}
@@ -261,7 +219,13 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* Reste des sections inchangé */}
+      {/* Trust & Stats Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-[2.5rem] sm:rounded-[4rem] p-8 sm:p-20 shadow-xl border border-gray-100">
+           <TrustWidgets language={language} />
+        </div>
+      </div>
+
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 shadow-sm overflow-hidden relative group">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-200/40 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
@@ -285,19 +249,9 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                       <p className="text-xs sm:text-sm text-gray-500 font-medium">Testez différents scénarios sans frais.</p>
                    </div>
                 </div>
-                <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-2xl shadow-sm">
-                   <div className="bg-emerald-100 p-2 sm:p-2.5 rounded-xl">
-                      <Zap className="w-5 h-5 sm:w-6 h-6 text-emerald-600" />
-                   </div>
-                   <div>
-                      <p className="font-bold text-gray-900 text-sm sm:text-base">Réponse de principe immédiate</p>
-                      <p className="text-xs sm:text-sm text-gray-500 font-medium">Recevez un premier avis dès la fin de votre simulation.</p>
-                   </div>
-                </div>
               </div>
             </div>
             <div className="relative z-20">
-              <div className="absolute -inset-4 bg-emerald-600/5 rounded-[4rem] blur-2xl -z-10"></div>
               <LoanCalculator language={language} onApply={() => onNavigate('loan-application')} />
             </div>
           </div>
@@ -314,11 +268,6 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
             <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
               {tq.subtitle}
             </h2>
-            <div className="space-y-4 sm:space-y-6">
-              <p className="text-sm sm:text-xl text-gray-600 leading-relaxed font-medium">
-                {tq.p1}
-              </p>
-            </div>
             <div className="pt-2">
               <button onClick={() => onNavigate('about')} className="group flex items-center gap-3 sm:gap-4 text-emerald-600 font-black text-lg sm:text-xl hover:translate-x-2 transition-transform">
                 {tq.btn}
@@ -326,18 +275,14 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
               </button>
             </div>
           </div>
-          <div className="relative group">
-            <div className="relative rounded-3xl sm:rounded-[3rem] overflow-hidden shadow-2xl h-[300px] sm:h-[500px]">
-              <img src="https://images.unsplash.com/photo-1600880212340-02d956381b90?auto=format&fit=crop&q=80&w=1200" alt="Equipe" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-              <div className="absolute inset-0 bg-gradient-to-t from-teal-900/40 to-transparent"></div>
-            </div>
+          <div className="relative group h-[300px] sm:h-[500px]">
+              <img src="https://images.unsplash.com/photo-1600880212340-02d956381b90?auto=format&fit=crop&q=80&w=1200" alt="Equipe" className="w-full h-full object-cover rounded-3xl" />
           </div>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-24">
         <ReviewsSection language={language} />
-        <TrustWidgets language={language} />
         <PartnersSection language={language} />
         <RateComparison language={language} />
       </div>
@@ -371,19 +316,6 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
           </div>
         </div>
       </section>
-      
-      <style>
-        {`
-          @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-          }
-          .animate-float {
-            animation: float 4s ease-in-out infinite;
-          }
-        `}
-      </style>
     </div>
   );
 };

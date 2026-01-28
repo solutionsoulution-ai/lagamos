@@ -190,7 +190,7 @@ const App: React.FC = () => {
         onLanguageChange={handleLanguageChange} 
         user={user} 
         onLogout={handleLogout} 
-        isTransparent={currentPage === 'loan-detail'}
+        isTransparent={['home', 'loan-detail'].includes(currentPage)}
       />
       <main className="flex-grow">
         {renderContent()}
