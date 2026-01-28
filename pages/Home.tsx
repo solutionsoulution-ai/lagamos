@@ -126,8 +126,21 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* Intro & Stats Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 1. Section Prêts (Placée en premier pour chevaucher la Hero) */}
+      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3rem] relative z-20">
+        <div className="text-left sm:text-center max-w-3xl sm:mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-4">
+          <h2 className="text-2xl sm:text-5xl font-black text-gray-900">{tl.h2}</h2>
+          <p className="text-sm sm:text-xl text-gray-600">{tl.p}</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+          {getLoansData(language).map((loan) => (
+            <LoanCard key={loan.id} loan={loan} onClick={() => onSelectLoan(loan.id)} language={language} />
+          ))}
+        </div>
+      </section>
+
+      {/* 2. Section Intro & Stats (Maintenant en dessous des prêts) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="bg-white rounded-[2rem] sm:rounded-[4rem] p-8 sm:p-20 shadow-xl border border-gray-100">
            
            {/* INTRODUCTION SECTION BEFORE STATS */}
@@ -148,20 +161,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </div>
 
-      {/* Loans Section */}
-      <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3rem] relative z-20">
-        <div className="text-left sm:text-center max-w-3xl sm:mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-4">
-          <h2 className="text-2xl sm:text-5xl font-black text-gray-900">{tl.h2}</h2>
-          <p className="text-sm sm:text-xl text-gray-600">{tl.p}</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
-          {getLoansData(language).map((loan) => (
-            <LoanCard key={loan.id} loan={loan} onClick={() => onSelectLoan(loan.id)} language={language} />
-          ))}
-        </div>
-      </section>
-
-      {/* Rest of the sections... */}
+      {/* Le reste des sections suit normalement */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 relative overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
