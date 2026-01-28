@@ -23,8 +23,6 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
   const tl = translations[language].loans_section;
   const tp = translations[language].process;
   const tc = translations[language].cta_footer;
-  const tw = translations[language].why_choose_us;
-  const tq = translations[language].who_we_are;
 
   const carouselImages = [
     { url: 'https://i.postimg.cc/wM0BTvww/side-view-man-working-as-real-estate-agent.jpg' },
@@ -82,12 +80,12 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
 
   return (
     <div className="space-y-12 sm:space-y-24 pb-20 overflow-x-hidden">
-      {/* Hero Section - Height 60vh, Left Aligned, No Zoom */}
+      {/* Hero Section */}
       <section className="relative h-[60vh] sm:h-[90vh] min-h-[520px] flex items-center overflow-hidden bg-gray-900">
         <div className="absolute inset-0 z-0">
           {carouselImages.map((img, idx) => (
             <div key={idx} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${idx === currentSlide ? 'opacity-100' : 'opacity-0'}`}>
-              <img src={img.url} className="w-full h-full object-cover object-center scale-100" alt="Finance background" />
+              <img src={img.url} className="w-full h-full object-cover object-center" alt="Finance background" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
             </div>
           ))}
@@ -126,7 +124,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* 1. Section Prêts (Placée en premier pour chevaucher la Hero) */}
+      {/* 1. Section Solutions de Financement */}
       <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-[-3rem] relative z-20">
         <div className="text-left sm:text-center max-w-3xl sm:mx-auto mb-10 sm:mb-16 space-y-2 sm:space-y-4">
           <h2 className="text-2xl sm:text-5xl font-black text-gray-900">{tl.h2}</h2>
@@ -139,11 +137,9 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* 2. Section Intro & Stats (Maintenant en dessous des prêts) */}
+      {/* 2. Section Preuve de fiabilité (Placée après Solutions) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="bg-white rounded-[2rem] sm:rounded-[4rem] p-8 sm:p-20 shadow-xl border border-gray-100">
-           
-           {/* INTRODUCTION SECTION BEFORE STATS */}
            <div className="text-left mb-12 sm:mb-20 space-y-4 sm:space-y-6">
               <div className="inline-flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 shadow-sm">
                  <Shield className="w-4 h-4 text-emerald-600" />
@@ -161,7 +157,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </div>
 
-      {/* Le reste des sections suit normalement */}
+      {/* Calculator Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 relative overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -183,7 +179,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
       <SecurityBanner language={language} />
       <FaqSection language={language} />
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         <div className="bg-gradient-to-br from-emerald-600 to-teal-800 rounded-[2.5rem] p-8 sm:p-24 text-center text-white relative overflow-hidden">
           <div className="relative z-10 max-w-3xl mx-auto space-y-6">
             <h2 className="text-3xl sm:text-6xl font-black leading-tight">{tc.h2}</h2>

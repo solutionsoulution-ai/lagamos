@@ -14,7 +14,6 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
   const [amount, setAmount] = useState(15000);
   const [duration, setDuration] = useState(24);
   
-  // Defensive translation fetching
   const t = translations[language]?.calculator || translations['fr'].calculator;
 
   const monthlyPayment = useMemo(() => {
@@ -54,7 +53,7 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
             step="500" 
             value={amount} 
             onChange={(e) => setAmount(Number(e.target.value))} 
-            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none sm:touch-auto" 
+            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none" 
           />
         </div>
 
@@ -73,7 +72,7 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
             step="6" 
             value={duration} 
             onChange={(e) => setDuration(Number(e.target.value))} 
-            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none sm:touch-auto" 
+            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none" 
           />
         </div>
 
@@ -88,9 +87,10 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
           </div>
         </div>
 
+        {/* Bouton stabilisé avec transform-gpu pour éviter les sauts de pixels sur mobile */}
         <button 
           onClick={onApply}
-          className="w-full bg-emerald-600 text-white py-3.5 sm:py-5 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg shadow-xl shadow-emerald-100 hover:bg-emerald-700 active:scale-95 transition-all flex items-center justify-center gap-2 sm:gap-3"
+          className="w-full bg-emerald-600 text-white py-3.5 sm:py-5 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg shadow-xl shadow-emerald-100/50 hover:bg-emerald-700 active:bg-emerald-800 transform-gpu transition-all duration-200 flex items-center justify-center gap-2 sm:gap-3"
         >
           {t.cta}
           <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />

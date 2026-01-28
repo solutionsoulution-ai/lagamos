@@ -18,7 +18,7 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        /* Animation SPECTRE pour le texte */
+        /* Animation SPECTRE ÉMERAUDE & TEAL */
         @keyframes flowGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -26,19 +26,20 @@
         }
 
         .animate-gradient-text {
-            background: linear-gradient(90deg, #10b981, #3b82f6, #06b6d4, #10b981);
+            /* Palette : Emerald 500 -> Teal 600 -> Emerald 600 -> Teal 700 */
+            background: linear-gradient(90deg, #10b981, #0d9488, #059669, #0f766e, #10b981);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: flowGradient 4s linear infinite;
+            animation: flowGradient 5s ease-in-out infinite;
         }
 
-        /* Animation d'entrée pour les cartes de stats */
+        /* Animation d'entrée stable */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(40px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -47,12 +48,12 @@
         }
         .reveal-item {
             opacity: 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        .delay-4 { animation-delay: 0.8s; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
     </style>
 <script type="importmap">
 {
