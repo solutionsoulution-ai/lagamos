@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Menu, X, ChevronDown, Globe, LogIn, LogOut, User } from 'lucide-react';
+import { ChevronDown, Globe, LogOut, User } from 'lucide-react';
 import { Language, User as UserType } from '../types';
 import { translations } from '../translations';
 import Logo from './Logo';
@@ -15,7 +15,6 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLanguageChange, user, onLogout }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const t = translations[language].nav;
 
@@ -48,6 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
             </span>
           </div>
 
+          {/* Menu Desktop uniquement */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button 
@@ -106,47 +106,32 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
             </button>
           </div>
 
+          {/* Sélecteur de langue mobile toujours visible, mais pas de bouton Menu */}
           <div className="md:hidden flex items-center gap-4">
-            <button onClick={() => setIsLangOpen(!isLangOpen)} className="text-xl">
-               {languages.find(l => l.code === language)?.flag}
-            </button>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-900">
-              {isOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+            <div className="relative">
+              <button onClick={() => setIsLangOpen(!isLangOpen)} className="text-xl p-2 bg-gray-50 rounded-lg">
+                 {languages.find(l => l.code === language)?.flag}
+              </button>
+              {isLangOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl border border-gray-100 py-2">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => { onLanguageChange(lang.code); setIsLangOpen(false); }}
+                      className="w-full text-left px-4 py-2 text-sm font-medium hover:bg-emerald-50 text-gray-600"
+                    >
+                      {lang.flag} {lang.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-4 py-2 rounded-full font-bold text-xs shadow-md">
+              {t.cta}
             </button>
           </div>
         </div>
       </div>
-
-      {isOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-white z-[90] overflow-y-auto p-6 flex flex-col border-t border-gray-100">
-          <div className="space-y-4 flex-grow">
-            {navItems.map((item) => (
-              <button 
-                key={item.id} 
-                onClick={() => { onNavigate(item.id); setIsOpen(false); }} 
-                className={`block w-full text-left p-4 text-xl font-bold rounded-2xl ${currentPage === item.id ? 'bg-emerald-50 text-emerald-600' : 'text-gray-700'}`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-          
-          <div className="space-y-4 pt-6 border-t border-gray-100">
-             {!user ? (
-               <button onClick={() => { onNavigate('login'); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-gray-700 rounded-2xl bg-gray-50">
-                 {t.login}
-               </button>
-             ) : (
-               <button onClick={() => { onLogout(); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-red-500 rounded-2xl bg-red-50">
-                 {t.logout}
-               </button>
-             )}
-             <button onClick={() => { onNavigate('loan-application'); setIsOpen(false); }} className="w-full bg-emerald-600 text-white p-5 text-xl font-black rounded-2xl shadow-xl shadow-emerald-100">
-               {t.cta}
-             </button>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };
