@@ -16,7 +16,7 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
   return (
     <div 
       onClick={onClick}
-      className="group relative bg-gray-900 rounded-xl sm:rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[18/5] sm:aspect-square lg:aspect-[4/5]"
+      className="group relative bg-gray-900 rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer aspect-[16/7] sm:aspect-square lg:aspect-[4/5]"
     >
       {/* Background Image */}
       <img 
@@ -28,26 +28,26 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
       {/* Dynamic Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-teal-950/90 via-teal-900/10 to-transparent opacity-80 group-hover:opacity-95 transition-opacity"></div>
       
-      {/* Top Badge: Taux Fixe - Ultra compact on mobile */}
-      <div className="absolute top-2 left-2 sm:top-6 sm:left-6">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 sm:gap-2">
-          <Sparkles className="w-2 h-2 sm:w-3 sm:h-3 text-emerald-400" />
-          <span className="text-[7px] sm:text-[10px] font-black text-white uppercase tracking-widest">2% Fixe</span>
+      {/* Top Badge: Taux Fixe - Smaller on mobile */}
+      <div className="absolute top-3 left-3 sm:top-6 sm:left-6">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 sm:gap-2">
+          <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400" />
+          <span className="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-widest">2% Fixe</span>
         </div>
       </div>
 
-      {/* Content Overlay - Ultra compact on mobile */}
-      <div className="absolute inset-x-0 bottom-0 p-3 sm:p-8 space-y-1 sm:space-y-4 translate-y-0.5 group-hover:translate-y-0 transition-transform">
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="bg-emerald-500 p-1.5 sm:p-3 rounded-lg sm:rounded-2xl shadow-lg shadow-emerald-900/40 text-white transform group-hover:rotate-12 transition-transform">
-            <IconComponent className="w-3 h-3 sm:w-6 sm:h-6" />
+      {/* Content Overlay - More compact on mobile */}
+      <div className="absolute inset-x-0 bottom-0 p-4 sm:p-8 space-y-2 sm:space-y-4 translate-y-1 group-hover:translate-y-0 transition-transform">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="bg-emerald-500 p-2 sm:p-3 rounded-xl sm:rounded-2xl shadow-lg shadow-emerald-900/40 text-white transform group-hover:rotate-12 transition-transform">
+            <IconComponent className="w-4 h-4 sm:w-6 sm:h-6" />
           </div>
-          <h3 className="text-sm sm:text-2xl lg:text-3xl font-black text-white leading-tight">
+          <h3 className="text-lg sm:text-2xl lg:text-3xl font-black text-white leading-tight">
             {loan.title}
           </h3>
         </div>
         
-        {/* Desktop only elements */}
+        {/* Hide separator/Discover on mobile to save vertical space */}
         <div className="hidden sm:flex pt-4 items-center justify-between border-t border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
           <span className="text-emerald-400 text-xs font-black uppercase tracking-[0.2em]">Découvrir l'offre</span>
           <div className="bg-white text-emerald-600 p-2 rounded-full">

@@ -102,9 +102,9 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
   }, [displayedText, isDeleting, phraseIndex, phrases, typingSpeed]);
 
   return (
-    <div className="space-y-8 sm:space-y-24 pb-20 overflow-x-hidden">
+    <div className="space-y-12 sm:space-y-24 pb-20 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative pt-24 pb-8 lg:pt-40 lg:pb-32 overflow-hidden">
+      <section className="relative pt-24 pb-12 lg:pt-40 lg:pb-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
@@ -117,7 +117,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                 {t.badge}
               </div>
               
-              <div className="min-h-[100px] sm:min-h-[160px] lg:min-h-[220px]">
+              <div className="min-h-[120px] sm:min-h-[160px] lg:min-h-[220px]">
                 <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black text-gray-900 leading-[1.1]">
                   {displayedText}
                   <span className="inline-block w-1 h-8 sm:h-12 lg:h-16 bg-emerald-600 ml-1 animate-pulse"></span>
@@ -221,14 +221,14 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* Solutions Section - Ultra-Compact on mobile */}
+      {/* Solutions Section - Compact on mobile */}
       <section id="loans" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-4 sm:mb-20 space-y-1 sm:space-y-4">
-          <h2 className="text-xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
-          <p className="text-xs sm:text-xl text-gray-600">{tl.p}</p>
+        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-20 space-y-2 sm:space-y-4">
+          <h2 className="text-2xl sm:text-5xl font-black text-gray-900 leading-tight">{tl.h2}</h2>
+          <p className="text-sm sm:text-xl text-gray-600">{tl.p}</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {getLoansData(language).map((loan) => (
             <LoanCard key={loan.id} loan={loan} onClick={() => onSelectLoan(loan.id)} language={language} />
           ))}
@@ -246,7 +246,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* Loan Calculator Section */}
+      {/* NEW: Loan Calculator Section (Just after Solutions) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         <div className="bg-emerald-50 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-16 border border-emerald-100 shadow-sm overflow-hidden relative group">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-emerald-200/40 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
@@ -264,7 +264,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
               <div className="grid gap-3 sm:gap-6">
                 <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-2xl shadow-sm">
                    <div className="bg-emerald-100 p-2 sm:p-2.5 rounded-xl">
-                      <CheckCircle2 className="w-5 h-5 sm:w-6 h-6 text-emerald-600" />
+                      <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
                    </div>
                    <div>
                       <p className="font-bold text-gray-900 text-sm sm:text-base">100% Sans engagement</p>
@@ -273,7 +273,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
                 </div>
                 <div className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 bg-white rounded-2xl shadow-sm">
                    <div className="bg-emerald-100 p-2 sm:p-2.5 rounded-xl">
-                      <Zap className="w-5 h-5 sm:w-6 h-6 text-emerald-600" />
+                      <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
                    </div>
                    <div>
                       <p className="font-bold text-gray-900 text-sm sm:text-base">Réponse de principe immédiate</p>
