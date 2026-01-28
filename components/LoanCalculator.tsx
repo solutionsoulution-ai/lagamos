@@ -13,7 +13,9 @@ interface LoanCalculatorProps {
 const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onApply }) => {
   const [amount, setAmount] = useState(15000);
   const [duration, setDuration] = useState(24);
-  const t = translations[language].calculator;
+  
+  // Defensive translation fetching
+  const t = translations[language]?.calculator || translations['fr'].calculator;
 
   const monthlyPayment = useMemo(() => {
     const r = (FIXED_RATE / 100) / 12;
@@ -27,7 +29,7 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
   }, [monthlyPayment, duration, amount]);
 
   return (
-    <div className="bg-white rounded-[1.5rem] sm:rounded-3xl shadow-2xl overflow-hidden border border-gray-100 max-w-full">
+    <div className="relative z-20 bg-white rounded-[1.5rem] sm:rounded-3xl shadow-2xl overflow-hidden border border-gray-100 max-w-full">
       <div className="bg-emerald-600 p-4 sm:p-8 text-white">
         <h3 className="text-base sm:text-2xl font-black flex items-center gap-2 sm:gap-3">
           <Zap className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-300 fill-yellow-300" />
@@ -46,9 +48,13 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
             <span className="text-base sm:text-2xl font-black text-emerald-600">{amount.toLocaleString()} €</span>
           </div>
           <input 
-            type="range" min="1000" max="250000" step="500" value={amount} 
+            type="range" 
+            min="1000" 
+            max="250000" 
+            step="500" 
+            value={amount} 
             onChange={(e) => setAmount(Number(e.target.value))} 
-            className="w-full h-1.5 sm:h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600" 
+            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none sm:touch-auto" 
           />
         </div>
 
@@ -61,9 +67,13 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ language = 'fr', onAppl
             <span className="text-base sm:text-2xl font-black text-emerald-600">{duration} {t.months}</span>
           </div>
           <input 
-            type="range" min="6" max="120" step="6" value={duration} 
+            type="range" 
+            min="6" 
+            max="120" 
+            step="6" 
+            value={duration} 
             onChange={(e) => setDuration(Number(e.target.value))} 
-            className="w-full h-1.5 sm:h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600" 
+            className="w-full h-2 bg-gray-100 rounded-lg appearance-none cursor-pointer accent-emerald-600 touch-none sm:touch-auto" 
           />
         </div>
 

@@ -135,6 +135,7 @@ const createLanguagePack = (lang: Language, base: any) => {
   pack.faq = generateFaq(lang);
   
   if (lang === 'pl') {
+    pack.calculator = { title: 'Szybki Symulator', subtitle: 'Oblicz swój budżet natychmiast.', amount: 'Pożądana kwota', duration: 'Okres pożyczki', months: 'miesięcy', monthly: 'Szacowana rata', total: 'Całkowity koszt kredytu', cta: 'Rozpocznij wniosek' };
     pack.form = {
       title: 'Wniosek o Pożyczkę',
       subtitle: 'Szybko i w 100% bezpiecznie.',
@@ -146,6 +147,7 @@ const createLanguagePack = (lang: Language, base: any) => {
       countries: { FR: 'Francja', BE: 'Belgia', CH: 'Szwajcaria', PL: 'Polska', DE: 'Niemcy', IT: 'Włochy', ES: 'Hiszpania', PT: 'Portugalia', NL: 'Holandia' }
     };
   } else if (lang === 'de') {
+    pack.calculator = { title: 'Express-Rechner', subtitle: 'Berechnen Sie Ihr Budget sofort.', amount: 'Wunschbetrag', duration: 'Laufzeit', months: 'Monate', monthly: 'Geschätzte Monatsrate', total: 'Gesamtkosten des Kredits', cta: 'Antrag starten' };
     pack.form = {
       title: 'Kreditantrag',
       subtitle: 'Schnell und 100% sicher.',
@@ -157,6 +159,7 @@ const createLanguagePack = (lang: Language, base: any) => {
       countries: { FR: 'Frankreich', BE: 'Belgien', CH: 'Schweiz', PL: 'Polen', DE: 'Deutschland', IT: 'Italien', ES: 'Spanien', PT: 'Portugal', NL: 'Niederlande' }
     };
   } else if (lang === 'nl') {
+    pack.calculator = { title: 'Express Simulator', subtitle: 'Bereken direct uw budget.', amount: 'Gewenst bedrag', duration: 'Looptijd', months: 'maanden', monthly: 'Geschatte maandlast', total: 'Totale kosten krediet', cta: 'Aanvraag starten' };
     pack.form = {
       title: 'Lening Aanvraag',
       subtitle: 'Snel en 100% veilig.',
@@ -168,6 +171,7 @@ const createLanguagePack = (lang: Language, base: any) => {
       countries: { FR: 'Frankrijk', BE: 'België', CH: 'Zwitserland', PL: 'Polen', DE: 'Duitsland', IT: 'Italië', ES: 'Spanje', PT: 'Portugal', NL: 'Nederland' }
     };
   } else if (lang === 'it') {
+    pack.calculator = { title: 'Simulatore Express', subtitle: 'Calcola il tuo budget istantaneamente.', amount: 'Importo desiderato', duration: 'Durata del prestito', months: 'mesi', monthly: 'Rata mensile stimata', total: 'Costo totale del credito', cta: 'Inizia la richiesta' };
     pack.form = {
       title: 'Richiesta di Prestito',
       subtitle: 'Rapida e sicura al 100%.',
@@ -179,6 +183,7 @@ const createLanguagePack = (lang: Language, base: any) => {
       countries: { FR: 'Francia', BE: 'Belgio', CH: 'Svizzera', PL: 'Polonia', DE: 'Germania', IT: 'Italia', ES: 'Spagna', PT: 'Portogallo', NL: 'Paesi Bassi' }
     };
   } else if (lang === 'pt') {
+    pack.calculator = { title: 'Simulador Expresso', subtitle: 'Calcule o seu orçamento instantaneamente.', amount: 'Montante pretendido', duration: 'Duração do empréstimo', months: 'meses', monthly: 'Mensalidade estimada', total: 'Custo total do crédito', cta: 'Iniciar pedido' };
     pack.form = {
       title: 'Pedido de Empréstimo',
       subtitle: 'Rápido e 100% seguro.',
@@ -186,19 +191,20 @@ const createLanguagePack = (lang: Language, base: any) => {
       trust_text: 'As suas informações são tratadas de acordo com o RGPD e protegidas por encriptação.',
       processing_fees: { title: 'Custos de processo', text: 'Os custos cobrem a análise técnica e jurídica do seu processo.', detail: 'Custos devidos apenas após acordo de princípio.' },
       help_sidebar: { title: 'Precisa de ajuda?', desc: 'Os nossos consultores acompanham-no.', cta: 'Falar com um consultor' },
-      fields: { firstName: 'Nome', lastName: 'Apelido', amount: 'Montante (€)', duration: 'Duração (meses)', email: 'E-mail', whatsapp: 'WhatsApp', country: 'País', profession: 'Profissão', income: 'Rendimento (€)', reason: 'Motivo do empréstimo', reason_placeholder: 'Descreva o seu projeto...', consent1: 'Certifico a exatidão das informações.', consent2: 'Os dados são tratados para o estudo do processo.', processing_consent: 'Aceito os custos de processo após o acordo.', warning: 'Um crédito compromete-o.', submit: 'Enviar pedido', select_country: 'Escolha um país', success: 'Pedido enviado!' },
+      fields: { firstName: 'Nome', lastName: 'Apelido', amount: 'Montante (€)', duration: 'Duração (meses)', email: 'E-mail', whatsapp: 'WhatsApp', country: 'País', profession: 'Profissão', income: 'Rendimento (€)', reason: 'Motivo do empréstimo', reason_placeholder: 'Descreva o seu projeto...', consent1: 'Certifico a exatidão das informações.', consent2: 'Os dados sont tratados para o estudo do processo.', processing_consent: 'Aceito os custos de processo após o acordo.', warning: 'Um crédito compromete-o.', submit: 'Enviar pedido', select_country: 'Escolha um país', success: 'Pedido enviado!' },
       countries: { FR: 'França', BE: 'Bélgica', CH: 'Suíça', PL: 'Polónia', DE: 'Alemanha', IT: 'Itália', ES: 'Espanha', PT: 'Portugal', NL: 'Países Baixos' }
     };
   } else if (lang === 'es') {
+    pack.calculator = { title: 'Simulador Express', subtitle: 'Calcule su presupuesto al instante.', amount: 'Monto deseado', duration: 'Plazo del préstamo', months: 'meses', monthly: 'Mensualidad estimada', total: 'Coste total del crédito', cta: 'Iniciar solicitud' };
     pack.form = {
       title: 'Solicitud de Préstamo',
       subtitle: 'Rápida y 100% segura.',
       trust_title: 'Seguridad de datos',
-      trust_text: 'Su información se trata conforme al RGPD y se protege mediante cifrado.',
+      trust_text: 'Su información se trata conforme al RGPD e se protege mediante cifrado.',
       processing_fees: { title: 'Gastos de gestión', text: 'Los gastos cubren el análisis técnico y jurídico de su expediente.', detail: 'Gastos debidos solo tras acuerdo de principio.' },
       help_sidebar: { title: '¿Necesita ayuda?', desc: 'Nuestros asesores le acompañan.', cta: 'Hablar con un asesor' },
       fields: { firstName: 'Nombre', lastName: 'Apellido', amount: 'Monto (€)', duration: 'Plazo (meses)', email: 'Email', whatsapp: 'WhatsApp', country: 'País', profession: 'Profesión', income: 'Ingresos (€)', reason: 'Motivo del préstamo', reason_placeholder: 'Describa su proyecto...', consent1: 'Certifico la exactitud de la información.', consent2: 'Los datos se tratan para el estudio del expediente.', processing_consent: 'Acepto los gastos de gestión tras el acuerdo.', warning: 'Un crédito le compromete.', submit: 'Enviar solicitud', select_country: 'Elegir un país', success: '¡Solicitud enviada!' },
-      countries: { FR: 'Francia', BE: 'Bélgica', CH: 'Suiza', PL: 'Polonia', DE: 'Alemania', IT: 'Italia', ES: 'España', PT: 'Portugal', NL: 'Países Bajos' }
+      countries: { FR: 'Francia', BE: 'Bélgica', CH: 'Suiza', PL: 'Polonia', DE: 'Alemania', IT: 'Italia', ES: 'España', PT: 'Portugal', NL: 'Países Baixos' }
     };
   }
   return pack;

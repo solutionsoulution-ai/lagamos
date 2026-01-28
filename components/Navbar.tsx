@@ -38,57 +38,61 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
   ];
 
   return (
-    <nav className="fixed w-full z-[100] bg-white/5 backdrop-blur-md border-b border-white/10">
+    <nav className="fixed w-full z-[100] bg-white/80 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center space-x-2 cursor-pointer group" onClick={() => onNavigate('home')}>
             <Logo className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-300" />
-            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-              Europ<span className="text-emerald-400">fy</span>
+            <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-gray-900">
+              Europ<span className="text-emerald-600">fy</span>
             </span>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <button key={item.id} onClick={() => onNavigate(item.id)} className={`text-sm font-semibold transition-colors ${currentPage === item.id ? 'text-emerald-400' : 'text-gray-200 hover:text-white'}`}>
+              <button 
+                key={item.id} 
+                onClick={() => onNavigate(item.id)} 
+                className={`text-sm font-semibold transition-colors ${currentPage === item.id ? 'text-emerald-600' : 'text-gray-600 hover:text-emerald-600'}`}
+              >
                 {item.label}
               </button>
             ))}
 
-            <div className="h-6 w-px bg-white/20 mx-2"></div>
+            <div className="h-6 w-px bg-gray-200 mx-2"></div>
 
             {user ? (
               <div className="flex items-center gap-4">
                 <button 
                   onClick={() => onNavigate(user.role === 'admin' ? 'admin-dashboard' : 'client-dashboard')}
-                  className="flex items-center gap-2 text-sm font-bold text-white bg-white/10 px-4 py-2 rounded-full hover:bg-white/20"
+                  className="flex items-center gap-2 text-sm font-bold text-gray-900 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200"
                 >
                   <User className="w-4 h-4" />
                   {user.role === 'admin' ? 'Admin' : t.my_space}
                 </button>
-                <button onClick={onLogout} className="text-gray-300 hover:text-red-400">
+                <button onClick={onLogout} className="text-gray-400 hover:text-red-500">
                   <LogOut className="w-5 h-5" />
                 </button>
               </div>
             ) : (
-              <button onClick={() => onNavigate('login')} className="text-sm font-bold text-gray-200 hover:text-white">
+              <button onClick={() => onNavigate('login')} className="text-sm font-bold text-gray-600 hover:text-emerald-600">
                 {t.login}
               </button>
             )}
 
             <div className="relative">
-              <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-2 text-sm font-bold text-white bg-white/10 px-3 py-2 rounded-lg">
+              <button onClick={() => setIsLangOpen(!isLangOpen)} className="flex items-center gap-2 text-sm font-bold text-gray-700 bg-gray-50 px-3 py-2 rounded-lg border border-gray-100 hover:bg-gray-100 transition-colors">
                 <Globe className="w-4 h-4" />
                 {languages.find(l => l.code === language)?.flag}
                 <ChevronDown className="w-4 h-4" />
               </button>
               {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-gray-900/95 backdrop-blur-xl rounded-xl shadow-2xl border border-white/10 py-2">
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl border border-gray-100 py-2">
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
                       onClick={() => { onLanguageChange(lang.code); setIsLangOpen(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm font-medium hover:bg-emerald-500/20 ${language === lang.code ? 'text-emerald-400 bg-emerald-500/10' : 'text-gray-300'}`}
+                      className={`w-full text-left px-4 py-2 text-sm font-medium hover:bg-emerald-50 ${language === lang.code ? 'text-emerald-600 bg-emerald-50' : 'text-gray-600'}`}
                     >
                       {lang.flag} {lang.label}
                     </button>
@@ -97,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
               )}
             </div>
 
-            <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg">
+            <button onClick={() => onNavigate('loan-application')} className="bg-emerald-600 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100">
               {t.cta}
             </button>
           </div>
@@ -106,7 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
             <button onClick={() => setIsLangOpen(!isLangOpen)} className="text-xl">
                {languages.find(l => l.code === language)?.flag}
             </button>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-900">
               {isOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
             </button>
           </div>
@@ -114,30 +118,30 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, language, onLa
       </div>
 
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-20 bg-gray-900 z-[90] overflow-y-auto p-6 flex flex-col">
+        <div className="md:hidden fixed inset-0 top-20 bg-white z-[90] overflow-y-auto p-6 flex flex-col border-t border-gray-100">
           <div className="space-y-4 flex-grow">
             {navItems.map((item) => (
               <button 
                 key={item.id} 
                 onClick={() => { onNavigate(item.id); setIsOpen(false); }} 
-                className={`block w-full text-left p-4 text-xl font-bold rounded-2xl ${currentPage === item.id ? 'bg-emerald-500/20 text-emerald-400' : 'text-gray-200'}`}
+                className={`block w-full text-left p-4 text-xl font-bold rounded-2xl ${currentPage === item.id ? 'bg-emerald-50 text-emerald-600' : 'text-gray-700'}`}
               >
                 {item.label}
               </button>
             ))}
           </div>
           
-          <div className="space-y-4 pt-6 border-t border-white/10">
+          <div className="space-y-4 pt-6 border-t border-gray-100">
              {!user ? (
-               <button onClick={() => { onNavigate('login'); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-white rounded-2xl bg-white/10">
+               <button onClick={() => { onNavigate('login'); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-gray-700 rounded-2xl bg-gray-50">
                  {t.login}
                </button>
              ) : (
-               <button onClick={() => { onLogout(); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-red-400 rounded-2xl bg-red-500/10">
+               <button onClick={() => { onLogout(); setIsOpen(false); }} className="w-full text-center p-4 text-lg font-bold text-red-500 rounded-2xl bg-red-50">
                  {t.logout}
                </button>
              )}
-             <button onClick={() => { onNavigate('loan-application'); setIsOpen(false); }} className="w-full bg-emerald-600 text-white p-5 text-xl font-black rounded-2xl shadow-xl shadow-emerald-500/20">
+             <button onClick={() => { onNavigate('loan-application'); setIsOpen(false); }} className="w-full bg-emerald-600 text-white p-5 text-xl font-black rounded-2xl shadow-xl shadow-emerald-100">
                {t.cta}
              </button>
           </div>
