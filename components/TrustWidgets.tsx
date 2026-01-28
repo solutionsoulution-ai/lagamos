@@ -9,21 +9,21 @@ interface TrustWidgetsProps { language: Language; }
 const TrustWidgets: React.FC<TrustWidgetsProps> = ({ language }) => {
   const t = translations[language].stats;
   const stats = [
-    { icon: Users, label: t.clients, value: '50k+' },
-    { icon: Award, label: t.exp, value: '15+' },
-    { icon: Star, label: t.rating, value: '4.9/5' },
-    { icon: ShieldCheck, label: t.safety, value: '100%' },
+    { icon: Users, label: t.clients, value: '50k+', delay: 'delay-1' },
+    { icon: Award, label: t.exp, value: '15+', delay: 'delay-2' },
+    { icon: Star, label: t.rating, value: '4.9/5', delay: 'delay-3' },
+    { icon: ShieldCheck, label: t.safety, value: '100%', delay: 'delay-4' },
   ];
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
       {stats.map((stat, i) => (
-        <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-lg transition-all hover:-translate-y-1">
-          <div className="bg-emerald-50 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-            <stat.icon className="w-6 h-6 text-emerald-600" />
+        <div key={i} className={`reveal-item ${stat.delay} bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-gray-100 text-left hover:shadow-xl transition-all hover:-translate-y-2 group`}>
+          <div className="bg-emerald-50 w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors duration-500">
+            <stat.icon className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-600 group-hover:text-white transition-colors" />
           </div>
-          <p className="text-2xl font-extrabold text-gray-900 tracking-tight">{stat.value}</p>
-          <p className="text-xs text-gray-500 font-bold uppercase tracking-widest mt-1">{stat.label}</p>
+          <p className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight">{stat.value}</p>
+          <p className="text-[10px] sm:text-xs text-gray-400 font-black uppercase tracking-widest mt-2">{stat.label}</p>
         </div>
       ))}
     </div>
