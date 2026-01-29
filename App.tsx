@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,6 +14,7 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
+import Faq from './pages/Faq';
 import LoanCalculator from './components/LoanCalculator';
 import { getLoansData } from './constants';
 import { Language, User } from './types';
@@ -147,7 +147,11 @@ const App: React.FC = () => {
     }
 
     if (currentPage === 'contact') {
-      return <Contact language={language} />;
+      return <Contact language={language} onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'faq') {
+      return <Faq language={language} onBack={() => handleNavigate('home')} />;
     }
 
     if (currentPage === 'success') {

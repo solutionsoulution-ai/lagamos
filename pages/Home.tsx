@@ -24,6 +24,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
   const tp = translations[language].process;
   const tc = translations[language].cta_footer;
   const tw = translations[language].who_we_are;
+  const ts = translations[language].stats;
 
   const carouselImages = [
     { url: 'https://i.postimg.cc/wM0BTvww/side-view-man-working-as-real-estate-agent.jpg' },
@@ -110,7 +111,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
             </div>
 
             <p className="text-sm sm:text-2xl text-gray-200 leading-relaxed font-medium max-w-xl">
-              Financez vos projets avec un taux transparent. Accompagnement sur mesure sans frais cachés.
+              {t.p}
             </p>
             
             <div className="flex flex-row gap-2 pt-4">
@@ -144,13 +145,13 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
            <div className="text-left mb-12 sm:mb-20 space-y-4 sm:space-y-6">
               <div className="inline-flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-full border border-emerald-100 shadow-sm">
                  <Shield className="w-4 h-4 text-emerald-600" />
-                 <span className="text-[10px] sm:text-xs font-black text-emerald-600 uppercase tracking-widest">Preuve de fiabilité</span>
+                 <span className="text-[10px] sm:text-xs font-black text-emerald-600 uppercase tracking-widest">{ts.badge}</span>
               </div>
               <h2 className="text-3xl sm:text-6xl font-black leading-tight tracking-tight animate-gradient-text">
-                Une confiance bâtie sur des résultats concrets.
+                {ts.title}
               </h2>
               <p className="text-sm sm:text-xl text-gray-500 font-medium leading-relaxed max-w-3xl">
-                Rejoignez des milliers d'Européens qui ont déjà optimisé leur avenir financier avec Europfy. Notre solidité financière et notre transparence sont vos meilleures garanties.
+                {ts.p}
               </p>
            </div>
            
@@ -171,7 +172,7 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
         </div>
       </section>
 
-      {/* 4. NOUVELLE SECTION QUI SOMMES NOUS - IMAGE/TEXTE */}
+      {/* 4. SECTION QUI SOMMES NOUS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-32">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Côté Image */}
@@ -185,10 +186,10 @@ const Home: React.FC<HomeProps> = ({ onSelectLoan, onNavigate, language }) => {
               />
               <div className="absolute inset-0 bg-emerald-900/10 backdrop-blur-[1px]"></div>
               
-              {/* Badge flottant institutionnel */}
+              {/* Badge flottant institutionnel mis à jour à 2026 */}
               <div className="absolute bottom-10 right-10 bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl space-y-2 max-w-[200px] animate-bounce duration-[3000ms]">
                 <Award className="w-10 h-10 text-emerald-600" />
-                <p className="text-sm font-black text-gray-900 leading-tight">Expert Finance Européen 2024</p>
+                <p className="text-sm font-black text-gray-900 leading-tight">Expert Finance Européen 2026</p>
               </div>
             </div>
           </div>

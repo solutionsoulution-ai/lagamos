@@ -35,9 +35,9 @@ export const getLoansData = (lang: Language): LoanInfo[] => {
     pl: { p: 'Realizuj swoje życiowe plany.', i: 'Zostań właścicielem domu.', a: 'Ruszaj w drogę.', e: 'Rozwijaj swoją firmę.', r: 'Uprość swoje finanse.' },
     de: { p: 'Lebensprojekte in Freiheit.', i: 'Werden Sie Eigentümer.', a: 'Ab auf die Straße.', e: 'Wachstum vorantreiben.', r: 'Finanzen vereinfachen.' },
     nl: { p: 'Vrijheid voor uw plannen.', i: 'Word eigenaar.', a: 'Ga de weg op.', e: 'Boost uw groei.', r: 'Vereenvoudig uw financiën.' },
-    it: { p: 'Progetti di vita in libertà.', i: 'Diventa proprietario.', a: 'Mettiti in viaggio.', e: 'Spingi la tua crescita.', r: 'Semplifica le tue finanze.' },
+    it: { p: 'Progetti di vita in liberté.', i: 'Diventa proprietario.', a: 'Mettiti in viaggio.', e: 'Spingi la tua crescita.', r: 'Semplifica le tue finanze.' },
     pt: { p: 'Projetos de vida em liberdade.', i: 'Torne-se proprietário.', a: 'Faça-se à estrada.', e: 'Impulsione o seu crescimento.', r: 'Simplifique as suas finanças.' },
-    es: { p: 'Proyectos de vida en libertad.', i: 'Conviértete en propietario.', a: 'Sal a la carretera.', e: 'Impulsa tu crecimiento.', r: 'Simplifica tus finanzas.' }
+    es: { p: 'Proyectos de vida en liberté.', i: 'Conviértete en propietario.', a: 'Sal a la carretera.', e: 'Impulsa tu crecimiento.', r: 'Simplifica tus finanzas.' }
   };
 
   const baseData = [

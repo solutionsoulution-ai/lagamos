@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Language } from '../types';
@@ -63,6 +62,8 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) =
             <ul className="space-y-4 font-medium">
               <li><button onClick={() => onNavigate('about')} className="hover:text-emerald-500 transition-colors">{t.links.about}</button></li>
               <li><button onClick={() => onNavigate('blog')} className="hover:text-emerald-500 transition-colors">{t.links.blog}</button></li>
+              <li><button onClick={() => onNavigate('faq')} className="hover:text-emerald-500 transition-colors">{t.links.faq}</button></li>
+              <li><button onClick={() => onNavigate('contact')} className="hover:text-emerald-500 transition-colors">{translations[language].nav.contact}</button></li>
             </ul>
           </div>
 
