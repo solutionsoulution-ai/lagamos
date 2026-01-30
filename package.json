@@ -12,7 +12,9 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "lucide-react": "^0.460.0"
+    "lucide-react": "^0.460.0",
+    "i18next": "^23.7.16",
+    "react-i18next": "^13.5.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
