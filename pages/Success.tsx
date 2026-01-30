@@ -11,6 +11,7 @@ interface SuccessProps {
 
 const Success: React.FC<SuccessProps> = ({ language, onNavigate }) => {
   const t = translations[language].success_page;
+  const steps = Array.isArray(t.steps) ? t.steps : [];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,7 +58,7 @@ const Success: React.FC<SuccessProps> = ({ language, onNavigate }) => {
                 {t.steps_title}
               </h2>
               <div className="grid gap-4">
-                {t.steps.map((step: string, i: number) => (
+                {steps.map((step: string, i: number) => (
                   <div key={i} className="flex items-center gap-6 p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-blue-200 transition-colors">
                     <div className="bg-white w-10 h-10 rounded-full flex items-center justify-center font-black text-blue-600 shadow-sm shrink-0">
                       {i + 1}

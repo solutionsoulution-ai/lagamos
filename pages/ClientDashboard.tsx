@@ -1,19 +1,19 @@
 
 import React, { useState, useEffect } from 'react';
-import { Language, LoanApplicationData, User } from '../types';
+import { Language, User } from '../types';
 import { translations } from '../translations';
+import { restdbService } from '../services/restdb';
 import { 
   User as UserIcon, 
   Euro, 
-  Calendar, 
   CheckCircle2, 
   Clock, 
   AlertCircle, 
-  ChevronRight, 
   FileText, 
   ArrowRight,
   TrendingUp,
-  ShieldCheck
+  ShieldCheck,
+  Loader2
 } from 'lucide-react';
 
 interface ClientDashboardProps {
@@ -25,18 +25,29 @@ interface ClientDashboardProps {
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNavigate }) => {
   const t = translations[language].client_dashboard;
   const adminT = translations[language].admin;
-  const [loan, setLoan] = useState<LoanApplicationData | null>(null);
+  const [loan, setLoan] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem('loan_applications');
-    if (saved) {
-      const apps: LoanApplicationData[] = JSON.parse(saved);
-      const userApp = apps.find(a => a.email.toLowerCase() === user.email.toLowerCase());
+    const fetchStatus = async () => {
+      setLoading(true);
+      const apps = await restdbService.getAllApplications();
+      const userApp = apps.find((a: any) => a.email?.toLowerCase() === user.email?.toLowerCase());
       if (userApp) setLoan(userApp);
-    }
+      setLoading(false);
+    };
+    fetchStatus();
   }, [user.email]);
 
   const steps = t.steps || ['Analyse', 'Vérification', 'Signature', 'Fonds'];
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 pb-20 bg-gray-50 min-h-screen">

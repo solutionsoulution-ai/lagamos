@@ -18,7 +18,6 @@
             -webkit-backdrop-filter: blur(10px);
         }
 
-        /* Animation SPECTRE ÉMERAUDE & TEAL */
         @keyframes flowGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -26,7 +25,6 @@
         }
 
         .animate-gradient-text {
-            /* Palette : Emerald 500 -> Teal 600 -> Emerald 600 -> Teal 700 */
             background: linear-gradient(90deg, #10b981, #0d9488, #059669, #0f766e, #10b981);
             background-size: 200% auto;
             -webkit-background-clip: text;
@@ -35,16 +33,9 @@
             animation: flowGradient 5s ease-in-out infinite;
         }
 
-        /* Animation d'entrée stable */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .reveal-item {
             opacity: 0;
@@ -62,8 +53,13 @@
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "i18next": "https://esm.sh/i18next@^23.7.16",
+    "react-i18next": "https://esm.sh/react-i18next@^13.5.0",
+    "i18next-browser-languagedetector": "https://esm.sh/i18next-browser-languagedetector@^7.2.0",
+    "i18next-locize-backend": "https://esm.sh/i18next-locize-backend@^6.4.1",
+    "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "vite": "https://esm.sh/vite@^7.3.1"
+    "sanity": "https://esm.sh/sanity@^5.7.0"
   }
 }
 </script>

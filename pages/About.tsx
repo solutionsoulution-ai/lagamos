@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Language } from '../types';
 import { translations } from '../translations';
-import { ShieldCheck, Target, Zap, Award, ChevronRight, CheckCircle2, TrendingUp, HeartHandshake, Shield } from 'lucide-react';
+import { ShieldCheck, Target, Zap, ChevronRight, CheckCircle2, TrendingUp, HeartHandshake, Shield, Eye } from 'lucide-react';
 import Logo from '../components/Logo';
 
 interface AboutProps {
@@ -73,7 +73,7 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
 
         <div className="grid md:grid-cols-3 gap-12 mb-32">
            {[
-             { title: "Transparence", icon: EyeIcon, color: "bg-emerald-50 text-emerald-600", desc: "Des conditions claires dès le premier jour." },
+             { title: "Transparence", icon: Eye, color: "bg-emerald-50 text-emerald-600", desc: "Des conditions claires dès le premier jour." },
              { title: "Sécurité", icon: Shield, color: "bg-teal-50 text-teal-600", desc: "Une protection bancaire de haut niveau." },
              { title: "Accompagnement", icon: HeartHandshake, color: "bg-emerald-50 text-emerald-600", desc: "Des experts à votre écoute 24/7." }
            ].map((val, i) => (
@@ -113,7 +113,7 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
                  <div className="space-y-8">
                     <h3 className="text-2xl font-black text-gray-900">{t.values_title}</h3>
                     <div className="grid gap-6">
-                       {t.values.map((val: any, i: number) => (
+                       {(t.values || []).map((val: any, i: number) => (
                          <div key={i} className="flex gap-6 items-start group">
                             <div className="bg-emerald-50 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 transition-colors shadow-sm">
                                <CheckCircle2 className="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors" />
@@ -153,12 +153,5 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
     </div>
   );
 };
-
-const EyeIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-  </svg>
-);
 
 export default About;

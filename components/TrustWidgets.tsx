@@ -1,18 +1,19 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldCheck, Star, Users, Award } from 'lucide-react';
 import { Language } from '../types';
-import { translations } from '../translations';
 
 interface TrustWidgetsProps { language: Language; }
 
-const TrustWidgets: React.FC<TrustWidgetsProps> = ({ language }) => {
-  const t = translations[language].stats;
+const TrustWidgets: React.FC<TrustWidgetsProps> = () => {
+  const { t } = useTranslation();
+  
   const stats = [
-    { icon: Users, label: t.clients, value: '50k+', delay: 'delay-1' },
-    { icon: Award, label: t.exp, value: '15+', delay: 'delay-2' },
-    { icon: Star, label: t.rating, value: '4.9/5', delay: 'delay-3' },
-    { icon: ShieldCheck, label: t.safety, value: '100%', delay: 'delay-4' },
+    { icon: Users, label: t('stats.clients'), value: '50k+', delay: 'delay-1' },
+    { icon: Award, label: t('stats.exp'), value: '15+', delay: 'delay-2' },
+    { icon: Star, label: t('stats.rating'), value: '4.9/5', delay: 'delay-3' },
+    { icon: ShieldCheck, label: t('stats.safety'), value: '100%', delay: 'delay-4' },
   ];
 
   return (

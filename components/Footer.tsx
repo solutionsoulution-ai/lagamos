@@ -1,7 +1,8 @@
+
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Language } from '../types';
-import { translations } from '../translations';
 import { getLoansData } from '../constants';
 import Logo from './Logo';
 
@@ -12,7 +13,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) => {
-  const t = translations[language].footer;
+  const { t } = useTranslation();
   const loans = getLoansData(language);
 
   const handleLoanClick = (loanId: string) => {
@@ -35,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) =
               </span>
             </div>
             <p className="text-gray-400 leading-relaxed">
-              {t.desc}
+              {t('footer.desc')}
             </p>
             <div className="flex space-x-4">
               {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
@@ -47,7 +48,7 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) =
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t.titles.loans}</h4>
+            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t('footer.titles.loans')}</h4>
             <ul className="space-y-4 font-medium">
               {loans.map((loan) => (
                 <li key={loan.id}>
@@ -58,17 +59,17 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) =
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t.titles.company}</h4>
+            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t('footer.titles.company')}</h4>
             <ul className="space-y-4 font-medium">
-              <li><button onClick={() => onNavigate('about')} className="hover:text-emerald-500 transition-colors">{t.links.about}</button></li>
-              <li><button onClick={() => onNavigate('blog')} className="hover:text-emerald-500 transition-colors">{t.links.blog}</button></li>
-              <li><button onClick={() => onNavigate('faq')} className="hover:text-emerald-500 transition-colors">{t.links.faq}</button></li>
-              <li><button onClick={() => onNavigate('contact')} className="hover:text-emerald-500 transition-colors">{translations[language].nav.contact}</button></li>
+              <li><button onClick={() => onNavigate('about')} className="hover:text-emerald-500 transition-colors">{t('footer.links.about')}</button></li>
+              <li><button onClick={() => onNavigate('blog')} className="hover:text-emerald-500 transition-colors">{t('footer.links.blog')}</button></li>
+              <li><button onClick={() => onNavigate('faq')} className="hover:text-emerald-500 transition-colors">{t('footer.links.faq')}</button></li>
+              <li><button onClick={() => onNavigate('contact')} className="hover:text-emerald-500 transition-colors">{t('nav.contact')}</button></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t.titles.contact}</h4>
+            <h4 className="text-white font-bold mb-8 uppercase tracking-widest text-sm">{t('footer.titles.contact')}</h4>
             <ul className="space-y-6">
               <li className="flex items-start gap-4">
                 <MapPin className="w-6 h-6 text-emerald-500 shrink-0" />
@@ -87,11 +88,11 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan }) =
         </div>
 
         <div className="pt-12 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
-          <p>{t.rights}</p>
+          <p>{t('footer.rights')}</p>
           <div className="flex flex-wrap justify-center gap-8">
-            <button onClick={() => onNavigate('legal-terms')} className="hover:text-white transition-colors">{t.links.legal}</button>
-            <button onClick={() => onNavigate('legal-privacy')} className="hover:text-white transition-colors">{t.links.privacy}</button>
-            <button onClick={() => onNavigate('legal-cookies')} className="hover:text-white transition-colors">{t.links.cookies}</button>
+            <button onClick={() => onNavigate('legal-terms')} className="hover:text-white transition-colors">{t('footer.links.legal')}</button>
+            <button onClick={() => onNavigate('legal-privacy')} className="hover:text-white transition-colors">{t('footer.links.privacy')}</button>
+            <button onClick={() => onNavigate('legal-cookies')} className="hover:text-white transition-colors">{t('footer.links.cookies')}</button>
           </div>
         </div>
       </div>
