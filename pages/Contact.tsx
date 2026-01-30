@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
 import { translations } from '../translations';
-import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Facebook, Twitter, Instagram, Linkedin, HelpCircle, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Facebook, Twitter, Instagram, Linkedin, HelpCircle, ChevronRight, Loader2 } from 'lucide-react';
+import { restdbService } from '../services/restdb';
 
 interface ContactProps {
   language: Language;
@@ -11,6 +13,7 @@ interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ language, onNavigate }) => {
   const t = translations[language].contact_page;
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,10 +30,19 @@ const Contact: React.FC<ContactProps> = ({ language, onNavigate }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setIsSubmitting(true);
+    try {
+      await restdbService.submitContact(formData);
+      setIsSubmitted(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error("Erreur lors de l'envoi du message", error);
+      alert("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -199,10 +211,11 @@ const Contact: React.FC<ContactProps> = ({ language, onNavigate }) => {
 
                 <button 
                   type="submit"
-                  className="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-4"
+                  disabled={isSubmitting}
+                  className="w-full bg-emerald-600 text-white py-6 rounded-2xl font-black text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-4 disabled:opacity-70"
                 >
-                  <Send className="w-6 h-6" />
-                  {t.fields.submit}
+                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : <Send className="w-6 h-6" />}
+                  {isSubmitting ? 'Envoi...' : t.fields.submit}
                 </button>
                 
                 <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest font-bold">

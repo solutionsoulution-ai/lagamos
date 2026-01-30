@@ -16,9 +16,9 @@ import { LOAN_DATABASE } from './database';
 
 export const FIXED_RATE = 2; // 2%
 
-export const getLoansData = (lang: Language): LoanInfo[] => {
-  const langDb = LOAN_DATABASE[lang];
-  
+export const buildLoansData = (langDb: any): LoanInfo[] => {
+  if (!langDb) return [];
+
   const iconMap: Record<LoanType, string> = {
     personnel: 'User',
     immobilier: 'HomeIcon',
@@ -39,6 +39,21 @@ export const getLoansData = (lang: Language): LoanInfo[] => {
 
   return loanTypes.map(id => {
     const data = langDb[id];
+    // Protection contre les données manquantes
+    if (!data) return {
+       id,
+       title: "Chargement...",
+       description: "",
+       longDescription: "",
+       icon: iconMap[id],
+       image: images[id],
+       features: [],
+       maxAmount: 0,
+       maxDuration: 0,
+       specificFaqs: [],
+       specificTestimonials: []
+    };
+
     return {
       id,
       title: data.title,
@@ -53,6 +68,11 @@ export const getLoansData = (lang: Language): LoanInfo[] => {
       specificTestimonials: data.testimonials
     };
   });
+};
+
+export const getLoansData = (lang: Language): LoanInfo[] => {
+  const langDb = LOAN_DATABASE[lang];
+  return buildLoansData(langDb);
 };
 
 export const TESTIMONIALS: Testimonial[] = [

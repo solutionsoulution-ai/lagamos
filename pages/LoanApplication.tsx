@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language, LoanApplicationData } from '../types';
 import { translations } from '../translations';
-import { ChevronLeft, ShieldCheck, Lock, Send, Info, Landmark, HelpCircle, FileCheck, Loader2 } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, Lock, Send, Info, Landmark, HelpCircle, FileCheck, Loader2, AlertCircle } from 'lucide-react';
 import { restdbService } from '../services/restdb';
 
 interface LoanApplicationProps {
@@ -15,6 +15,7 @@ interface LoanApplicationProps {
 const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onSuccess, onNavigate }) => {
   const t = translations[language].form;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -44,8 +45,10 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+    
     if (!formData.processingConsent) {
-        alert("Veuillez accepter les frais de dossier pour continuer.");
+        setErrorMessage("Veuillez accepter les frais de dossier pour continuer.");
         return;
     }
 
@@ -68,12 +71,14 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
         feesAccepted: formData.processingConsent
       };
 
-      // ENVOI VERS RESTDB
       await restdbService.submitApplication(application);
-      
       onSuccess();
-    } catch (error) {
-      alert("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
+    } catch (error: any) {
+      if (error.message === 'CORS_ERROR') {
+        setErrorMessage("Erreur de connexion (CORS). Vérifiez que la collection 'applications' existe dans RestDB.");
+      } else {
+        setErrorMessage("Erreur serveur : " + error.message);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -103,6 +108,13 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, onBack, onS
                   {t.subtitle}
                 </p>
               </div>
+
+              {errorMessage && (
+                <div className="mb-8 p-6 bg-red-50 border border-red-100 text-red-700 rounded-2xl flex items-center gap-4 animate-in shake-in">
+                  <AlertCircle className="w-6 h-6 shrink-0" />
+                  <p className="font-bold">{errorMessage}</p>
+                </div>
+              )}
 
               <div className="mb-10 bg-emerald-50 border border-emerald-100 rounded-3xl p-6 sm:p-8 space-y-4">
                 <div className="flex items-center gap-3">

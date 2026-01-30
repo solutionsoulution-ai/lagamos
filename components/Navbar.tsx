@@ -1,8 +1,7 @@
-
-import React, { useState, useEffect } from 'react';
-import { LogOut, User, Menu, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { LogOut, User, Menu, X, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { User as UserType } from '../types';
+import { User as UserType, Language } from '../types';
 import Logo from './Logo';
 
 interface NavbarProps {
@@ -11,6 +10,8 @@ interface NavbarProps {
   user: UserType | null;
   onLogout: () => void;
   isTransparent?: boolean;
+  currentLanguage?: Language;
+  onLanguageChange?: (lang: Language) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ 
@@ -18,18 +19,34 @@ const Navbar: React.FC<NavbarProps> = ({
   currentPage, 
   user, 
   onLogout,
-  isTransparent = false
+  isTransparent = false,
+  currentLanguage = 'fr',
+  onLanguageChange
 }) => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const langMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Fermer le menu langue si on clique ailleurs
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
   const navItems = [
@@ -40,11 +57,24 @@ const Navbar: React.FC<NavbarProps> = ({
     { label: t('nav.contact'), id: 'contact' },
   ];
 
+  const languages: {code: Language, label: string, flag: string}[] = [
+    { code: 'fr', label: 'Français', flag: '🇫🇷' },
+    { code: 'en', label: 'English', flag: '🇬🇧' },
+    { code: 'es', label: 'Español', flag: '🇪🇸' },
+    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+    { code: 'it', label: 'Italiano', flag: '🇮🇹' },
+    { code: 'pt', label: 'Português', flag: '🇵🇹' },
+    { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
+    { code: 'pl', label: 'Polski', flag: '🇵🇱' },
+  ];
+
   const isActuallyTransparent = isTransparent && !isScrolled;
   const bgColor = isActuallyTransparent ? 'bg-transparent' : 'bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm';
   const textColor = isActuallyTransparent ? 'text-white' : 'text-gray-600';
   const activeColor = isActuallyTransparent ? 'text-emerald-400' : 'text-emerald-600';
   const logoTextColor = isActuallyTransparent ? 'text-white' : 'text-gray-900';
+
+  const currentFlag = languages.find(l => l.code === currentLanguage)?.flag || '🇫🇷';
 
   return (
     <nav className={`fixed w-full z-[100] transition-all duration-500 ${bgColor}`}>
@@ -70,6 +100,35 @@ const Navbar: React.FC<NavbarProps> = ({
             ))}
 
             <div className={`h-6 w-px mx-2 ${isActuallyTransparent ? 'bg-white/20' : 'bg-gray-200'}`}></div>
+
+            {/* Language Selector */}
+            <div className="relative" ref={langMenuRef}>
+              <button 
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-colors ${isActuallyTransparent ? 'hover:bg-white/10 text-white' : 'hover:bg-gray-100 text-gray-700'}`}
+              >
+                <span className="text-xl">{currentFlag}</span>
+                <span className="text-xs font-bold uppercase">{currentLanguage}</span>
+              </button>
+
+              {isLangMenuOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 overflow-hidden">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        if (onLanguageChange) onLanguageChange(lang.code);
+                        setIsLangMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 flex items-center gap-3 text-sm font-medium hover:bg-emerald-50 transition-colors ${currentLanguage === lang.code ? 'text-emerald-600 bg-emerald-50' : 'text-gray-600'}`}
+                    >
+                      <span className="text-lg">{lang.flag}</span>
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {user ? (
               <div className="flex items-center gap-4">
@@ -97,10 +156,19 @@ const Navbar: React.FC<NavbarProps> = ({
 
           {/* Mobile toggle */}
           <div className="md:hidden flex items-center gap-4">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`p-2 rounded-lg ${isActuallyTransparent ? 'text-white' : 'text-gray-900'}`}
-            >
+             {/* Language Selector Mobile */}
+             <button 
+                onClick={() => {
+                   const currentIndex = languages.findIndex(l => l.code === currentLanguage);
+                   const nextIndex = (currentIndex + 1) % languages.length;
+                   if (onLanguageChange) onLanguageChange(languages[nextIndex].code);
+                }}
+                className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-colors ${isActuallyTransparent ? 'text-white' : 'text-gray-700'}`}
+              >
+                <span className="text-xl">{currentFlag}</span>
+              </button>
+
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className={textColor}>
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -109,27 +177,67 @@ const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 animate-in slide-in-from-top duration-300">
+        <div className="md:hidden bg-white border-b border-gray-100 animate-in slide-in-from-top-2">
           <div className="px-4 pt-2 pb-6 space-y-2">
             {navItems.map((item) => (
-              <button 
-                key={item.id} 
-                onClick={() => { onNavigate(item.id); setIsMenuOpen(false); }}
-                className={`block w-full text-left px-4 py-3 rounded-xl text-base font-bold ${currentPage === item.id ? 'bg-emerald-50 text-emerald-600' : 'text-gray-600 hover:bg-gray-50'}`}
+              <button
+                key={item.id}
+                onClick={() => {
+                  onNavigate(item.id);
+                  setIsMenuOpen(false);
+                }}
+                className={`block w-full text-left px-3 py-3 rounded-lg text-base font-semibold ${currentPage === item.id ? 'bg-emerald-50 text-emerald-600' : 'text-gray-600 hover:bg-gray-50'}`}
               >
                 {item.label}
               </button>
             ))}
-            <div className="pt-4 flex flex-col gap-4">
-              <button onClick={() => { onNavigate('loan-application'); setIsMenuOpen(false); }} className="w-full bg-emerald-600 text-white py-4 rounded-xl font-black shadow-lg">
-                {t('nav.cta')}
-              </button>
-              {!user && (
-                <button onClick={() => { onNavigate('login'); setIsMenuOpen(false); }} className="w-full bg-gray-50 text-gray-900 py-4 rounded-xl font-bold">
-                  {t('nav.login')}
+            
+            <div className="border-t border-gray-100 my-2 pt-2"></div>
+
+            {user ? (
+              <>
+                <button
+                  onClick={() => {
+                    onNavigate(user.role === 'admin' ? 'admin-dashboard' : 'client-dashboard');
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-3 rounded-lg text-base font-semibold text-gray-900 hover:bg-gray-50 flex items-center gap-2"
+                >
+                  <User className="w-5 h-5" />
+                  {user.role === 'admin' ? 'Admin Dashboard' : t('nav.my_space')}
                 </button>
-              )}
-            </div>
+                <button
+                  onClick={() => {
+                    onLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full text-left px-3 py-3 rounded-lg text-base font-semibold text-red-600 hover:bg-red-50 flex items-center gap-2"
+                >
+                  <LogOut className="w-5 h-5" />
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  onNavigate('login');
+                  setIsMenuOpen(false);
+                }}
+                className="w-full text-left px-3 py-3 rounded-lg text-base font-semibold text-gray-900 hover:bg-gray-50"
+              >
+                {t('nav.login')}
+              </button>
+            )}
+
+            <button
+              onClick={() => {
+                onNavigate('loan-application');
+                setIsMenuOpen(false);
+              }}
+              className="w-full mt-4 bg-emerald-600 text-white px-3 py-3 rounded-xl font-bold text-center shadow-lg shadow-emerald-100/50"
+            >
+              {t('nav.cta')}
+            </button>
           </div>
         </div>
       )}

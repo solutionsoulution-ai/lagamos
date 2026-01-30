@@ -18,9 +18,10 @@ import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
 import Faq from './pages/Faq';
 import LoanCalculator from './components/LoanCalculator';
-import { getLoansData } from './constants';
+import { getLoansData, buildLoansData } from './constants';
 import { translations } from './translations';
 import { Language, User, LoanInfo } from './types';
+import { redisService } from './services/redis';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -31,13 +32,14 @@ const App: React.FC = () => {
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  const currentLanguage: Language = 'fr';
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
 
   useEffect(() => {
-    // Chargement immédiat des données locales
-    setLoans(getLoansData(currentLanguage));
-    setPosts(translations[currentLanguage].blog.posts || []);
+    // Chargement initial (Français par défaut)
+    setLoans(getLoansData('fr'));
+    if (translations['fr']?.blog?.posts) {
+      setPosts(translations['fr'].blog.posts);
+    }
     setIsLoading(false);
   }, []);
 
@@ -47,6 +49,54 @@ const App: React.FC = () => {
       setUser(JSON.parse(savedUser));
     }
   }, []);
+
+  const handleLanguageChange = async (lang: Language) => {
+    if (lang === currentLanguage) return;
+    
+    setIsLoading(true);
+    try {
+      // 1. Vérifier si la traduction est déjà en mémoire
+      let langData = translations[lang];
+
+      // 2. Sinon, aller chercher dans Upstash Redis
+      if (!langData) {
+        console.log(`Chargement de la langue ${lang} depuis Redis...`);
+        const dbData = await redisService.getTranslation(lang);
+        
+        if (dbData) {
+          // Mise en cache locale
+          translations[lang] = dbData;
+          langData = dbData;
+          
+          // Injection dans i18next
+          i18n.addResourceBundle(lang, 'translation', dbData, true, true);
+        } else {
+          console.warn(`Traduction introuvable pour : ${lang}`);
+          // On continue quand même pour changer l'interface, même si certaines trads manquent
+        }
+      }
+
+      // 3. Appliquer le changement de langue
+      await i18n.changeLanguage(lang);
+      setCurrentLanguage(lang);
+
+      // 4. Mettre à jour les données dynamiques (Prêts, Blog) si disponibles
+      if (langData) {
+        if (langData.loan_specifics) {
+          setLoans(buildLoansData(langData.loan_specifics));
+        }
+        
+        if (langData.blog && langData.blog.posts) {
+          setPosts(langData.blog.posts);
+        }
+      }
+
+    } catch (error) {
+      console.error("Erreur lors du changement de langue :", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleLogin = (userData: User) => {
     setUser(userData);
@@ -94,10 +144,15 @@ const App: React.FC = () => {
   const renderContent = () => {
     if (isLoading) {
       return (
-        <div className="h-screen flex items-center justify-center">
-          <div className="flex flex-col items-center gap-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-600"></div>
-            <p className="text-emerald-600 font-bold animate-pulse">Chargement Europfy...</p>
+        <div className="h-screen flex items-center justify-center bg-gray-50">
+          <div className="flex flex-col items-center gap-6">
+            <div className="relative">
+               <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
+               <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 bg-white rounded-full"></div>
+               </div>
+            </div>
+            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
           </div>
         </div>
       );
@@ -146,6 +201,8 @@ const App: React.FC = () => {
         return <Blog language={currentLanguage} onSelectPost={handleSelectPost} />;
       case 'loan-application':
         return <LoanApplication language={currentLanguage} onBack={() => handleNavigate('home')} onSuccess={() => setCurrentPage('success')} onNavigate={handleNavigate} />;
+      case 'success':
+        return <Success language={currentLanguage} onNavigate={handleNavigate} />;
       case 'contact':
         return <Contact language={currentLanguage} onNavigate={handleNavigate} />;
       case 'faq':
@@ -175,6 +232,8 @@ const App: React.FC = () => {
         user={user} 
         onLogout={handleLogout} 
         isTransparent={['home', 'loan-detail'].includes(currentPage)}
+        currentLanguage={currentLanguage}
+        onLanguageChange={handleLanguageChange}
       />
       <main className="flex-grow">
         {renderContent()}

@@ -17,9 +17,19 @@ export const basePackFR = {
     badge: 'Taux Fixe 2%', 
     h1: 'Le crédit qui vous respecte.', 
     h1_variants: ['Financer à 2% fixe.', 'Réponse en 24h.', 'Partenaire de confiance.'], 
-    p: 'Financez vos projets avec un taux transparent. Accompagnement sur mesure sans frais cachés.', 
+    p: 'Prêt à 2% fixe. Simple, rapide et sans frais cachés. Financez vos projets immobiliers, personnels, automobiles ou professionnels en toute sérénité.', 
     cta1: 'Ma simulation', 
     cta2: 'En savoir plus' 
+  },
+  feature_highlight: {
+    badge: "Transparence totale",
+    title: "La clarté au service de vos ambitions",
+    p: "Nous avons supprimé les frais de dossier cachés et les conditions complexes. Chez Europfy, vous bénéficiez d'une visibilité totale sur votre financement dès le premier jour.",
+    items: [
+      { title: "Zéro surprise", desc: "Le taux de 2% est garanti par contrat pour toute la durée.", icon: "ShieldCheck" },
+      { title: "Flexibilité réelle", desc: "Modifiez vos mensualités ou remboursez par anticipation sans frais.", icon: "RefreshCcw" },
+      { title: "Analyse experte", desc: "Un conseiller dédié vous accompagne de l'étude à la signature.", icon: "UserCheck" }
+    ]
   },
   calculator: { 
     title: 'Simulateur Express', 
@@ -40,6 +50,50 @@ export const basePackFR = {
     rating: 'Note', 
     safety: 'Sécurité' 
   },
+  about_us_section: {
+    badge: "Qui sommes-nous ?",
+    title: "L'Esprit Europfy",
+    p: "Nous transformons le prêt bancaire en un service simple, humain et accessible à chaque citoyen européen.",
+    items: [
+      {
+        title: "Notre Mission",
+        desc: "Démocratiser l'accès au crédit avec un taux unique de 2% pour stimuler l'économie réelle.",
+        icon: "Target"
+      },
+      {
+        title: "Notre Histoire",
+        desc: "Fondé à Lyon en 2018, Europfy est devenu en quelques années le leader du prêt éthique en ligne.",
+        icon: "History"
+      },
+      {
+        title: "Nos Garanties",
+        desc: "Une sécurité de niveau bancaire et une transparence totale sur chaque contrat signé.",
+        icon: "ShieldCheck"
+      }
+    ]
+  },
+  identity: {
+    title: "Notre ADN",
+    subtitle: "Plus qu'une banque, un partenaire de vie.",
+    p: "Nous ne nous contentons pas de prêter de l'argent. Nous investissons dans vos rêves en simplifiant radicalement l'accès au financement.",
+    pillars: [
+      {
+        title: "Proximité Européenne",
+        desc: "Présents dans toute l'Union, nous maîtrisons les spécificités locales pour vous offrir un service sur mesure partout en Europe.",
+        icon: "Globe"
+      },
+      {
+        title: "Accompagnement Humain",
+        desc: "Chez nous, pas de robots. Chaque dossier est analysé par un expert dédié qui comprend votre situation réelle.",
+        icon: "Heart"
+      },
+      {
+        title: "Simplicité Radicale",
+        desc: "Nous avons supprimé les petites lignes et les termes complexes. Un taux de 2% fixe, point final.",
+        icon: "Shield"
+      }
+    ]
+  },
   who_we_are: {
     title: "Qui sommes-nous ?",
     subtitle: "Une nouvelle vision du crédit.",
@@ -51,6 +105,44 @@ export const basePackFR = {
       { title: "Accès", desc: "Ouvert à tous les résidents européens." }
     ],
     btn: "Notre histoire"
+  },
+  about_page: {
+    title: "À Propos d'Europfy",
+    subtitle: "Une finance plus humaine et accessible.",
+    mission_text: "Notre mission est de briser les barrières bancaires traditionnelles en offrant un financement équitable à 2% pour tous les Européens, sans discrimination.",
+    vision_title: "Notre Vision 2030",
+    vision_text: "Devenir le leader européen du crédit éthique et transparent, en remplaçant la complexité par la clarté.",
+    values_title: "Nos Engagements",
+    values: [
+      { title: "Transparence", desc: "Chaque centime est expliqué, aucun frais n'est caché." },
+      { title: "Réactivité", desc: "Votre temps est précieux, nous répondons en 24h." },
+      { title: "Sécurité", desc: "Vos données et vos fonds sont protégés par les meilleurs standards." }
+    ]
+  },
+  legal: {
+    terms: {
+      title: "Conditions Générales d'Utilisation",
+      sections: [
+        { icon: "Shield", h3: "Utilisation du service", p: "En utilisant Europfy, vous acceptez nos conditions d'utilisation et notre charte éthique." },
+        { icon: "Scale", h3: "Responsabilité", p: "Europfy s'engage à fournir des informations exactes et un service de haute qualité." },
+        { icon: "Gavel", h3: "Juridiction", p: "Tout litige est soumis au droit européen et aux tribunaux compétents de Lyon, France." }
+      ]
+    },
+    privacy: {
+      title: "Politique de Confidentialité",
+      sections: [
+        { icon: "Lock", h3: "Protection des données", p: "Vos données personnelles sont cryptées via le protocole SSL 256 bits et ne sont jamais vendues." },
+        { icon: "Database", h3: "Stockage", p: "Vos informations sont stockées sur des serveurs sécurisés situés dans l'Union Européenne." },
+        { icon: "EyeOff", h3: "Vos droits", p: "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données." }
+      ]
+    },
+    cookies: {
+      title: "Politique des Cookies",
+      sections: [
+        { icon: "Cookie", h3: "Usage des cookies", p: "Nous utilisons des cookies uniquement pour améliorer votre expérience de navigation et la sécurité du site." },
+        { icon: "Settings", h3: "Gestion", p: "Vous pouvez configurer votre navigateur pour refuser les cookies à tout moment." }
+      ]
+    }
   },
   footer: { 
     desc: 'Votre partenaire crédit à 2%. Un accompagnement transparent pour tous vos projets de vie.', 
@@ -172,7 +264,7 @@ export const basePackFR = {
       income: 'Revenu net mensuel', 
       reason: 'Motif du prêt', 
       reason_placeholder: 'Décrivez brièvement votre projet...', 
-      consent1: 'Je certifie sur l\'honneur l\'exactitude des informations fournies.', 
+      consent1: 'Je certifie l\'honneur l\'exactitude des informations fournies.', 
       consent2: 'Vos données sont traitées conformément au RGPD.', 
       processing_consent: 'J\'accepte les frais de gestion liés au dossier.', 
       warning: 'Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.', 
@@ -181,11 +273,49 @@ export const basePackFR = {
       success: 'Félicitations' 
     },
     countries: { 
-      FR: 'France', 
-      BE: 'Belgique', 
-      LU: 'Luxembourg', 
-      CH: 'Suisse', 
-      MC: 'Monaco' 
+      AL: 'Albanie',
+      AD: 'Andorre',
+      AT: 'Autriche',
+      BE: 'Belgique',
+      BA: 'Bosnie-Herzégovine',
+      BG: 'Bulgarie',
+      HR: 'Croatie',
+      CY: 'Chypre',
+      CZ: 'République Tchèque',
+      DK: 'Danemark',
+      EE: 'Estonie',
+      FI: 'Finlande',
+      FR: 'France',
+      DE: 'Allemagne',
+      GR: 'Grèce',
+      HU: 'Hongrie',
+      IS: 'Islande',
+      IE: 'Irlande',
+      IT: 'Italie',
+      LV: 'Lettonie',
+      LI: 'Liechtenstein',
+      LT: 'Lituanie',
+      LU: 'Luxembourg',
+      MT: 'Malte',
+      MD: 'Moldavie',
+      MC: 'Monaco',
+      ME: 'Monténégro',
+      NL: 'Pays-Bas',
+      MK: 'Macédoine du Nord',
+      NO: 'Norvège',
+      PL: 'Pologne',
+      PT: 'Portugal',
+      RO: 'Roumanie',
+      SM: 'Saint-Marin',
+      RS: 'Serbie',
+      SK: 'Slovaquie',
+      SI: 'Slovénie',
+      ES: 'Espagne',
+      SE: 'Suède',
+      CH: 'Suisse',
+      UA: 'Ukraine',
+      GB: 'Royaume-Uni',
+      VA: 'Vatican'
     }
   },
   login: { 

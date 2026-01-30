@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LoanInfo, Language } from '../types';
 import { FIXED_RATE } from '../constants';
-import { ChevronLeft, ShieldCheck, UserCheck, TrendingUp, PieChart, Euro, ArrowDown, Zap, HeartHandshake } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, UserCheck, TrendingUp, Zap, HeartHandshake, ArrowDown } from 'lucide-react';
 import LoanCalculator from '../components/LoanCalculator';
 import FaqSection from '../components/FaqSection';
 import ReviewsSection from '../components/ReviewsSection';
@@ -63,19 +63,20 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-24 relative z-10 space-y-16 sm:space-y-24">
         <div className="grid lg:grid-cols-3 gap-8 sm:gap-12 items-start">
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-12 shadow-2xl border border-gray-100 space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-2xl sm:text-4xl font-black text-gray-900">{t('loan_detail.advantages')}</h2>
-                <p className="text-base sm:text-lg text-gray-500 leading-relaxed font-medium">{loan.description}</p>
+            {/* Version compacte de la section Avantages du prêt */}
+            <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-xl border border-gray-100 space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl sm:text-3xl font-black text-gray-900">{t('loan_detail.advantages')}</h2>
+                <p className="text-sm sm:text-base text-gray-500 leading-relaxed font-medium">{loan.description}</p>
               </div>
-              <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                <div className="bg-emerald-50 p-6 sm:p-8 rounded-[2rem] border border-emerald-100">
-                  <p className="text-[10px] font-black text-emerald-600 uppercase mb-4">{t('loan_detail.labels.maxAmount')}</p>
-                  <p className="text-3xl sm:text-4xl font-black text-teal-950">{loan.maxAmount.toLocaleString()} €</p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="bg-emerald-50 p-4 sm:p-6 rounded-2xl border border-emerald-100">
+                  <p className="text-[10px] font-black text-emerald-600 uppercase mb-1">{t('loan_detail.labels.maxAmount')}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-teal-950">{loan.maxAmount.toLocaleString()} €</p>
                 </div>
-                <div className="bg-teal-50 p-6 sm:p-8 rounded-[2rem] border border-teal-100">
-                  <p className="text-[10px] font-black text-teal-600 uppercase mb-4">{t('loan_detail.labels.maxDuration')}</p>
-                  <p className="text-3xl sm:text-4xl font-black text-teal-950">{loan.maxDuration} {t('calculator.months')}</p>
+                <div className="bg-teal-50 p-4 sm:p-6 rounded-2xl border border-teal-100">
+                  <p className="text-[10px] font-black text-teal-600 uppercase mb-1">{t('loan_detail.labels.maxDuration')}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-teal-950">{loan.maxDuration} {t('calculator.months')}</p>
                 </div>
               </div>
             </div>

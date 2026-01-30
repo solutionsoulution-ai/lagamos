@@ -1,72 +1,121 @@
 
 /**
  * RESTDB SERVICE - Europfy
- * Configuration pour la base de données cloud personnalisée.
  */
 
-const API_KEY = "4713135320f0275000b8f4879b1ecaab5bef9"; 
+const API_KEY = "697ccf3853d66e4a701956f1"; 
 const BASE_URL = `https://lomo0-3d70.restdb.io/rest`;
+const META_URL = `https://lomo0-3d70.restdb.io/rest/_meta`;
 
-const headers = {
-  "content-type": "application/json",
+const getHeaders = () => ({
+  "Content-Type": "application/json",
   "x-apikey": API_KEY,
-  "cache-control": "no-cache"
-};
+  "Cache-Control": "no-cache"
+});
 
 export const restdbService = {
-  /**
-   * Envoyer une nouvelle demande de prêt vers la collection 'applications'
-   */
+  // --- GESTION DES PRÊTS ---
   async submitApplication(data: any) {
     try {
       const response = await fetch(`${BASE_URL}/applications`, {
         method: "POST",
-        headers: headers,
+        headers: getHeaders(),
+        mode: 'cors',
         body: JSON.stringify(data)
       });
       if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || "Erreur de transmission");
+        if (response.status === 404) throw new Error("COLLECTION_NOT_FOUND");
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.message || `Erreur: ${response.status}`);
       }
       return await response.json();
-    } catch (error) {
-      console.error("RestDB Submit Error:", error);
+    } catch (error: any) {
+      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+        throw new Error("CORS_ERROR");
+      }
       throw error;
     }
   },
 
-  /**
-   * Récupérer toutes les demandes (pour l'administration)
-   */
   async getAllApplications() {
     try {
       const response = await fetch(`${BASE_URL}/applications`, {
         method: "GET",
-        headers: headers
+        headers: getHeaders(),
+        mode: 'cors'
       });
-      if (!response.ok) throw new Error("Erreur de récupération");
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("COLLECTION_NOT_FOUND");
+        throw new Error(`Erreur: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error: any) {
+      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+        throw new Error("CORS_ERROR");
+      }
+      throw error;
+    }
+  },
+
+  async updateApplicationStatus(id: string, status: string) {
+    try {
+      const response = await fetch(`${BASE_URL}/applications/${id}`, {
+        method: "PATCH",
+        headers: getHeaders(),
+        mode: 'cors',
+        body: JSON.stringify({ status })
+      });
       return await response.json();
     } catch (error) {
-      console.error("RestDB Fetch Error:", error);
+      throw error;
+    }
+  },
+
+  // --- GESTION DES CONTACTS ---
+  async submitContact(data: any) {
+    try {
+      const response = await fetch(`${BASE_URL}/contacts`, {
+        method: "POST",
+        headers: getHeaders(),
+        mode: 'cors',
+        body: JSON.stringify({
+          ...data,
+          date: new Date().toISOString(),
+          status: 'unread'
+        })
+      });
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("COLLECTION_NOT_FOUND");
+        throw new Error(`Erreur: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getAllContacts() {
+    try {
+      const response = await fetch(`${BASE_URL}/contacts`, {
+        method: "GET",
+        headers: getHeaders(),
+        mode: 'cors'
+      });
+      if (!response.ok) return [];
+      return await response.json();
+    } catch (error) {
       return [];
     }
   },
 
-  /**
-   * Mettre à jour le statut d'un dossier (Admin)
-   */
-  async updateApplicationStatus(id: string, status: 'approved' | 'rejected' | 'pending') {
+  async markContactAsRead(id: string) {
     try {
-      const response = await fetch(`${BASE_URL}/applications/${id}`, {
+      await fetch(`${BASE_URL}/contacts/${id}`, {
         method: "PATCH",
-        headers: headers,
-        body: JSON.stringify({ status })
+        headers: getHeaders(),
+        mode: 'cors',
+        body: JSON.stringify({ status: 'read' })
       });
-      if (!response.ok) throw new Error("Erreur de mise à jour");
-      return await response.json();
-    } catch (error) {
-      console.error("RestDB Update Error:", error);
-      throw error;
-    }
+    } catch (error) {}
   }
 };
