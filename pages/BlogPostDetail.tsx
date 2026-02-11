@@ -1,84 +1,109 @@
 
 import React, { useEffect } from 'react';
 import { Language } from '../types';
-import { translations } from '../translations';
-import { ChevronLeft, Calendar, Clock, Share2, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { ChevronLeft, Calendar, Clock, Facebook, Twitter, Linkedin, Share2, ArrowRight } from 'lucide-react';
 
 interface BlogPostDetailProps {
   postId: string;
   language: Language;
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
-const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ postId, language, onBack }) => {
-  const t = translations[language].blog;
-  const post = t.posts.find((p: any) => p.id === postId);
+const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ postId, language, onBack, onNavigate }) => {
+  const { t } = useTranslation();
+  const blogT = t('blog', { returnObjects: true }) as any;
+  const post = blogT?.posts?.find((p: any) => p.id === postId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (!post) return null;
+  if (!post) return <div className="pt-32 text-center text-xl font-bold text-gray-400">Article introuvable</div>;
 
-  // Metadata mapping (keeping images consistent)
   const images: Record<string, string> = {
     'rate-2-percent': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1200',
-    'real-estate-2024': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1200',
-    'debt-consolidation': 'https://images.unsplash.com/photo-1573163281538-559e1c48073b?auto=format&fit=crop&q=80&w=1200',
-    'entrepreneurship-financing': 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=1200',
+    'real-estate-2026': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1200',
+    'debt-consolidation-2026': 'https://images.unsplash.com/photo-1573163281538-559e1c48073b?auto=format&fit=crop&q=80&w=1200',
+    'ai-finance-2026': 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=1200',
+  };
+
+  const dates: Record<string, string> = {
+    'rate-2-percent': '12 Mars 2026',
+    'real-estate-2026': '08 Avril 2026',
+    'debt-consolidation-2026': '15 Avril 2026',
+    'ai-finance-2026': '22 Avril 2026',
+  };
+
+  // Fonction utilitaire pour nettoyer le texte si jamais il reste des ###
+  const cleanContent = (text: string) => {
+    return text.replace(/### /g, ''); 
   };
 
   return (
-    <div className="pt-32 pb-24">
+    <div className="pt-32 pb-24 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-blue-600 font-bold mb-12 transition-colors group"
+          className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-12 transition-colors group px-4 py-2 rounded-full hover:bg-emerald-50 w-fit"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          {t.back}
+          {blogT.back}
         </button>
 
         <article className="space-y-12">
-          <div className="space-y-6">
-            <h1 className="text-4xl sm:text-6xl font-black text-gray-900 leading-tight">
+          <div className="space-y-8 text-center">
+            <h1 className="text-4xl sm:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight">
               {post.title}
             </h1>
             
-            <div className="flex flex-wrap items-center justify-between gap-6 py-8 border-y border-gray-100">
-              <div className="flex items-center gap-8 text-sm text-gray-400 font-bold uppercase tracking-widest">
-                <span className="flex items-center gap-2 text-blue-600"><Calendar className="w-4 h-4" /> 12 MARS 2024</span>
-                <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> 6 MIN LECTURE</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-gray-400 font-bold text-xs uppercase tracking-widest">Partager</span>
-                <div className="flex gap-2">
-                  {[Facebook, Twitter, Linkedin].map((Icon, i) => (
-                    <button key={i} className="p-2 bg-gray-50 rounded-full hover:bg-blue-600 hover:text-white transition-all">
-                      <Icon className="w-4 h-4" />
-                    </button>
-                  ))}
-                </div>
+            <div className="flex flex-wrap items-center justify-center gap-6 py-6 border-y border-gray-100">
+              <div className="flex items-center gap-8 text-xs font-black text-gray-400 uppercase tracking-widest">
+                <span className="flex items-center gap-2 text-emerald-600"><Calendar className="w-4 h-4" /> {dates[postId] || '2026'}</span>
+                <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> 5 MIN LECTURE</span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-[3rem] overflow-hidden shadow-2xl h-[400px]">
-            <img src={images[postId]} alt={post.title} className="w-full h-full object-cover" />
+          <div className="rounded-[3rem] overflow-hidden shadow-2xl h-[400px] sm:h-[500px] relative group">
+            <img src={images[postId]} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
           </div>
 
-          <div className="prose prose-xl max-w-none text-gray-600 leading-relaxed space-y-8 font-medium">
-            <p className="text-2xl text-gray-900 font-bold italic border-l-4 border-blue-600 pl-8 py-2">
-              {post.excerpt}
+          <div className="max-w-3xl mx-auto space-y-10">
+            <p className="text-2xl sm:text-3xl text-gray-900 font-bold italic leading-relaxed text-center">
+              "{post.excerpt}"
             </p>
-            <p>{post.content}</p>
-            <p>Dans la gestion de votre patrimoine, chaque pourcentage compte. En choisissant FinancePlus, vous optez pour la clarté et la pérennité. Nos experts sont à votre disposition pour détailler comment cette offre s'applique spécifiquement à votre situation personnelle ou professionnelle.</p>
-          </div>
+            
+            <div className="prose prose-lg sm:prose-xl max-w-none text-gray-600 leading-relaxed font-medium whitespace-pre-line text-justify">
+              {cleanContent(post.content)}
+            </div>
 
-          <div className="bg-blue-600 rounded-[2.5rem] p-10 sm:p-16 text-white text-center space-y-8 shadow-2xl shadow-blue-200">
-            <h3 className="text-3xl sm:text-4xl font-black">Prêt à franchir le pas ?</h3>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">Rejoignez plus de 50 000 clients qui ont fait confiance à FinancePlus pour leurs projets à 2%.</p>
-            <button className="bg-white text-blue-600 px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 transition-transform">Démarrer ma simulation gratuite</button>
+            {/* CTA Section */}
+            <div className="bg-emerald-50 rounded-[2.5rem] p-8 sm:p-12 text-center space-y-6 my-16 border border-emerald-100">
+               <h3 className="text-2xl sm:text-4xl font-black text-emerald-900">Convaincu ? Lancez votre projet maintenant.</h3>
+               <p className="text-emerald-700 font-medium text-lg">Profitez de notre taux fixe exceptionnel de 2% dès aujourd'hui.</p>
+               <button 
+                 onClick={() => onNavigate('loan-application')}
+                 className="inline-flex items-center gap-3 bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 hover:scale-105 transition-all"
+               >
+                 Lancer ma demande <ArrowRight className="w-5 h-5" />
+               </button>
+            </div>
+
+            <div className="border-t border-gray-100 pt-10 mt-10">
+               <div className="flex justify-between items-center">
+                  <span className="text-sm font-black text-gray-400 uppercase tracking-widest">Partager cet article</span>
+                  <div className="flex gap-3">
+                    {[Facebook, Twitter, Linkedin, Share2].map((Icon, i) => (
+                      <button key={i} className="p-3 bg-gray-50 rounded-full hover:bg-emerald-600 hover:text-white transition-all text-gray-400">
+                        <Icon className="w-5 h-5" />
+                      </button>
+                    ))}
+                  </div>
+               </div>
+            </div>
           </div>
         </article>
       </div>

@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Language, FaqItem } from '../types';
-import { translations } from '../translations';
 
 interface FaqSectionProps { 
   language: Language; 
@@ -10,14 +10,18 @@ interface FaqSectionProps {
 }
 
 const FaqSection: React.FC<FaqSectionProps> = ({ language, customFaqs }) => {
-  const t = translations[language].faq;
+  const { t } = useTranslation();
+  // Récupération de l'objet FAQ via i18next (nécessite returnObjects: true)
+  const faqData = t('faq', { returnObjects: true }) as any;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  if (!faqData) return null;
+
   const faqs = customFaqs || [
-    { q: t.q1, a: t.a1 },
-    { q: t.q2, a: t.a2 },
-    { q: t.q3, a: t.a3 },
-    { q: t.q4, a: t.a4 },
+    { q: faqData.q1, a: faqData.a1 },
+    { q: faqData.q2, a: faqData.a2 },
+    { q: faqData.q3, a: faqData.a3 },
+    { q: faqData.q4, a: faqData.a4 },
   ];
 
   return (
@@ -26,8 +30,8 @@ const FaqSection: React.FC<FaqSectionProps> = ({ language, customFaqs }) => {
         <div className="bg-emerald-50 w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <HelpCircle className="w-6 h-6 text-emerald-600" />
         </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-gray-900">{t.h2}</h2>
-        <p className="text-sm sm:text-xl text-gray-600">{t.p}</p>
+        <h2 className="text-3xl sm:text-4xl font-black text-gray-900">{faqData.h2}</h2>
+        <p className="text-sm sm:text-xl text-gray-600">{faqData.p}</p>
       </div>
 
       <div className="max-w-3xl mx-auto space-y-4">

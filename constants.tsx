@@ -9,15 +9,17 @@ import {
   CheckCircle,
   Clock,
   ShieldCheck,
-  TrendingDown
+  TrendingDown,
+  Info,
+  List,
+  Target
 } from 'lucide-react';
-import { LoanInfo, Testimonial, Language, LoanType } from './types';
-import { LOAN_DATABASE } from './database';
+import { LoanInfo, Testimonial, LoanType } from './types';
 
 export const FIXED_RATE = 2; // 2%
 
-export const buildLoansData = (langDb: any): LoanInfo[] => {
-  if (!langDb) return [];
+export const buildLoansData = (loanSpecifics: any): LoanInfo[] => {
+  if (!loanSpecifics) return [];
 
   const iconMap: Record<LoanType, string> = {
     personnel: 'User',
@@ -38,7 +40,7 @@ export const buildLoansData = (langDb: any): LoanInfo[] => {
   const loanTypes: LoanType[] = ['personnel', 'immobilier', 'automobile', 'entreprise', 'rachat'];
 
   return loanTypes.map(id => {
-    const data = langDb[id];
+    const data = loanSpecifics[id];
     // Protection contre les données manquantes
     if (!data) return {
        id,
@@ -64,15 +66,15 @@ export const buildLoansData = (langDb: any): LoanInfo[] => {
       features: data.features,
       maxAmount: data.maxAmount,
       maxDuration: data.maxDuration,
+      definition: data.definition, // Ajout du champ definition
       specificFaqs: data.faqs,
       specificTestimonials: data.testimonials
     };
   });
 };
 
-export const getLoansData = (lang: Language): LoanInfo[] => {
-  const langDb = LOAN_DATABASE[lang];
-  return buildLoansData(langDb);
+export const getLoansData = (lang: any): LoanInfo[] => {
+  return []; 
 };
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -81,4 +83,4 @@ export const TESTIMONIALS: Testimonial[] = [
   { id: 3, name: 'Lucas Dubois', role: 'Enseignant, Bordeaux', content: 'Enfin une banque qui respecte ses clients avec un taux fixe et clair.', rating: 5, avatar: 'https://i.pravatar.cc/150?u=luca' }
 ];
 
-export const ICON_MAP: Record<string, any> = { User, HomeIcon, Car, Briefcase, RefreshCcw, CheckCircle, Clock, ShieldCheck, TrendingDown };
+export const ICON_MAP: Record<string, any> = { User, HomeIcon, Car, Briefcase, RefreshCcw, CheckCircle, Clock, ShieldCheck, TrendingDown, Info, List, Target };

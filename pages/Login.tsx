@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { Language, User } from '../types';
-import { translations } from '../translations';
-import { Mail, Lock, LogIn, ChevronLeft, ArrowRight, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Mail, Lock, LogIn, ChevronLeft, ArrowRight, HelpCircle, Eye } from 'lucide-react';
 
 interface LoginProps {
   language: Language;
@@ -12,7 +12,8 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) => {
-  const t = translations[language].login;
+  const { t } = useTranslation();
+  const loginT = t('login', { returnObjects: true }) as any;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -20,7 +21,6 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError(false);
-
     if (email === 'admin@europfy.com' && password === 'admin123') {
       onLogin({ email, role: 'admin', name: 'Administrateur' });
     } else if (email && password) {
@@ -30,86 +30,47 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
     }
   };
 
+  const handleDemoAccess = () => {
+    onLogin({ email: 'demo@europfy.com', role: 'client', name: 'Client Démo' });
+  };
+
+  if (!loginT) return null;
+
   return (
     <div className="pt-32 pb-24 bg-gray-50 min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
-        <button 
-          onClick={onBack}
-          className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold transition-colors group"
-        >
+        <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold transition-colors group">
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          {translations[language].nav.home}
+          {t('nav.home')}
         </button>
-
         <div className="bg-white p-8 sm:p-12 rounded-[2.5rem] shadow-2xl border border-gray-100 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
-          
           <div className="text-center space-y-4 mb-10">
-            <div className="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-               <LogIn className="w-8 h-8 text-emerald-600" />
-            </div>
-            <h1 className="text-3xl font-black text-gray-900 tracking-tight">{t.title}</h1>
-            <p className="text-gray-500 font-medium">{t.subtitle}</p>
+            <div className="bg-emerald-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"><LogIn className="w-8 h-8 text-emerald-600" /></div>
+            <h1 className="text-3xl font-black text-gray-900 tracking-tight">{loginT.title}</h1>
+            <p className="text-gray-500 font-medium">{loginT.subtitle}</p>
           </div>
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm font-bold text-center animate-in shake-in">
-              {t.error}
-            </div>
-          )}
-
+          {error && <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm font-bold text-center animate-in shake-in">{loginT.error}</div>}
+          
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 ml-1">{t.email}</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input 
-                  type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                  placeholder="exemple@email.com"
-                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-gray-700 ml-1">{t.password}</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input 
-                  type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium"
-                />
-              </div>
-            </div>
-
-            <button 
-              type="submit"
-              className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"
-            >
-              <LogIn className="w-5 h-5" />
-              {t.submit}
-            </button>
+            <div className="space-y-2"><label className="text-sm font-bold text-gray-700 ml-1">{loginT.email}</label><div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="exemple@email.com" className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium" /></div></div>
+            <div className="space-y-2"><label className="text-sm font-bold text-gray-700 ml-1">{loginT.password}</label><div className="relative"><Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" /><input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full bg-gray-50 border-none pl-12 pr-6 py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium" /></div></div>
+            <button type="submit" className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"><LogIn className="w-5 h-5" />{loginT.submit}</button>
           </form>
 
+          {/* Bouton Démo */}
+          <div className="mt-6">
+             <button 
+               onClick={handleDemoAccess}
+               className="w-full bg-indigo-50 text-indigo-600 py-3 rounded-2xl font-bold text-sm hover:bg-indigo-100 transition-all flex items-center justify-center gap-2 border border-indigo-100"
+             >
+                <Eye className="w-4 h-4" /> Voir le Dashboard Client (Démo)
+             </button>
+          </div>
+
           <div className="mt-8 text-center space-y-6">
-            <button 
-              onClick={() => onNavigate('help')}
-              className="text-sm text-emerald-600 font-black hover:text-emerald-800 transition-colors flex items-center justify-center gap-2 mx-auto"
-            >
-              <HelpCircle className="w-4 h-4" />
-              {t.forgot}
-            </button>
-            
-            <div className="pt-6 border-t border-gray-100">
-               <button 
-                 onClick={() => onNavigate('loan-application')}
-                 className="w-full bg-gray-50 text-gray-600 py-4 px-6 rounded-2xl font-bold text-sm hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center justify-center gap-3 group"
-               >
-                 <span className="text-left">{t.noAccount}</span>
-                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-               </button>
-            </div>
+            <button onClick={() => onNavigate('help')} className="text-sm text-emerald-600 font-black hover:text-emerald-800 transition-colors flex items-center justify-center gap-2 mx-auto"><HelpCircle className="w-4 h-4" />{loginT.forgot}</button>
+            <div className="pt-6 border-t border-gray-100"><button onClick={() => onNavigate('loan-application')} className="w-full bg-gray-50 text-gray-600 py-4 px-6 rounded-2xl font-bold text-sm hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center justify-center gap-3 group"><span className="text-left">{loginT.noAccount}</span><ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button></div>
           </div>
         </div>
       </div>

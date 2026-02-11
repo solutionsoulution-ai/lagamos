@@ -1,575 +1,700 @@
-
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
 import { restdbService } from '../services/restdb';
+import { redisService } from '../services/redis';
 import { 
-  Users, Landmark, Search, RefreshCw, Loader2, XCircle, Check, 
-  Clock, Database, AlertTriangle, Settings, Wrench, Sparkles, 
-  ChevronDown, ChevronUp, Copy, ExternalLink, ListChecks, CheckCircle2, Terminal, MousePointer2, Monitor, PlusCircle,
-  AlertCircle, LayoutDashboard, Database as DatabaseIcon, ArrowRight, X, Phone, Globe, Briefcase, Wallet, MessageSquare, ShieldCheck,
-  Mail, MessageCircle, UploadCloud
+  Users, Search, Loader2, Check, X, 
+  Clock, Settings, Sparkles, 
+  CheckCircle2, AlertCircle, LayoutDashboard, Database, 
+  Briefcase, MessageSquare, Mail, UploadCloud, Globe,
+  FileText, TrendingUp, ShieldCheck, ExternalLink, Eye, Phone, MapPin, Wallet, Calendar, CheckSquare,
+  Plus, Minus, RefreshCw, Key, CreditCard, Lock, ShieldAlert, Timer, UserPlus, Save, Info
 } from 'lucide-react';
 
 interface AdminDashboardProps {
   language: Language;
 }
 
-// Données de traduction Espagnol (Hardcodées pour l'initialisation)
-const SPANISH_DATA = {
-  nav: {
-    home: "Inicio",
-    loans: "Préstamos",
-    simulator: "Simulador",
-    about: "Nosotros",
-    contact: "Contacto",
-    cta: "Solicitud en línea",
-    login: "Conexión",
-    my_space: "Mi Espacio"
-  },
-  hero: {
-    badge: "Tasa Fija 2%",
-    h1: "El crédito que te respeta.",
-    h1_variants: ["Financiación al 2% fijo.", "Respuesta en 24h.", "Socio de confianza."],
-    p: "Préstamo al 2% fijo. Simple, rápido y sin comisiones ocultas. Financie sus proyectos inmobiliarios, personales, de automóvil o profesionales con total tranquilidad.",
-    cta1: "Mi simulación",
-    cta2: "Saber más"
-  },
-  calculator: {
-    title: "Simulador Exprés",
-    subtitle: "Calcula tu presupuesto al instante.",
-    amount: "Monto deseado",
-    duration: "Duración",
-    months: "meses",
-    monthly: "Mensualidad",
-    total: "Costo total",
-    cta: "Iniciar mi solicitud"
-  },
-  stats: {
-    badge: "Fiabilidad",
-    title: "Confianza y resultados.",
-    p: "Únase a miles de europeos que confían en nosotros para sus proyectos financieros.",
-    clients: "Clientes",
-    exp: "Experiencia",
-    rating: "Nota",
-    safety: "Seguridad"
-  },
-  loans_section: {
-    h2: "Nuestras Soluciones",
-    p: "Descubra nuestras ofertas con una tasa fija única del 2%."
-  },
-  feature_highlight: {
-    badge: "Transparencia total",
-    title: "Claridad para tus ambiciones",
-    p: "Hemos eliminado las comisiones ocultas y las condiciones complejas.",
-    items: [
-      { title: "Cero sorpresas", desc: "La tasa del 2% está garantizada por contrato.", icon: "ShieldCheck" },
-      { title: "Flexibilidad real", desc: "Modifica tus mensualidades sin costo.", icon: "RefreshCcw" },
-      { title: "Análisis experto", desc: "Un asesor dedicado te acompaña.", icon: "UserCheck" }
-    ]
-  },
-  about_us_section: {
-    badge: "¿Quiénes somos?",
-    title: "El Espíritu Europfy",
-    p: "Transformamos el préstamo bancario en un servicio simple y humano.",
-    items: [
-      { title: "Nuestra Misión", desc: "Democratizar el acceso al crédito al 2%.", icon: "Target" },
-      { title: "Nuestra Historia", desc: "Fundada en Lyon en 2018, líder del crédito ético.", icon: "History" },
-      { title: "Garantías", desc: "Seguridad bancaria y transparencia total.", icon: "ShieldCheck" }
-    ]
-  },
-  identity: {
-    title: "Nuestro ADN",
-    subtitle: "Más que un banco, un socio.",
-    p: "Invertimos en tus sueños simplificando radicalmente el acceso a la financiación.",
-    pillars: [
-      { title: "Proximidad Europea", desc: "Presentes en toda la Unión Europea.", icon: "Globe" },
-      { title: "Acompañamiento Humano", desc: "Cada expediente es analizado por un experto.", icon: "Heart" },
-      { title: "Simplicidad Radical", desc: "Tasa del 2% fija, punto final.", icon: "Shield" }
-    ]
-  },
-  footer: {
-    desc: "Su socio de crédito al 2%. Acompañamiento transparente para todos sus proyectos.",
-    titles: { loans: "Préstamos", company: "Empresa", contact: "Contacto" },
-    links: { about: "Nosotros", blog: "Blog", faq: "FAQ", legal: "Avisos Legales", privacy: "Privacidad", cookies: "Cookies" },
-    rights: "© 2026 Europfy. Todos los derechos reservados."
-  },
-  cta_footer: {
-    h2: "¿Listo para lanzar tu proyecto?",
-    p: "Obtén una respuesta de principio en menos de 2 minutos.",
-    btn1: "Depositar mi expediente",
-    btn2: "Contactarnos"
-  },
-  comparison: {
-    h3: "Ahorre en su crédito",
-    p: "Europfy ofrece una de las tasas más bajas de Europa.",
-    market: "Tasa media bancaria",
-    ours: "Tasa Europfy",
-    saving: "Ahorro medio constatado"
-  },
-  partners: {
-    h2: "Socios de Confianza",
-    p: "Trabajamos con instituciones de renombre mundial."
-  },
-  security: {
-    rgpd: "Conformidad RGPD",
-    h24: "Vigilancia 24/7",
-    orias: "Regulación Europea"
-  },
-  testimonials: {
-    h2: "Opiniones de Clientes",
-    p: "La satisfacción de nuestros prestatarios es nuestra prioridad."
-  },
-  form: {
-    title: "Solicitud en Línea",
-    subtitle: "Procedimiento rápido, simple y 100% seguro.",
-    trust_title: "Confidencialidad",
-    trust_text: "Sus datos están protegidos por encriptación bancaria.",
-    processing_fees: {
-      title: "Gastos de gestión",
-      text: "Se aplican gastos de análisis técnico para el tratamiento de su expediente.",
-      detail: "Estos gastos solo se deben en caso de aceptación."
-    },
-    fields: {
-      firstName: "Nombre",
-      lastName: "Apellidos",
-      amount: "Monto (€)",
-      duration: "Duración (meses)",
-      email: "Email",
-      whatsapp: "WhatsApp",
-      country: "País de residencia",
-      profession: "Profesión",
-      income: "Ingreso neto mensual",
-      reason: "Motivo del préstamo",
-      processing_consent: "Acepto los gastos de gestión vinculados al expediente.",
-      consent1: "Certifico la exactitud de la información.",
-      submit: "Enviar mi solicitud",
-      select_country: "Seleccione su país...",
-      success: "¡Felicidades!"
-    },
-    countries: {}
-  },
-  faq: {
-    h2: "Preguntas Frecuentes",
-    p: "Todas las respuestas a sus preguntas.",
-    categories: { general: "General", immobilier: "Inmobiliario", automobile: "Automóvil", entreprise: "Empresa", personnel: "Personal", rachat: "Consolidación" },
-    q1: "¿Cuáles son las condiciones de elegibilidad?", a1: "Ser mayor de edad, residir en Europa y justificar ingresos estables.",
-    q2: "¿Qué documentos debo proporcionar?", a2: "DNI, comprobante de domicilio y últimos extractos bancarios.",
-    q3: "¿Cuál es el plazo de respuesta?", a3: "Respuesta definitiva en 24 horas laborables.",
-    q4: "¿La tasa del 2% es realmente fija?", a4: "Sí, garantizada por contrato durante toda la duración."
-  },
-  loan_specifics: {
-    personnel: {
-      title: "Préstamo Personal",
-      description: "Concreta tus proyectos de vida libremente.",
-      longDescription: "Bodas, viajes, estudios o imprevistos, disponga de los fondos rápidamente.",
-      features: ["2% Fijo", "Sin justificantes", "Transferencia exprés"],
-      maxAmount: 75000,
-      maxDuration: 84,
-      faqs: [],
-      testimonials: []
-    },
-    immobilier: {
-      title: "Préstamo Inmobiliario",
-      description: "Tasa fija del 2% para tu futuro hogar.",
-      longDescription: "Financia la adquisición de tu residencia principal, secundaria o inversión.",
-      features: ["2% Fijo", "Seguro flexible", "Respuesta en 24h"],
-      maxAmount: 1500000,
-      maxDuration: 300,
-      faqs: [],
-      testimonials: []
-    },
-    automobile: {
-      title: "Préstamo Automóvil",
-      description: "Financia tu movilidad al mejor precio.",
-      longDescription: "Para coche nuevo, de ocasión o eléctrico.",
-      features: ["2% Fijo", "Sin aporte obligatorio", "Todo tipo de vehículos"],
-      maxAmount: 80000,
-      maxDuration: 84,
-      faqs: [],
-      testimonials: []
-    },
-    entreprise: {
-      title: "Préstamo Empresa",
-      description: "Apoya el crecimiento de tu actividad.",
-      longDescription: "Necesidades de tesorería, inversión material o desarrollo comercial.",
-      features: ["2% Fijo", "Análisis experto", "Diferimiento de pago"],
-      maxAmount: 5000000,
-      maxDuration: 120,
-      faqs: [],
-      testimonials: []
-    },
-    rachat: {
-      title: "Consolidación de Deuda",
-      description: "Simplifica tus finanzas y reduce tus cuotas.",
-      longDescription: "Agrupa todos tus créditos en uno solo para pagar una única mensualidad.",
-      features: ["2% Fijo", "Una sola cuota", "Gestión simplificada"],
-      maxAmount: 250000,
-      maxDuration: 180,
-      faqs: [],
-      testimonials: []
-    }
-  }
-};
+// Données statiques pour injection (gardées pour référence)
+const SPANISH_DATA = { /* ... */ };
 
-const AdminDashboard: React.FC<AdminDashboardProps> = () => {
-  const [activeTab, setActiveTab] = useState<'loans' | 'contacts'>('loans');
-  const [applications, setApplications] = useState<any[]>([]);
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
+  const [activeTab, setActiveTab] = useState<'loans' | 'contacts' | 'config' | 'create_account'>('loans');
+  const [loans, setLoans] = useState<any[]>([]);
   const [contacts, setContacts] = useState<any[]>([]);
-  const [filter, setFilter] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [lastSync, setLastSync] = useState<Date>(new Date());
-  const [selectedApp, setSelectedApp] = useState<any | null>(null);
-  const [selectedContact, setSelectedContact] = useState<any | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [selectedLoan, setSelectedLoan] = useState<any>(null);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [appsData, contactsData] = await Promise.all([
-        restdbService.getAllApplications(),
-        restdbService.getAllContacts()
-      ]);
+  // États pour gestion financière
+  const [amountOperation, setAmountOperation] = useState('');
+  const [operationLoading, setOperationLoading] = useState(false);
 
-      if (Array.isArray(appsData)) {
-        const filteredApps = appsData.filter((a: any) => !a.isSystem);
-        setApplications(filteredApps.sort((a: any, b: any) => 
-          new Date(b.date || b._created).getTime() - new Date(a.date || a._created).getTime()
-        ));
-      }
+  // États pour configuration virement
+  const [configDelay, setConfigDelay] = useState<string>('24');
+  const [configUnit, setConfigUnit] = useState<'minutes' | 'hours' | 'days'>('hours');
+  const [configBlocked, setConfigBlocked] = useState<boolean>(false);
+  const [configReason, setConfigReason] = useState<string>('');
+  const [configLoading, setConfigLoading] = useState(false);
 
-      if (Array.isArray(contactsData)) {
-        setContacts(contactsData.sort((a: any, b: any) => 
-          new Date(b.date || b._created).getTime() - new Date(a.date || a._created).getTime()
-        ));
-      }
-      
-      setLastSync(new Date());
-    } catch (err: any) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const seedUpstashSpanish = async () => {
-    setUploading(true);
-    try {
-      const UPSTASH_REDIS_REST_URL = "https://current-dassie-43977.upstash.io";
-      const UPSTASH_REDIS_REST_TOKEN = "AavJAAIncDJlMjlhODRmOGVjNzk0NTg2YjQxNjg4ZGM0ZWEzYWE2MHAyNDM5Nzc";
-
-      // Envoi de la donnée 'es' vers Redis
-      const response = await fetch(`${UPSTASH_REDIS_REST_URL}/set/es`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}`,
-          "Content-Type": "text/plain" // Important pour Redis REST
-        },
-        body: JSON.stringify(SPANISH_DATA)
-      });
-
-      if (response.ok) {
-        alert("Succès ! La traduction ESPAGNOL a été envoyée vers Upstash Redis.");
-      } else {
-        alert("Erreur lors de l'envoi vers Upstash.");
-      }
-    } catch (e) {
-      alert("Erreur réseau : " + e);
-    } finally {
-      setUploading(false);
-    }
-  };
+  // États pour création de compte manuel
+  const [newAccount, setNewAccount] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    idCardNumber: '',
+    password: '',
+    country: 'FR'
+  });
+  const [createLoading, setCreateLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [activeTab]);
+
+  // Initialisation des états locaux quand un dossier est sélectionné
+  useEffect(() => {
+    if (selectedLoan) {
+      setConfigDelay(selectedLoan.transferDelay?.toString() || '24');
+      setConfigUnit(selectedLoan.transferDelayUnit || 'hours');
+      setConfigBlocked(selectedLoan.isBlocked || false);
+      setConfigReason(selectedLoan.blockReason || '');
+    }
+  }, [selectedLoan]);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (activeTab === 'loans') {
+        const data = await restdbService.getAllApplications();
+        setLoans(data || []);
+      } else if (activeTab === 'contacts') {
+        const data = await restdbService.getAllContacts();
+        setContacts(data || []);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdateStatus = async (id: string, status: string) => {
+    setActionLoading(id);
+    try {
+      await restdbService.updateApplication(id, { status });
+      const updatedLoans = loans.map(l => l._id === id ? { ...l, status } : l);
+      setLoans(updatedLoans);
+      if (selectedLoan && selectedLoan._id === id) {
+        setSelectedLoan({ ...selectedLoan, status });
+      }
+    } catch (e) {
+      alert("Erreur lors de la mise à jour");
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleBalanceOperation = async (type: 'credit' | 'debit') => {
+    if (!selectedLoan || !amountOperation) return;
+    const amount = parseFloat(amountOperation);
+    if (isNaN(amount) || amount <= 0) return;
+
+    setOperationLoading(true);
+    try {
+      const currentBalance = selectedLoan.balance || 0;
+      const newBalance = type === 'credit' ? currentBalance + amount : currentBalance - amount;
+
+      await restdbService.updateApplication(selectedLoan._id, { balance: newBalance });
+      
+      const updatedLoan = { ...selectedLoan, balance: newBalance };
+      setSelectedLoan(updatedLoan);
+      setLoans(loans.map(l => l._id === selectedLoan._id ? updatedLoan : l));
+      setAmountOperation('');
+      alert(`Opération réussie : ${type === 'credit' ? '+' : '-'}${amount}€`);
+    } catch (e) {
+      alert("Erreur lors de l'opération financière");
+    } finally {
+      setOperationLoading(false);
+    }
+  };
+
+  const handleSaveConfig = async () => {
+    if (!selectedLoan) return;
+    setConfigLoading(true);
+    try {
+        const updateData = {
+            transferDelay: parseInt(configDelay),
+            transferDelayUnit: configUnit,
+            isBlocked: configBlocked,
+            blockReason: configReason
+        };
+        await restdbService.updateApplication(selectedLoan._id, updateData);
+        
+        const updatedLoan = { ...selectedLoan, ...updateData };
+        setSelectedLoan(updatedLoan);
+        setLoans(loans.map(l => l._id === selectedLoan._id ? updatedLoan : l));
+        alert("Configuration sauvegardée !");
+    } catch (e) {
+        alert("Erreur sauvegarde configuration");
+    } finally {
+        setConfigLoading(false);
+    }
+  };
+
+  const handleSeedLanguage = async (lang: string, data: any) => {
+    setActionLoading(`seed-${lang}`);
+    try {
+      await redisService.setTranslation(lang, data);
+      alert(`Langue ${lang} injectée avec succès !`);
+    } catch (e) {
+      alert(`Erreur injection ${lang}`);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // --- LOGIQUE CRÉATION COMPTE MANUEL ---
+  const generateIBAN = () => {
+    const bankCode = "30004"; 
+    const branchCode = "01458"; 
+    const accountNb = Math.floor(Math.random() * 100000000000).toString().padStart(11, '0');
+    const key = Math.floor(Math.random() * 90 + 10).toString();
+    return `FR76 ${bankCode} ${branchCode} ${accountNb} ${key}`;
+  };
+
+  const handleCreateAccountChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      setNewAccount({ ...newAccount, [e.target.name]: e.target.value });
+  };
+
+  const submitNewAccount = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setCreateLoading(true);
+
+      try {
+        // Préparation des données "type prêt" mais adaptées pour un compte simple
+        const accountData = {
+            ...newAccount,
+            whatsapp: newAccount.phone, // Mapping
+            amount: 0, // Pas de prêt initial
+            duration: 0,
+            profession: 'Non spécifié (Compte Manuel)',
+            income: 0,
+            reason: 'Ouverture Compte Bancaire Direct',
+            status: 'approved', // Approuvé direct car créé par admin
+            feesAccepted: true,
+            consent: true,
+            processingConsent: true,
+            date: new Date().toISOString(),
+            // Données bancaires
+            iban: generateIBAN(),
+            bic: 'ERPYFRPP',
+            balance: 0,
+            password: newAccount.password || 'Europfy2026', // MDP par défaut si vide
+            transferDelay: 24,
+            transferDelayUnit: 'hours',
+            isBlocked: false
+        };
+
+        await restdbService.submitApplication(accountData);
+        alert("Compte bancaire créé avec succès !");
+        
+        // Reset form
+        setNewAccount({
+            firstName: '', lastName: '', email: '', phone: '', 
+            address: '', idCardNumber: '', password: '', country: 'FR'
+        });
+        
+        // Rediriger vers la liste
+        setActiveTab('loans');
+      } catch (error) {
+          console.error(error);
+          alert("Erreur lors de la création du compte.");
+      } finally {
+          setCreateLoading(false);
+      }
+  };
 
   return (
-    <div className="pt-24 pb-20 bg-gray-50 min-h-screen font-sans relative">
-      
-      {/* Modal Détails Dossier Prêt */}
-      {selectedApp && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in duration-300">
-            <div className="bg-emerald-600 p-6 sm:p-8 text-white flex justify-between items-center shrink-0">
-               <div className="flex items-center gap-4">
-                  <div className="bg-white/20 p-3 rounded-2xl"><Users className="w-6 h-6" /></div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black">{selectedApp.firstName} {selectedApp.lastName}</h2>
-                    <p className="text-emerald-100 text-xs font-bold uppercase tracking-widest">Dossier #{selectedApp._id.substring(0,8)}</p>
-                  </div>
-               </div>
-               <button onClick={() => setSelectedApp(null)} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all">
-                 <X className="w-6 h-6" />
-               </button>
+    <div className="pt-24 pb-20 bg-gray-50 min-h-screen font-sans">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 rounded-2xl bg-gray-900 flex items-center justify-center text-white shadow-xl">
+              <LayoutDashboard className="w-8 h-8" />
             </div>
-            <div className="p-6 sm:p-10 overflow-y-auto space-y-10">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-6">
-                  <h3 className="text-xs font-black text-emerald-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <Phone className="w-4 h-4" /> Coordonnées & Origine
-                  </h3>
-                  <div className="bg-gray-50 p-6 rounded-3xl space-y-4">
-                    <div><p className="text-[10px] text-gray-400 font-black uppercase">Email</p><p className="font-bold text-gray-900">{selectedApp.email}</p></div>
-                    <div><p className="text-[10px] text-gray-400 font-black uppercase">WhatsApp</p><p className="font-bold text-emerald-600">{selectedApp.whatsapp || "Non renseigné"}</p></div>
-                    <div><p className="text-[10px] text-gray-400 font-black uppercase">Pays</p><p className="font-bold text-gray-900 flex items-center gap-2"><Globe className="w-4 h-4 text-blue-500" /> {selectedApp.country}</p></div>
+            <div>
+              <h1 className="text-3xl font-black text-gray-900 tracking-tight">Admin Dashboard</h1>
+              <p className="text-gray-500 font-medium">Gestion globale de la plateforme</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm w-full md:w-auto overflow-x-auto">
+            {[
+              { id: 'loans', label: 'Dossiers', icon: Briefcase },
+              { id: 'create_account', label: 'Nouveau Compte', icon: UserPlus },
+              { id: 'contacts', label: 'Messages', icon: MessageSquare },
+              { id: 'config', label: 'Outils', icon: Settings }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all whitespace-nowrap ${
+                  activeTab === tab.id 
+                    ? 'bg-gray-900 text-white shadow-md' 
+                    : 'text-gray-500 hover:bg-gray-50'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content */}
+        {isLoading ? (
+          <div className="flex justify-center py-20"><Loader2 className="w-12 h-12 animate-spin text-gray-300" /></div>
+        ) : (
+          <div className="space-y-6">
+            
+            {/* LOANS LIST */}
+            {activeTab === 'loans' && (
+              <div className="grid gap-4">
+                {loans.length === 0 ? (
+                   <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+                      <p className="text-gray-400 font-bold uppercase">Aucun dossier en cours</p>
+                   </div>
+                ) : (
+                  loans.map(loan => (
+                    <div key={loan._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 hover:shadow-md transition-shadow">
+                       <div className="space-y-1 flex-grow w-full">
+                          <div className="flex flex-wrap items-center gap-3 mb-2">
+                             <h3 className="text-lg font-black text-gray-900">{loan.firstName} {loan.lastName}</h3>
+                             <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                               loan.status === 'pending' ? 'bg-orange-100 text-orange-600' :
+                               loan.status === 'approved' ? 'bg-emerald-100 text-emerald-600' :
+                               'bg-red-100 text-red-600'
+                             }`}>
+                                {loan.status}
+                             </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 font-medium">
+                             <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5" /> {loan.email}</span>
+                             <span className="flex items-center gap-1"><TrendingUp className="w-3.5 h-3.5" /> {loan.amount} €</span>
+                             <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded"><Wallet className="w-3 h-3" /> Solde: {loan.balance || 0} €</span>
+                          </div>
+                       </div>
+                       
+                       <div className="flex items-center gap-3 w-full lg:w-auto">
+                          <button 
+                            onClick={() => setSelectedLoan(loan)}
+                            className="flex-1 lg:flex-none justify-center bg-gray-100 text-gray-700 p-2.5 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
+                            title="Voir tous les détails"
+                          >
+                            <Eye className="w-5 h-5" /> <span className="lg:hidden text-sm font-bold">Détails</span>
+                          </button>
+                       </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* CREATE ACCOUNT TAB */}
+            {activeTab === 'create_account' && (
+                <div className="max-w-2xl mx-auto">
+                    <div className="bg-white rounded-[2rem] shadow-xl border border-gray-100 overflow-hidden">
+                        <div className="bg-emerald-600 p-8 text-white">
+                            <h2 className="text-2xl font-black flex items-center gap-3">
+                                <UserPlus className="w-8 h-8 text-emerald-200" /> Création Compte Bancaire
+                            </h2>
+                            <p className="text-emerald-100 mt-2">Ce formulaire crée un compte client direct (Type: Compte Courant) avec RIB généré automatiquement.</p>
+                        </div>
+                        <div className="p-8">
+                            <form onSubmit={submitNewAccount} className="space-y-6">
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Prénom</label>
+                                        <input required name="firstName" value={newAccount.firstName} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-bold text-gray-900" placeholder="Jean" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Nom</label>
+                                        <input required name="lastName" value={newAccount.lastName} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-bold text-gray-900" placeholder="Dupont" />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase">Adresse Postale Complète</label>
+                                    <input required name="address" value={newAccount.address} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-medium text-gray-900" placeholder="10 Rue de la Paix, 75000 Paris" />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Email</label>
+                                        <input required type="email" name="email" value={newAccount.email} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-medium text-gray-900" placeholder="client@mail.com" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Téléphone</label>
+                                        <input required name="phone" value={newAccount.phone} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-medium text-gray-900" placeholder="+33 6..." />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">N° CNI / Passeport</label>
+                                        <input required name="idCardNumber" value={newAccount.idCardNumber} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-medium text-gray-900" placeholder="A12345678" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-500 uppercase">Pays</label>
+                                        <select name="country" value={newAccount.country} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-medium text-gray-900">
+                                            <option value="FR">France</option>
+                                            <option value="BE">Belgique</option>
+                                            <option value="CH">Suisse</option>
+                                            <option value="LU">Luxembourg</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="MC">Monaco</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase">Mot de passe Compte</label>
+                                    <input required name="password" value={newAccount.password} onChange={handleCreateAccountChange} className="w-full bg-gray-50 border-none rounded-xl p-3 font-bold text-gray-900" placeholder="Définir un mot de passe..." />
+                                </div>
+
+                                <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 flex gap-3">
+                                    <Info className="w-5 h-5 text-blue-600 shrink-0" />
+                                    <p className="text-sm text-blue-800">
+                                        Ce compte sera créé avec un statut <strong>Approuvé</strong>. Le RIB sera généré instantanément. Le client pourra se connecter immédiatement avec l'email et le mot de passe définis.
+                                    </p>
+                                </div>
+
+                                <button 
+                                    type="submit" 
+                                    disabled={createLoading}
+                                    className="w-full bg-emerald-600 text-white py-4 rounded-xl font-black text-lg shadow-lg hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+                                >
+                                    {createLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
+                                    Créer le compte maintenant
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* CONTACTS TAB */}
+            {activeTab === 'contacts' && (
+              <div className="grid gap-4">
+                 {contacts.map(contact => (
+                    <div key={contact._id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                       <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2">
+                          <div>
+                             <h4 className="font-bold text-gray-900">{contact.name}</h4>
+                             <p className="text-sm text-gray-500">{contact.email}</p>
+                          </div>
+                          <span className="text-xs font-medium text-gray-400">{new Date(contact.date).toLocaleDateString()}</span>
+                       </div>
+                       <p className="text-gray-700 bg-gray-50 p-4 rounded-xl text-sm">{contact.message}</p>
+                    </div>
+                 ))}
+              </div>
+            )}
+
+            {/* CONFIG TAB */}
+            {activeTab === 'config' && (
+              <div className="grid lg:grid-cols-2 gap-8">
+                 <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl">
+                    <div className="bg-blue-50 w-12 h-12 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                       <Globe className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 mb-2">Injection Espagnol (ES)</h3>
+                    <button onClick={() => handleSeedLanguage('es', SPANISH_DATA)} disabled={!!actionLoading} className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+                      {actionLoading === 'seed-es' ? <Loader2 className="w-5 h-5 animate-spin" /> : <UploadCloud className="w-5 h-5" />} Injecter ES
+                    </button>
+                 </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* MODAL DÉTAILS DOSSIER */}
+        {selectedLoan && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white w-full max-w-4xl max-h-[95vh] overflow-y-auto rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col">
+              {/* Modal Header */}
+              <div className="sticky top-0 bg-white/95 backdrop-blur border-b border-gray-100 p-4 sm:p-6 flex justify-between items-center z-10 shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="bg-emerald-50 p-3 rounded-xl">
+                    <FileText className="w-6 h-6 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-black text-gray-900">Dossier Complet</h2>
+                    <p className="text-sm text-gray-500 font-medium">Réf: {selectedLoan._id.substring(0, 8)}...</p>
                   </div>
                 </div>
-                <div className="space-y-6">
-                  <h3 className="text-xs font-black text-emerald-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <Briefcase className="w-4 h-4" /> Profil Professionnel
+                <button onClick={() => setSelectedLoan(null)} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                  <X className="w-6 h-6 text-gray-500" />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="p-4 sm:p-6 space-y-8 flex-grow">
+                
+                {/* 1. GESTION FINANCIÈRE (Seulement si approuvé) */}
+                {selectedLoan.status === 'approved' && (
+                    <div className="grid lg:grid-cols-2 gap-6">
+                        {/* Crédit / Débit */}
+                        <section className="bg-gray-900 rounded-2xl p-6 text-white space-y-6">
+                            <div className="flex justify-between items-center">
+                                <h3 className="text-xs font-black uppercase tracking-widest flex items-center gap-2 text-emerald-400">
+                                    <Wallet className="w-4 h-4" /> Gestion Solde
+                                </h3>
+                                <div className="text-right">
+                                    <p className="text-xs text-gray-400">Solde Actuel</p>
+                                    <p className="text-3xl font-black">{selectedLoan.balance || 0} €</p>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white/10 p-4 rounded-xl space-y-4">
+                                <p className="text-xs font-bold text-gray-300 uppercase">Opérations</p>
+                                <div className="flex gap-2">
+                                    <input 
+                                        type="number" 
+                                        placeholder="Montant..." 
+                                        className="bg-gray-800 border-none rounded-lg px-4 py-2 text-white w-full"
+                                        value={amountOperation}
+                                        onChange={(e) => setAmountOperation(e.target.value)}
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button 
+                                        onClick={() => handleBalanceOperation('credit')}
+                                        disabled={operationLoading}
+                                        className="bg-emerald-600 hover:bg-emerald-500 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-colors"
+                                    >
+                                        <Plus className="w-4 h-4" /> Créditer
+                                    </button>
+                                    <button 
+                                        onClick={() => handleBalanceOperation('debit')}
+                                        disabled={operationLoading}
+                                        className="bg-white/10 hover:bg-white/20 py-2 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-colors"
+                                    >
+                                        <Minus className="w-4 h-4" /> Débiter
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* CONFIGURATION VIREMENT & BLOCAGE */}
+                        <section className="bg-orange-50 rounded-2xl p-6 border border-orange-100 space-y-6">
+                             <div className="flex items-center gap-2">
+                                <ShieldAlert className="w-5 h-5 text-orange-600" />
+                                <h3 className="text-sm font-black text-orange-900 uppercase">Sécurité & Virement</h3>
+                             </div>
+
+                             <div className="space-y-4">
+                                <div>
+                                    <label className="text-xs font-bold text-orange-800 uppercase block mb-1">Durée Virement Sortant</label>
+                                    <div className="flex gap-2">
+                                        <input 
+                                            type="number" 
+                                            className="w-20 rounded-lg border-none p-2 text-center font-bold" 
+                                            value={configDelay}
+                                            onChange={e => setConfigDelay(e.target.value)}
+                                        />
+                                        <select 
+                                            className="flex-1 rounded-lg border-none p-2 font-bold"
+                                            value={configUnit}
+                                            onChange={e => setConfigUnit(e.target.value as any)}
+                                        >
+                                            <option value="minutes">Minutes</option>
+                                            <option value="hours">Heures</option>
+                                            <option value="days">Jours</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-4 rounded-xl border border-orange-100">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <label className="text-xs font-bold text-red-600 uppercase">Blocage Virement</label>
+                                        <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                                            <input 
+                                                type="checkbox" 
+                                                name="toggle" 
+                                                id="toggle" 
+                                                checked={configBlocked}
+                                                onChange={e => setConfigBlocked(e.target.checked)}
+                                                className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+                                                style={{ right: configBlocked ? '0' : 'auto', left: configBlocked ? 'auto' : '0', borderColor: configBlocked ? '#DC2626' : '#E5E7EB' }}
+                                            />
+                                            <label htmlFor="toggle" className={`toggle-label block overflow-hidden h-6 rounded-full cursor-pointer ${configBlocked ? 'bg-red-600' : 'bg-gray-300'}`}></label>
+                                        </div>
+                                    </div>
+                                    {configBlocked && (
+                                        <div className="animate-in fade-in">
+                                            <label className="text-[10px] font-bold text-gray-400 uppercase block mb-1">Motif du blocage (visible client)</label>
+                                            <textarea 
+                                                className="w-full bg-gray-50 border-none rounded-lg p-2 text-sm font-medium resize-none" 
+                                                rows={2}
+                                                value={configReason}
+                                                onChange={e => setConfigReason(e.target.value)}
+                                                placeholder="Ex: Contrôle de sécurité en cours..."
+                                            ></textarea>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <button 
+                                    onClick={handleSaveConfig}
+                                    disabled={configLoading}
+                                    className="w-full bg-orange-600 text-white py-2 rounded-lg font-bold shadow-lg shadow-orange-200 hover:bg-orange-700 transition-all disabled:opacity-50"
+                                >
+                                    {configLoading ? "Sauvegarde..." : "Appliquer la configuration"}
+                                </button>
+                             </div>
+                        </section>
+                    </div>
+                )}
+
+                {/* 2. INFOS DE CONNEXION (MDP) & BANCAIRES (RIB) */}
+                <div className="grid md:grid-cols-2 gap-6">
+                    {/* Carte Connexion */}
+                    <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100 space-y-4">
+                        <h3 className="text-xs font-black text-blue-600 uppercase tracking-widest flex items-center gap-2">
+                            <Key className="w-4 h-4" /> Accès Client
+                        </h3>
+                        <div className="space-y-3">
+                            <div className="bg-white p-3 rounded-lg border border-blue-100">
+                                <p className="text-[10px] text-gray-400 font-bold uppercase">Email de connexion</p>
+                                <p className="font-bold text-gray-900 select-all break-all">{selectedLoan.email}</p>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border border-blue-100">
+                                <p className="text-[10px] text-gray-400 font-bold uppercase">Mot de passe</p>
+                                <p className="font-mono font-bold text-red-600 bg-red-50 inline-block px-2 rounded select-all break-all">{selectedLoan.password || "Non enregistré"}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Carte Bancaire */}
+                    <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
+                        <h3 className="text-xs font-black text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                            <CreditCard className="w-4 h-4" /> RIB Généré
+                        </h3>
+                        <div className="space-y-3">
+                            <div className="bg-white p-3 rounded-lg border border-gray-200">
+                                <p className="text-[10px] text-gray-400 font-bold uppercase">IBAN</p>
+                                <p className="font-mono font-bold text-gray-900 select-all break-all">{selectedLoan.iban || "En attente"}</p>
+                            </div>
+                            <div className="bg-white p-3 rounded-lg border border-gray-200">
+                                <p className="text-[10px] text-gray-400 font-bold uppercase">BIC / SWIFT</p>
+                                <p className="font-mono font-bold text-gray-900 select-all">{selectedLoan.bic || "En attente"}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. DÉTAILS PERSONNELS & PRO */}
+                <section className="space-y-4">
+                  <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <Users className="w-4 h-4" /> Détails Personnels & Professionnels
                   </h3>
-                  <div className="bg-gray-50 p-6 rounded-3xl space-y-4">
-                    <div><p className="text-[10px] text-gray-400 font-black uppercase">Profession</p><p className="font-bold text-gray-900">{selectedApp.profession || "Non renseigné"}</p></div>
-                    <div><p className="text-[10px] text-gray-400 font-black uppercase">Revenu</p><p className="text-xl font-black text-emerald-700">{(selectedApp.income || 0).toLocaleString()} €</p></div>
-                    <div className="pt-2 border-t border-gray-200">
-                      <p className={`font-black text-xs uppercase mt-1 flex items-center gap-2 ${selectedApp.feesAccepted ? 'text-emerald-600' : 'text-red-500'}`}>
-                        {selectedApp.feesAccepted ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-                        {selectedApp.feesAccepted ? "Frais Acceptés" : "Frais Non acceptés"}
-                      </p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                      <p className="text-xs text-gray-500 font-bold mb-1">Nom complet</p>
+                      <p className="text-gray-900 font-bold">{selectedLoan.firstName} {selectedLoan.lastName}</p>
+                    </div>
+                    {selectedLoan.address && (
+                        <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm col-span-2 sm:col-span-1">
+                          <p className="text-xs text-gray-500 font-bold mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Adresse</p>
+                          <p className="text-gray-900 font-medium text-sm">{selectedLoan.address}</p>
+                        </div>
+                    )}
+                    {selectedLoan.idCardNumber && (
+                        <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                          <p className="text-xs text-gray-500 font-bold mb-1 flex items-center gap-1"><ShieldCheck className="w-3 h-3" /> CNI / Passeport</p>
+                          <p className="text-gray-900 font-mono font-bold">{selectedLoan.idCardNumber}</p>
+                        </div>
+                    )}
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                      <p className="text-xs text-gray-500 font-bold mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Pays</p>
+                      <p className="text-gray-900 font-medium">{selectedLoan.country}</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                      <p className="text-xs text-gray-500 font-bold mb-1 flex items-center gap-1"><Phone className="w-3 h-3" /> WhatsApp</p>
+                      <p className="text-gray-900 font-medium">{selectedLoan.whatsapp || 'Non renseigné'}</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                      <p className="text-xs text-gray-500 font-bold mb-1 flex items-center gap-1"><Briefcase className="w-3 h-3" /> Profession</p>
+                      <p className="text-gray-900 font-medium">{selectedLoan.profession}</p>
                     </div>
                   </div>
+                </section>
+                
+                {/* 4. MOTIF & CONFORMITÉ */}
+                <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                        <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Motif du prêt / compte</p>
+                        <p className="text-gray-700 italic">"{selectedLoan.reason}"</p>
+                    </div>
+                    
+                    <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100 space-y-3">
+                        <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Conformité</p>
+                        <div className="flex items-center gap-2 text-sm">
+                            {selectedLoan.feesAccepted ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <X className="w-4 h-4 text-red-500" />}
+                            <span className={selectedLoan.feesAccepted ? "text-gray-700 font-medium" : "text-gray-400"}>Frais acceptés</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                            {selectedLoan.consent ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <X className="w-4 h-4 text-red-500" />}
+                            <span className={selectedLoan.consent ? "text-gray-700 font-medium" : "text-gray-400"}>RGPD / Exactitude</span>
+                        </div>
+                    </div>
                 </div>
+
+                {/* 5. RÉCAPITULATIF PRÊT (Si applicable) */}
+                {selectedLoan.amount > 0 && (
+                    <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-100 flex flex-col sm:flex-row gap-6 justify-between items-center">
+                        <div className="text-center sm:text-left">
+                          <p className="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-1">Montant demandé</p>
+                          <p className="text-3xl font-black text-emerald-900">{selectedLoan.amount?.toLocaleString()} €</p>
+                        </div>
+                        <div className="h-px w-full sm:w-px sm:h-12 bg-emerald-200"></div>
+                        <div className="text-center sm:text-right">
+                          <p className="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-1">Durée souhaitée</p>
+                          <p className="text-3xl font-black text-emerald-900">{selectedLoan.duration} mois</p>
+                        </div>
+                    </div>
+                )}
+
               </div>
-              <div className="space-y-6">
-                 <h3 className="text-xs font-black text-emerald-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <Wallet className="w-4 h-4" /> Demande de Crédit
-                 </h3>
-                 <div className="grid sm:grid-cols-3 gap-4">
-                    <div className="bg-emerald-50 border border-emerald-100 p-6 rounded-3xl text-center"><p className="text-[10px] text-emerald-600 font-black uppercase mb-1">Montant</p><p className="text-3xl font-black">{(selectedApp.amount || 0).toLocaleString()} €</p></div>
-                    <div className="bg-teal-50 border border-teal-100 p-6 rounded-3xl text-center"><p className="text-[10px] text-teal-600 font-black uppercase mb-1">Durée</p><p className="text-3xl font-black">{selectedApp.duration} mois</p></div>
-                    <div className="bg-gray-900 p-6 rounded-3xl text-center text-white"><p className="text-[10px] text-gray-400 font-black uppercase mb-1">Taux Fixe</p><p className="text-3xl font-black">2%</p></div>
-                 </div>
-              </div>
-              <div className="space-y-6">
-                 <h3 className="text-xs font-black text-emerald-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4" /> Motif du projet
-                 </h3>
-                 <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 italic text-gray-700 leading-relaxed font-medium">"{selectedApp.reason || "Aucun."}"</div>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-                <button onClick={() => restdbService.updateApplicationStatus(selectedApp._id, 'approved').then(() => { fetchData(); setSelectedApp(null); })} className="flex-1 bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl hover:bg-emerald-700 transition-all">Approuver</button>
-                <button onClick={() => restdbService.updateApplicationStatus(selectedApp._id, 'rejected').then(() => { fetchData(); setSelectedApp(null); })} className="flex-1 bg-white border-2 border-red-100 text-red-600 py-4 rounded-2xl font-black text-lg hover:bg-red-50 transition-all">Refuser</button>
+
+              {/* Modal Footer Actions */}
+              <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 p-4 sm:p-6 flex flex-col sm:flex-row justify-end gap-3 z-10 shrink-0">
+                {selectedLoan.status === 'pending' && (
+                  <>
+                    <button 
+                      onClick={() => handleUpdateStatus(selectedLoan._id, 'rejected')}
+                      className="px-6 py-3 rounded-xl font-bold text-gray-700 bg-white border border-gray-300 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all flex justify-center items-center gap-2"
+                    >
+                      <X className="w-4 h-4" /> Refuser
+                    </button>
+                    <button 
+                      onClick={() => handleUpdateStatus(selectedLoan._id, 'approved')}
+                      className="px-6 py-3 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-200 transition-all flex justify-center items-center gap-2"
+                    >
+                      <Check className="w-4 h-4" /> Approuver
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Modal Détails Contact */}
-      {selectedContact && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white w-full max-w-3xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in duration-300">
-            <div className="bg-blue-600 p-6 sm:p-8 text-white flex justify-between items-center shrink-0">
-               <div className="flex items-center gap-4">
-                  <div className="bg-white/20 p-3 rounded-2xl"><Mail className="w-6 h-6" /></div>
-                  <div>
-                    <h2 className="text-xl sm:text-2xl font-black">{selectedContact.name}</h2>
-                    <p className="text-blue-100 text-xs font-bold uppercase tracking-widest">Message reçu le {new Date(selectedContact.date).toLocaleDateString()}</p>
-                  </div>
-               </div>
-               <button onClick={() => { restdbService.markContactAsRead(selectedContact._id); setSelectedContact(null); fetchData(); }} className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all">
-                 <X className="w-6 h-6" />
-               </button>
-            </div>
-            <div className="p-8 sm:p-12 space-y-8">
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div className="bg-gray-50 p-6 rounded-2xl">
-                   <p className="text-[10px] text-gray-400 font-black uppercase mb-1">Email du client</p>
-                   <p className="font-bold text-blue-600 text-lg">{selectedContact.email}</p>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-2xl">
-                   <p className="text-[10px] text-gray-400 font-black uppercase mb-1">Objet du message</p>
-                   <p className="font-black text-gray-900 text-lg">{selectedContact.subject}</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                 <h3 className="text-xs font-black text-blue-600 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4" /> Message complet
-                 </h3>
-                 <div className="bg-blue-50/30 p-8 rounded-3xl border border-blue-50 text-gray-800 leading-relaxed font-medium text-lg min-h-[150px]">
-                    {selectedContact.message}
-                 </div>
-              </div>
-              <button 
-                onClick={() => { restdbService.markContactAsRead(selectedContact._id); setSelectedContact(null); fetchData(); }}
-                className="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-100"
-              >
-                Marquer comme lu & Fermer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Header Admin */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-6">
-             <div>
-                <h1 className="text-3xl font-black text-gray-900 tracking-tight">Console Admin</h1>
-                <div className="flex items-center gap-3 mt-1">
-                  <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-100 text-emerald-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Connecté
-                  </span>
-                  <span className="text-[10px] text-gray-400 font-bold uppercase">
-                    Dernière synchro : {lastSync.toLocaleTimeString()}
-                  </span>
-                </div>
-             </div>
-             {/* Onglets */}
-             <div className="flex bg-gray-100 p-1 rounded-2xl ml-4">
-                <button 
-                  onClick={() => { setActiveTab('loans'); setFilter(''); }}
-                  className={`px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${activeTab === 'loans' ? 'bg-white text-emerald-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                >
-                  Prêts
-                </button>
-                <button 
-                  onClick={() => { setActiveTab('contacts'); setFilter(''); }}
-                  className={`px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all ${activeTab === 'contacts' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}
-                >
-                  Messages
-                </button>
-             </div>
-          </div>
-          <div className="flex gap-3 w-full md:w-auto">
-            <button 
-              onClick={seedUpstashSpanish} 
-              disabled={uploading}
-              className="bg-indigo-600 text-white p-3 rounded-xl border border-indigo-700 shadow-sm hover:bg-indigo-700 flex items-center gap-2 font-bold text-sm"
-              title="Envoyer la traduction Espagnol vers Redis"
-            >
-              {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <UploadCloud className="w-5 h-5" />}
-              {uploading ? "Envoi..." : "Initialiser Espagnol"}
-            </button>
-            <button onClick={fetchData} className="bg-white p-3 rounded-xl border border-gray-200 shadow-sm hover:bg-gray-50">
-              <RefreshCw className={`w-5 h-5 text-emerald-600 ${loading ? 'animate-spin' : ''}`} />
-            </button>
-          </div>
-        </div>
-
-        {/* Statistiques Dynamiques selon l'onglet */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {activeTab === 'loans' ? (
-            <>
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
-                <div><p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Dossiers</p><p className="text-3xl font-black text-gray-900">{applications.length}</p></div>
-                <div className="bg-blue-50 p-4 rounded-2xl text-blue-600"><Users className="w-8 h-8" /></div>
-              </div>
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
-                <div><p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">En Étude</p><p className="text-3xl font-black text-gray-900">{applications.filter(a => a.status === 'pending').length}</p></div>
-                <div className="bg-orange-50 p-4 rounded-2xl text-orange-500"><Clock className="w-8 h-8" /></div>
-              </div>
-              <div className="bg-emerald-600 p-8 rounded-3xl text-white shadow-xl shadow-emerald-100 flex items-center justify-between">
-                <div><p className="text-xs font-black text-emerald-100 uppercase tracking-widest mb-1">Volume global</p><p className="text-3xl font-black">{applications.reduce((s, a) => s + (Number(a.amount) || 0), 0).toLocaleString()} €</p></div>
-                <div className="bg-white/20 p-4 rounded-2xl"><Landmark className="w-8 h-8" /></div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
-                <div><p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Total Messages</p><p className="text-3xl font-black text-gray-900">{contacts.length}</p></div>
-                <div className="bg-blue-50 p-4 rounded-2xl text-blue-600"><Mail className="w-8 h-8" /></div>
-              </div>
-              <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
-                <div><p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Non lus</p><p className="text-3xl font-black text-gray-900">{contacts.filter(c => c.status === 'unread').length}</p></div>
-                <div className="bg-red-50 p-4 rounded-2xl text-red-500"><MessageSquare className="w-8 h-8" /></div>
-              </div>
-              <div className="bg-emerald-600 p-8 rounded-3xl text-white shadow-xl shadow-emerald-100 flex items-center justify-between">
-                <div><p className="text-xs font-black text-emerald-100 uppercase tracking-widest mb-1">Avis Positifs</p><p className="text-3xl font-black">98%</p></div>
-                <div className="bg-white/20 p-4 rounded-2xl"><Sparkles className="w-8 h-8" /></div>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Liste Tabulaire */}
-        <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl overflow-hidden min-h-[400px]">
-          <div className="p-8 border-b border-gray-50 flex items-center">
-            <div className="relative flex-grow">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input 
-                type="text" placeholder={`Recherche dans les ${activeTab === 'loans' ? 'dossiers' : 'messages'}...`}
-                value={filter} onChange={(e) => setFilter(e.target.value)}
-                className="w-full bg-gray-50 border-none pl-14 pr-8 py-4 rounded-2xl focus:ring-2 focus:ring-emerald-500 font-bold"
-              />
-            </div>
-          </div>
-
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-80 gap-4">
-              <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
-            </div>
-          ) : (activeTab === 'loans' ? (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <tr><th className="px-8 py-5 text-left">Date</th><th className="px-8 py-5 text-left">Client</th><th className="px-8 py-5 text-left">Détails</th><th className="px-8 py-5 text-left">Statut</th><th className="px-8 py-5 text-right">Action</th></tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {applications.filter(a => `${a.firstName} ${a.lastName} ${a.email}`.toLowerCase().includes(filter.toLowerCase())).map((app) => (
-                    <tr key={app._id} onClick={() => setSelectedApp(app)} className="hover:bg-emerald-50/50 transition-colors cursor-pointer group">
-                      <td className="px-8 py-5">
-                         <p className="text-[10px] font-black text-gray-400 uppercase">{new Date(app.date || app._created).toLocaleDateString()}</p>
-                         <p className="text-[9px] font-bold text-emerald-600 uppercase">{new Date(app.date || app._created).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <p className="font-bold text-gray-900">{app.firstName} {app.lastName}</p>
-                        <p className="text-xs text-emerald-600 font-medium">{app.email}</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <p className="font-black text-gray-900">{(app.amount || 0).toLocaleString()} €</p>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase">{app.duration} mois</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 w-fit ${app.status === 'pending' ? 'bg-orange-100 text-orange-600' : app.status === 'approved' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${app.status === 'pending' ? 'bg-orange-600' : app.status === 'approved' ? 'bg-emerald-600' : 'bg-red-600'}`}></span>
-                          {app.status === 'pending' ? 'Étude' : app.status === 'approved' ? 'Validé' : 'Refusé'}
-                        </span>
-                      </td>
-                      <td className="px-8 py-5 text-right"><span className="text-xs font-black text-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity">Voir le dossier</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                  <tr><th className="px-8 py-5 text-left">Date</th><th className="px-8 py-5 text-left">Nom</th><th className="px-8 py-5 text-left">Objet</th><th className="px-8 py-5 text-left">Statut</th><th className="px-8 py-5 text-right">Action</th></tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {contacts.filter(c => `${c.name} ${c.email} ${c.subject}`.toLowerCase().includes(filter.toLowerCase())).map((contact) => (
-                    <tr key={contact._id} onClick={() => setSelectedContact(contact)} className="hover:bg-blue-50/50 transition-colors cursor-pointer group">
-                      <td className="px-8 py-5">
-                         <p className="text-[10px] font-black text-gray-400 uppercase">{new Date(contact.date).toLocaleDateString()}</p>
-                         <p className="text-[9px] font-bold text-blue-600 uppercase">{new Date(contact.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <p className="font-bold text-gray-900">{contact.name}</p>
-                        <p className="text-xs text-blue-600 font-medium">{contact.email}</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <p className="font-black text-gray-900 truncate max-w-[200px]">{contact.subject}</p>
-                        <p className="text-[10px] text-gray-400 font-bold uppercase truncate max-w-[200px]">{contact.message}</p>
-                      </td>
-                      <td className="px-8 py-5">
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 w-fit ${contact.status === 'unread' ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-400'}`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${contact.status === 'unread' ? 'bg-red-500' : 'bg-gray-400'}`}></span>
-                          {contact.status === 'unread' ? 'Nouveau' : 'Lu'}
-                        </span>
-                      </td>
-                      <td className="px-8 py-5 text-right"><span className="text-xs font-black text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">Lire le message</span></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );

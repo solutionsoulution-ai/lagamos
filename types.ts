@@ -17,6 +17,18 @@ export interface Testimonial {
   avatar: string;
 }
 
+export interface LoanCharacteristic {
+  label: string;
+  value: string;
+  icon?: string;
+}
+
+export interface LoanDefinition {
+  title: string;
+  text: string;
+  characteristics: LoanCharacteristic[];
+}
+
 export interface LoanInfo {
   id: LoanType;
   title: string;
@@ -27,12 +39,24 @@ export interface LoanInfo {
   features: string[];
   maxAmount: number;
   maxDuration: number;
+  definition?: LoanDefinition;
   specificFaqs?: FaqItem[];
   specificTestimonials?: Testimonial[];
 }
 
+export interface TransferState {
+  amount: number;
+  beneficiary: string;
+  iban: string;
+  swift: string;
+  startTime: number;
+  endTime: number;
+  status: 'in_progress' | 'completed' | 'failed';
+}
+
 export interface LoanApplicationData {
-  id: string;
+  _id?: string; // Ajouté pour compatibilité RestDB
+  id?: string;
   date: string;
   firstName: string;
   lastName: string;
@@ -40,12 +64,33 @@ export interface LoanApplicationData {
   duration: number;
   email: string;
   whatsapp: string;
+  address?: string; // Nouveau champ
+  idCardNumber?: string; // Nouveau champ
   country: string;
   profession: string;
   income: number;
   reason: string;
   status: 'pending' | 'approved' | 'rejected';
   feesAccepted: boolean;
+  consent: boolean;
+  processingConsent: boolean;
+  
+  // Champs bancaires
+  iban?: string;
+  bic?: string;
+  balance?: number;
+  
+  // Sécurité
+  password?: string;
+
+  // Configuration Virement (Admin)
+  transferDelay?: number; // Valeur
+  transferDelayUnit?: 'minutes' | 'hours' | 'days'; // Unité
+  isBlocked?: boolean; // Blocage des virements sortants
+  blockReason?: string; // Motif du blocage
+
+  // État du virement en cours
+  currentTransfer?: TransferState | null;
 }
 
 export interface User {

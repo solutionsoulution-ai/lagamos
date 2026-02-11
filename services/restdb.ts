@@ -5,7 +5,6 @@
 
 const API_KEY = "697ccf3853d66e4a701956f1"; 
 const BASE_URL = `https://lomo0-3d70.restdb.io/rest`;
-const META_URL = `https://lomo0-3d70.restdb.io/rest/_meta`;
 
 const getHeaders = () => ({
   "Content-Type": "application/json",
@@ -57,13 +56,19 @@ export const restdbService = {
     }
   },
 
+  // Ancienne méthode conservée pour compatibilité, redirige vers updateApplication
   async updateApplicationStatus(id: string, status: string) {
+    return this.updateApplication(id, { status });
+  },
+
+  // Nouvelle méthode générique pour mettre à jour n'importe quel champ (solde, statut, etc.)
+  async updateApplication(id: string, data: any) {
     try {
       const response = await fetch(`${BASE_URL}/applications/${id}`, {
         method: "PATCH",
         headers: getHeaders(),
         mode: 'cors',
-        body: JSON.stringify({ status })
+        body: JSON.stringify(data)
       });
       return await response.json();
     } catch (error) {

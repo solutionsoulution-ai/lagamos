@@ -8,12 +8,14 @@ i18n
   .init({
     debug: false,
     lng: 'fr',
-    fallbackLng: 'fr',
+    fallbackLng: false,
     interpolation: {
       escapeValue: false,
     },
     resources: {
-      fr: { translation: translations.fr }
+      fr: {
+        translation: translations.fr
+      }
     },
     react: {
       useSuspense: false,

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LoanInfo, Language } from '../types';
 import { FIXED_RATE } from '../constants';
-import { ChevronLeft, ShieldCheck, UserCheck, TrendingUp, Zap, HeartHandshake, ArrowDown } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, UserCheck, TrendingUp, Zap, HeartHandshake, ArrowDown, ArrowRight, FileCheck, Info, List, CheckCircle2 } from 'lucide-react';
 import LoanCalculator from '../components/LoanCalculator';
 import FaqSection from '../components/FaqSection';
 import ReviewsSection from '../components/ReviewsSection';
@@ -53,7 +53,7 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
             <div className="space-y-4 sm:space-y-8">
               <h1 className="text-4xl sm:text-8xl font-black text-white leading-tight tracking-tight drop-shadow-2xl">{loan.title}</h1>
               <div className="inline-flex items-center gap-4 bg-white/20 backdrop-blur-md px-6 py-3 rounded-full border border-white/30 text-white font-black text-lg sm:text-2xl">
-                {FIXED_RATE}% <span className="text-xs sm:text-sm uppercase tracking-widest opacity-80 font-bold">Fixe</span>
+                {FIXED_RATE}% <span className="text-xs sm:text-sm uppercase tracking-widest opacity-80 font-bold">{t('loan_detail.fixed')}</span>
               </div>
             </div>
           </div>
@@ -62,8 +62,29 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 sm:-mt-24 relative z-10 space-y-16 sm:space-y-24">
         <div className="grid lg:grid-cols-3 gap-8 sm:gap-12 items-start">
-          <div className="lg:col-span-2 space-y-8">
-            {/* Version compacte de la section Avantages du prêt */}
+          <div className="lg:col-span-2 space-y-6">
+            
+            {/* Bloc CTA */}
+            <div className="bg-white rounded-[2rem] p-6 border border-emerald-100 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+                <div className="flex items-center gap-4 z-10">
+                   <div className="bg-emerald-50 p-4 rounded-2xl">
+                      <FileCheck className="w-8 h-8 text-emerald-600" />
+                   </div>
+                   <div>
+                      <h3 className="text-xl font-black text-gray-900">{t('loan_detail.interested_title')}</h3>
+                      <p className="text-sm text-gray-500 font-medium">{t('loan_detail.interested_subtitle')}</p>
+                   </div>
+                </div>
+                <button 
+                  onClick={onApply}
+                  className="w-full sm:w-auto bg-emerald-600 text-white px-8 py-4 rounded-xl font-black text-sm uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 flex items-center justify-center gap-2 z-10"
+                >
+                  {t('calculator.cta')} <ArrowRight className="w-4 h-4" />
+                </button>
+            </div>
+
+            {/* Avantages */}
             <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-xl border border-gray-100 space-y-6">
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl font-black text-gray-900">{t('loan_detail.advantages')}</h2>
@@ -80,6 +101,47 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
                 </div>
               </div>
             </div>
+
+            {/* NOUVELLE SECTION : Définition & Caractéristiques */}
+            {loan.definition && (
+              <div className="bg-white rounded-[2rem] p-8 shadow-xl border border-gray-100 overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl -z-10"></div>
+                
+                <div className="space-y-8">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-100 p-3 rounded-2xl text-blue-600 shrink-0">
+                      <Info className="w-6 h-6" />
+                    </div>
+                    <div className="space-y-3">
+                      <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">
+                        {loan.definition.title}
+                      </h2>
+                      <p className="text-gray-600 leading-relaxed font-medium text-lg">
+                        {loan.definition.text}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-3xl p-6 sm:p-8">
+                    <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                      <List className="w-4 h-4" /> Caractéristiques clés
+                    </h3>
+                    <div className="grid sm:grid-cols-2 gap-y-6 gap-x-12">
+                      {loan.definition.characteristics.map((char, index) => (
+                        <div key={index} className="flex items-center justify-between border-b border-gray-200 pb-3 last:border-0 last:pb-0">
+                          <span className="font-bold text-gray-500">{char.label}</span>
+                          <span className="font-black text-gray-900 flex items-center gap-2">
+                            {char.value === '2% Fixe' && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                            {char.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
           <div className="sticky top-32">
             <LoanCalculator language={language} onApply={onApply} />
@@ -89,7 +151,7 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
         <section className="bg-white rounded-[3rem] sm:rounded-[5rem] p-8 sm:p-24 shadow-2xl border border-gray-50">
           <div className="grid lg:grid-cols-2 gap-16 sm:gap-24 items-center">
             <div className="relative rounded-[3rem] sm:rounded-[4rem] overflow-hidden shadow-2xl h-[400px] sm:h-[600px]">
-              <img src="https://images.unsplash.com/photo-1573163281538-559e1c48073b?auto=format&fit=crop&q=80&w=1200" className="w-full h-full object-cover" />
+              <img src="https://i.postimg.cc/tJfXY3ZJ/pexels-fauxels-3183197.jpg" className="w-full h-full object-cover" />
               <div className="absolute bottom-10 left-10 right-10 bg-white/95 backdrop-blur-md p-6 rounded-[2.5rem] shadow-2xl flex items-center gap-4">
                 <div className="bg-emerald-600 p-3 rounded-2xl text-white"><Zap className="w-6 h-6" /></div>
                 <p className="text-sm sm:text-lg font-black text-gray-900">Support 24/7 Europfy</p>
@@ -144,6 +206,7 @@ const LoanDetail: React.FC<LoanDetailProps> = ({ loan, onBack, language, onApply
           </div>
         </section>
 
+        {/* Les avis seront maintenant affichés si customReviews contient des données */}
         <ReviewsSection language={language} customReviews={loan.specificTestimonials} />
         <FaqSection language={language} customFaqs={loan.specificFaqs} />
       </div>

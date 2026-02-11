@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { LoanInfo, Language } from '../types';
 import { ICON_MAP } from '../constants';
 import { ArrowRight, Sparkles } from 'lucide-react';
@@ -11,6 +12,7 @@ interface LoanCardProps {
 }
 
 const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
+  const { t } = useTranslation();
   const IconComponent = ICON_MAP[loan.icon];
 
   return (
@@ -32,7 +34,7 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
       <div className="absolute top-3 left-3 sm:top-6 sm:left-6">
         <div className="bg-white/10 backdrop-blur-md border border-white/20 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full flex items-center gap-1 sm:gap-2">
           <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400" />
-          <span className="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-widest">2% Fixe</span>
+          <span className="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-widest">{t('loans_section.fixed_rate')}</span>
         </div>
       </div>
 
@@ -49,7 +51,7 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onClick, language }) => {
         
         {/* Hide separator/Discover on mobile to save vertical space */}
         <div className="hidden sm:flex pt-4 items-center justify-between border-t border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-500">
-          <span className="text-emerald-400 text-xs font-black uppercase tracking-[0.2em]">Découvrir l'offre</span>
+          <span className="text-emerald-400 text-xs font-black uppercase tracking-[0.2em]">{t('loans_section.discover')}</span>
           <div className="bg-white text-emerald-600 p-2 rounded-full">
             <ArrowRight className="w-4 h-4" />
           </div>

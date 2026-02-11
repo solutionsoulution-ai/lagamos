@@ -1,4 +1,3 @@
-
 /**
  * REDIS SERVICE - Upstash
  * Utilisé uniquement pour le stockage et la récupération des traductions JSON.
@@ -40,6 +39,36 @@ export const redisService = {
     } catch (error) {
       console.error("Erreur chargement traduction depuis Redis:", error);
       return null;
+    }
+  },
+
+  /**
+   * Enregistre le pack de langue dans Redis.
+   * @param lang Code langue (ex: 'es', 'de')
+   * @param data Objet JSON de traduction
+   */
+  async setTranslation(lang: string, data: any) {
+    try {
+      // On convertit l'objet data en chaîne JSON pour le stockage
+      const value = JSON.stringify(data);
+      
+      const response = await fetch(`${UPSTASH_REDIS_REST_URL}/set/${lang}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${UPSTASH_REDIS_REST_TOKEN}`,
+          "Content-Type": "text/plain" // Upstash raw body
+        },
+        body: value
+      });
+
+      if (!response.ok) {
+        throw new Error(`Redis set error: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error("Erreur enregistrement traduction vers Redis:", error);
+      throw error;
     }
   }
 };

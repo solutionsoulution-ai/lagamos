@@ -1,7 +1,7 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Language } from '../types';
-import { translations } from '../translations';
 import { ShieldCheck, Target, Zap, ChevronRight, CheckCircle2, TrendingUp, HeartHandshake, Shield, Eye } from 'lucide-react';
 import Logo from '../components/Logo';
 
@@ -11,11 +11,22 @@ interface AboutProps {
 }
 
 const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
-  const t = translations[language].about_page;
+  const { t } = useTranslation();
+  const pageT = t('about_page', { returnObjects: true }) as any;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const featureIcons: Record<string, any> = { Eye, Shield, HeartHandshake };
+
+  const features = useMemo(() => {
+    return Array.isArray(pageT?.features) ? pageT.features : [];
+  }, [pageT]);
+
+  const values = useMemo(() => {
+    return Array.isArray(pageT?.values) ? pageT.values : [];
+  }, [pageT]);
 
   return (
     <div className="pt-32 pb-24 bg-white overflow-hidden">
@@ -27,27 +38,27 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
           <div className="space-y-8 relative">
             <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold border border-emerald-100">
                <Logo className="w-5 h-5" />
-               {t.title}
+               {pageT.title}
             </div>
             <h1 className="text-5xl sm:text-7xl font-black text-gray-900 leading-tight">
-              {t.subtitle}
+              {pageT.subtitle}
             </h1>
             <p className="text-xl text-gray-600 leading-relaxed font-medium">
-              {t.mission_text}
+              {pageT.mission_text}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button 
                 onClick={() => onNavigate('loan-application')}
                 className="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3"
               >
-                Commencer
+                {pageT.cta_start}
                 <ChevronRight className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => onNavigate('contact')}
                 className="bg-gray-100 text-gray-900 px-8 py-4 rounded-2xl font-black text-lg hover:bg-gray-200 transition-all text-center"
               >
-                Contact
+                {pageT.cta_contact}
               </button>
             </div>
           </div>
@@ -72,19 +83,18 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-12 mb-32">
-           {[
-             { title: "Transparence", icon: Eye, color: "bg-emerald-50 text-emerald-600", desc: "Des conditions claires dès le premier jour." },
-             { title: "Sécurité", icon: Shield, color: "bg-teal-50 text-teal-600", desc: "Une protection bancaire de haut niveau." },
-             { title: "Accompagnement", icon: HeartHandshake, color: "bg-emerald-50 text-emerald-600", desc: "Des experts à votre écoute 24/7." }
-           ].map((val, i) => (
-             <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all text-center space-y-4">
-                <div className={`${val.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6`}>
-                   <val.icon className="w-8 h-8" />
-                </div>
-                <h3 className="text-2xl font-black text-gray-900">{val.title}</h3>
-                <p className="text-gray-500 font-medium">{val.desc}</p>
-             </div>
-           ))}
+           {features.map((val: any, i: number) => {
+             const Icon = featureIcons[val.icon] || Eye;
+             return (
+               <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all text-center space-y-4">
+                  <div className="bg-emerald-50 text-emerald-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                     <Icon className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-2xl font-black text-gray-900">{val.title}</h3>
+                  <p className="text-gray-500 font-medium">{val.desc}</p>
+               </div>
+             );
+           })}
         </div>
 
         <div className="space-y-24">
@@ -98,22 +108,22 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
                  <div className="absolute inset-0 bg-emerald-600/20 backdrop-blur-[2px]"></div>
                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 p-8 rounded-[3rem] shadow-2xl text-center space-y-4 max-w-xs">
                     <Target className="w-12 h-12 text-emerald-600 mx-auto" />
-                    <p className="text-xl font-black text-gray-900">Vision 2030</p>
-                    <p className="text-sm text-gray-500 font-medium leading-relaxed">Devenir le premier réseau de crédit éthique en Europe.</p>
+                    <p className="text-xl font-black text-gray-900">{pageT.vision_badge_title}</p>
+                    <p className="text-sm text-gray-500 font-medium leading-relaxed">{pageT.vision_badge_desc}</p>
                  </div>
               </div>
               <div className="order-1 lg:order-2 space-y-12">
                  <div className="space-y-6">
-                    <h2 className="text-4xl font-black text-gray-900 leading-tight">{t.vision_title}</h2>
+                    <h2 className="text-4xl font-black text-gray-900 leading-tight">{pageT.vision_title}</h2>
                     <p className="text-lg text-gray-600 leading-relaxed font-medium">
-                       {t.vision_text}
+                       {pageT.vision_text}
                     </p>
                  </div>
                  
                  <div className="space-y-8">
-                    <h3 className="text-2xl font-black text-gray-900">{t.values_title}</h3>
+                    <h3 className="text-2xl font-black text-gray-900">{pageT.values_title}</h3>
                     <div className="grid gap-6">
-                       {(t.values || []).map((val: any, i: number) => (
+                       {values.map((val: any, i: number) => (
                          <div key={i} className="flex gap-6 items-start group">
                             <div className="bg-emerald-50 w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 transition-colors shadow-sm">
                                <CheckCircle2 className="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors" />
@@ -142,9 +152,9 @@ const About: React.FC<AboutProps> = ({ language, onNavigate }) => {
               <div className="bg-emerald-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-2xl animate-pulse">
                  <Target className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight">Engagés pour une finance éthique.</h2>
+              <h2 className="text-3xl lg:text-5xl font-black text-white leading-tight">{pageT.commitment_title}</h2>
               <p className="text-gray-400 text-lg font-medium leading-relaxed">
-                 Chaque prêt accordé chez Europfy respecte des critères de durabilité et d'éthique sociale stricts. Nous ne finançons pas seulement des projets, nous construisons une économie plus humaine.
+                 {pageT.commitment_text}
               </p>
            </div>
         </div>

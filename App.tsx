@@ -18,10 +18,10 @@ import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
 import Faq from './pages/Faq';
 import LoanCalculator from './components/LoanCalculator';
-import { getLoansData, buildLoansData } from './constants';
-import { translations } from './translations';
+import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
 import { redisService } from './services/redis';
+import { translations } from './translations';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -31,16 +31,19 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
+  
+  // Nouvel état pour passer les infos de compte générées à la page de succès
+  const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
+  // Chargement initial des données FR (local)
   useEffect(() => {
-    // Chargement initial (Français par défaut)
-    setLoans(getLoansData('fr'));
-    if (translations['fr']?.blog?.posts) {
-      setPosts(translations['fr'].blog.posts);
+    // Initialiser les données FR au montage
+    setLoans(buildLoansData(translations.fr.loan_specifics));
+    if (translations.fr.blog && translations.fr.blog.posts) {
+      setPosts(translations.fr.blog.posts);
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -51,48 +54,44 @@ const App: React.FC = () => {
   }, []);
 
   const handleLanguageChange = async (lang: Language) => {
-    if (lang === currentLanguage) return;
-    
+    // Si c'est français, on utilise les données locales instantanément
+    if (lang === 'fr') {
+      await i18n.changeLanguage('fr');
+      setCurrentLanguage('fr');
+      setLoans(buildLoansData(translations.fr.loan_specifics));
+      if (translations.fr.blog?.posts) {
+        setPosts(translations.fr.blog.posts);
+      }
+      return;
+    }
+
+    // Pour les autres langues, on cherche dans Redis
     setIsLoading(true);
     try {
-      // 1. Vérifier si la traduction est déjà en mémoire
-      let langData = translations[lang];
+      console.log(`Chargement de la langue ${lang} depuis Redis...`);
+      const dbData = await redisService.getTranslation(lang);
+      
+      if (dbData) {
+        // Injection dans i18next
+        i18n.addResourceBundle(lang, 'translation', dbData, true, true);
+        await i18n.changeLanguage(lang);
+        setCurrentLanguage(lang);
 
-      // 2. Sinon, aller chercher dans Upstash Redis
-      if (!langData) {
-        console.log(`Chargement de la langue ${lang} depuis Redis...`);
-        const dbData = await redisService.getTranslation(lang);
-        
-        if (dbData) {
-          // Mise en cache locale
-          translations[lang] = dbData;
-          langData = dbData;
-          
-          // Injection dans i18next
-          i18n.addResourceBundle(lang, 'translation', dbData, true, true);
-        } else {
-          console.warn(`Traduction introuvable pour : ${lang}`);
-          // On continue quand même pour changer l'interface, même si certaines trads manquent
-        }
-      }
-
-      // 3. Appliquer le changement de langue
-      await i18n.changeLanguage(lang);
-      setCurrentLanguage(lang);
-
-      // 4. Mettre à jour les données dynamiques (Prêts, Blog) si disponibles
-      if (langData) {
-        if (langData.loan_specifics) {
-          setLoans(buildLoansData(langData.loan_specifics));
+        // Mise à jour des données dynamiques
+        if (dbData.loan_specifics) {
+          setLoans(buildLoansData(dbData.loan_specifics));
         }
         
-        if (langData.blog && langData.blog.posts) {
-          setPosts(langData.blog.posts);
+        if (dbData.blog && dbData.blog.posts) {
+          setPosts(dbData.blog.posts);
         }
+      } else {
+        console.warn(`Traduction introuvable pour : ${lang}. Assurez-vous d'avoir injecté les données via l'Admin.`);
+        alert(`La langue ${lang.toUpperCase()} n'est pas encore disponible. Veuillez l'initialiser depuis le panneau Admin.`);
       }
-
     } catch (error) {
       console.error("Erreur lors du changement de langue :", error);
+      alert("Erreur de connexion lors du chargement de la langue.");
     } finally {
       setIsLoading(false);
     }
@@ -152,7 +151,7 @@ const App: React.FC = () => {
                   <div className="w-8 h-8 bg-white rounded-full"></div>
                </div>
             </div>
-            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
+            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement de la langue...</p>
           </div>
         </div>
       );
@@ -186,23 +185,46 @@ const App: React.FC = () => {
     }
 
     if (currentPage === 'blog-detail' && selectedPostId) {
-      const postFromLocal = posts.find(p => p.id === selectedPostId);
-      if (postFromLocal) {
-        return <BlogPostDetail postId={selectedPostId} language={currentLanguage} onBack={() => handleNavigate('blog')} />;
-      }
+      return <BlogPostDetail postId={selectedPostId} language={currentLanguage} onBack={() => handleNavigate('blog')} onNavigate={handleNavigate} />;
+    }
+
+    // Gestion des pages légales
+    if (currentPage === 'legal-terms' || currentPage === 'legal-privacy' || currentPage === 'legal-cookies') {
+      const type = currentPage.replace('legal-', '') as 'terms' | 'privacy' | 'cookies';
+      return <Legal type={type} language={currentLanguage} onBack={() => handleNavigate('home')} />;
     }
 
     switch (currentPage) {
       case 'home':
-        return <Home onSelectLoan={handleSelectLoan} onNavigate={handleNavigate} language={currentLanguage} loans={loans} />;
+        return (
+          <Home 
+            onSelectLoan={handleSelectLoan} 
+            onNavigate={handleNavigate} 
+            language={currentLanguage} 
+            loans={loans} 
+            user={user}
+            onLogout={handleLogout}
+            onLanguageChange={handleLanguageChange}
+          />
+        );
       case 'about':
         return <About language={currentLanguage} onNavigate={handleNavigate} />;
       case 'blog':
-        return <Blog language={currentLanguage} onSelectPost={handleSelectPost} />;
+        return <Blog language={currentLanguage} onSelectPost={handleSelectPost} postsData={posts} />;
       case 'loan-application':
-        return <LoanApplication language={currentLanguage} onBack={() => handleNavigate('home')} onSuccess={() => setCurrentPage('success')} onNavigate={handleNavigate} />;
+        return (
+          <LoanApplication 
+            language={currentLanguage} 
+            onBack={() => handleNavigate('home')} 
+            onSuccess={(creds) => {
+              setTempAccount(creds);
+              setCurrentPage('success');
+            }} 
+            onNavigate={handleNavigate} 
+          />
+        );
       case 'success':
-        return <Success language={currentLanguage} onNavigate={handleNavigate} />;
+        return <Success language={currentLanguage} onNavigate={handleNavigate} tempAccount={tempAccount} />;
       case 'contact':
         return <Contact language={currentLanguage} onNavigate={handleNavigate} />;
       case 'faq':
@@ -219,26 +241,44 @@ const App: React.FC = () => {
             </div>
           </div>
         );
+      case 'help':
+        return <Help language={currentLanguage} onBack={() => handleNavigate('login')} />;
       default:
-        return <Home onSelectLoan={handleSelectLoan} onNavigate={handleNavigate} language={currentLanguage} loans={loans} />;
+        return (
+          <Home 
+            onSelectLoan={handleSelectLoan} 
+            onNavigate={handleNavigate} 
+            language={currentLanguage} 
+            loans={loans} 
+            user={user}
+            onLogout={handleLogout}
+            onLanguageChange={handleLanguageChange}
+          />
+        );
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navbar 
-        onNavigate={handleNavigate} 
-        currentPage={currentPage} 
-        user={user} 
-        onLogout={handleLogout} 
-        isTransparent={['home', 'loan-detail'].includes(currentPage)}
-        currentLanguage={currentLanguage}
-        onLanguageChange={handleLanguageChange}
-      />
+      {currentPage !== 'home' && !currentPage.startsWith('legal-') && (
+        <Navbar 
+          onNavigate={handleNavigate} 
+          currentPage={currentPage} 
+          user={user} 
+          onLogout={handleLogout} 
+          isTransparent={currentPage === 'loan-detail'}
+          currentLanguage={currentLanguage}
+          onLanguageChange={handleLanguageChange}
+        />
+      )}
+      {/* On inclut la navbar sur home avec la logique spécifique de Home.tsx */}
+      
       <main className="flex-grow">
         {renderContent()}
       </main>
-      <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} />
+      
+      {/* Footer affiché partout sauf peut-être sur certaines pages admin si nécessaire, ici partout */}
+      <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} loans={loans} />
     </div>
   );
 };

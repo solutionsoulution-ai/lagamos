@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { LogOut, User, Menu, X, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +13,7 @@ interface NavbarProps {
   isTransparent?: boolean;
   currentLanguage?: Language;
   onLanguageChange?: (lang: Language) => void;
+  position?: 'fixed' | 'absolute' | 'relative';
 }
 
 const Navbar: React.FC<NavbarProps> = ({ 
@@ -21,7 +23,8 @@ const Navbar: React.FC<NavbarProps> = ({
   onLogout,
   isTransparent = false,
   currentLanguage = 'fr',
-  onLanguageChange
+  onLanguageChange,
+  position = 'fixed'
 }) => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -77,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const currentFlag = languages.find(l => l.code === currentLanguage)?.flag || '🇫🇷';
 
   return (
-    <nav className={`fixed w-full z-[100] transition-all duration-500 ${bgColor}`}>
+    <nav className={`${position} w-full z-[100] transition-all duration-500 ${bgColor}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           <div className="flex items-center space-x-2 cursor-pointer group" onClick={() => onNavigate('home')}>

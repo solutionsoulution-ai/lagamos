@@ -1,0 +1,14 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo_gradient_dynamic" x1="0" y1="100" x2="100" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10B981" />
+      <stop offset="1" stop-color="#0F766E" />
+    </linearGradient>
+  </defs>
+  <g fill="url(#logo_gradient_dynamic)">
+    <path d="M48 48V10C27.0132 10 10 27.0132 10 48H48Z" />
+    <path d="M52 48V10C72.9868 10 90 27.0132 90 48H52Z" />
+    <path d="M48 52H10C10 72.9868 27.0132 90 48 90V52Z" />
+    <circle cx="71" cy="71" r="19" />
+  </g>
+</svg>
