@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/Navbar';
@@ -17,6 +16,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
 import Faq from './pages/Faq';
+import AIAdvisor from './components/AIAdvisor';
 import LoanCalculator from './components/LoanCalculator';
 import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
@@ -34,12 +34,9 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
   
-  // Nouvel état pour passer les infos de compte générées à la page de succès
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
-  // Chargement initial des données FR (local)
   useEffect(() => {
-    // Initialiser les données FR au montage
     setLoans(buildLoansData(translations.fr.loan_specifics));
     if (translations.fr.blog && translations.fr.blog.posts) {
       setPosts(translations.fr.blog.posts);
@@ -54,7 +51,6 @@ const App: React.FC = () => {
   }, []);
 
   const handleLanguageChange = async (lang: Language) => {
-    // Si c'est français, on utilise les données locales instantanément
     if (lang === 'fr') {
       await i18n.changeLanguage('fr');
       setCurrentLanguage('fr');
@@ -65,33 +61,23 @@ const App: React.FC = () => {
       return;
     }
 
-    // Pour les autres langues, on cherche dans Redis
     setIsLoading(true);
     try {
-      console.log(`Chargement de la langue ${lang} depuis Redis...`);
       const dbData = await redisService.getTranslation(lang);
       
       if (dbData) {
-        // Injection dans i18next
         i18n.addResourceBundle(lang, 'translation', dbData, true, true);
         await i18n.changeLanguage(lang);
         setCurrentLanguage(lang);
-
-        // Mise à jour des données dynamiques
         if (dbData.loan_specifics) {
           setLoans(buildLoansData(dbData.loan_specifics));
         }
-        
         if (dbData.blog && dbData.blog.posts) {
           setPosts(dbData.blog.posts);
         }
-      } else {
-        console.warn(`Traduction introuvable pour : ${lang}. Assurez-vous d'avoir injecté les données via l'Admin.`);
-        alert(`La langue ${lang.toUpperCase()} n'est pas encore disponible. Veuillez l'initialiser depuis le panneau Admin.`);
       }
     } catch (error) {
       console.error("Erreur lors du changement de langue :", error);
-      alert("Erreur de connexion lors du chargement de la langue.");
     } finally {
       setIsLoading(false);
     }
@@ -122,7 +108,9 @@ const App: React.FC = () => {
       }
     } else {
       setCurrentPage(page);
-      setSelectedLoanId(null);
+      if (page !== 'loan-application' && page !== 'loan-detail') {
+          setSelectedLoanId(null);
+      }
       setSelectedPostId(null);
       window.scrollTo(0, 0);
     }
@@ -145,13 +133,8 @@ const App: React.FC = () => {
       return (
         <div className="h-screen flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-6">
-            <div className="relative">
-               <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-               <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 bg-white rounded-full"></div>
-               </div>
-            </div>
-            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement de la langue...</p>
+            <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
+            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
           </div>
         </div>
       );
@@ -188,7 +171,6 @@ const App: React.FC = () => {
       return <BlogPostDetail postId={selectedPostId} language={currentLanguage} onBack={() => handleNavigate('blog')} onNavigate={handleNavigate} />;
     }
 
-    // Gestion des pages légales
     if (currentPage === 'legal-terms' || currentPage === 'legal-privacy' || currentPage === 'legal-cookies') {
       const type = currentPage.replace('legal-', '') as 'terms' | 'privacy' | 'cookies';
       return <Legal type={type} language={currentLanguage} onBack={() => handleNavigate('home')} />;
@@ -215,6 +197,7 @@ const App: React.FC = () => {
         return (
           <LoanApplication 
             language={currentLanguage} 
+            loanType={selectedLoanId || 'personnel'}
             onBack={() => handleNavigate('home')} 
             onSuccess={(creds) => {
               setTempAccount(creds);
@@ -271,13 +254,14 @@ const App: React.FC = () => {
           onLanguageChange={handleLanguageChange}
         />
       )}
-      {/* On inclut la navbar sur home avec la logique spécifique de Home.tsx */}
       
       <main className="flex-grow">
         {renderContent()}
       </main>
+
+      {/* Conseiller AI Global */}
+      <AIAdvisor />
       
-      {/* Footer affiché partout sauf peut-être sur certaines pages admin si nécessaire, ici partout */}
       <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} loans={loans} />
     </div>
   );

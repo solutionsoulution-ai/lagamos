@@ -23,7 +23,7 @@ export const basePackFR = {
   feature_highlight: {
     badge: "Transparence totale",
     title: "La clarté au service de vos ambitions",
-    p: "Nous avons supprimé les frais de dossier cachés et les conditions complexes. Chez Europfy, vous bénéficiez d'une visibilité totale sur votre financement dès le premier jour.",
+    p: "Nous avons supprimé les frais de dossier cachés et les conditions complexes. Chez Europcapital, vous bénéficiez d'une visibilité totale sur votre financement dès le premier jour.",
     audit_title: "Audit 2026",
     audit_subtitle: "100% Conforme",
     items: [
@@ -53,7 +53,7 @@ export const basePackFR = {
   },
   about_us_section: {
     badge: "Qui sommes-nous ?",
-    title: "L'Esprit Europfy",
+    title: "L'Esprit Europcapital",
     p: "Nous transformons le prêt bancaire en un service simple, humain et accessible à chaque citoyen européen.",
     trust_title: "Confiance Européenne",
     trust_subtitle: "Plus de 50 000 projets financés depuis 2018.",
@@ -65,7 +65,7 @@ export const basePackFR = {
       },
       {
         title: "Notre Histoire",
-        desc: "Fondé à Lyon en 2018, Europfy est devenu en quelques années le leader du prêt éthique en ligne.",
+        desc: "Fondé à Lyon en 2018, Europcapital est devenu en quelques années le leader du prêt éthique en ligne.",
         icon: "History"
       },
       {
@@ -100,7 +100,7 @@ export const basePackFR = {
   who_we_are: {
     title: "Qui sommes-nous ?",
     subtitle: "Une nouvelle vision du crédit.",
-    p1: "Europfy est né d'une volonté de rendre le crédit plus accessible et plus juste.",
+    p1: "Europcapital est né d'une volonté de rendre le crédit plus accessible et plus juste.",
     p2: "En supprimant les intermédiaires complexes, nous proposons un taux fixe de 2% pour tous.",
     values: [
       { title: "Éthique", desc: "Aucun frais caché, une transparence totale." },
@@ -110,7 +110,7 @@ export const basePackFR = {
     btn: "Notre histoire"
   },
   about_page: {
-    title: "À Propos d'Europfy",
+    title: "À Propos d'Europcapital",
     subtitle: "Une finance plus humaine et accessible.",
     mission_text: "Notre mission est de briser les barrières bancaires traditionnelles en offrant un financement équitable à 2% pour tous les Européens, sans discrimination.",
     vision_title: "Notre Vision 2030",
@@ -131,32 +131,32 @@ export const basePackFR = {
     vision_badge_title: "Vision 2030",
     vision_badge_desc: "Devenir le premier réseau de crédit éthique en Europe.",
     commitment_title: "Engagés pour une finance éthique.",
-    commitment_text: "Chaque prêt accordé chez Europfy respecte des critères de durabilité et d'éthique sociale stricts. Nous ne finançons pas seulement des projets, nous construisons une économie plus humaine."
+    commitment_text: "Chaque prêt accordé chez Europcapital respecte des critères de durabilité et d'éthique sociale stricts. Nous ne finançons pas seulement des projets, nous construisons une économie plus humaine."
   },
   legal: {
     terms: {
-      title: "Mentions Légales - Europfy",
+      title: "Mentions Légales - Europcapital",
       subtitle: "En vigueur au 29 janvier 2026",
       sections: [
         { 
           icon: "Building", 
           h3: "1. Identification de l'Éditeur et Informations Institutionnelles", 
-          p: "Le présent site internet, accessible à l’adresse [URL du site], est la propriété exclusive de la société Europfy SAS, opérant sous le nom commercial Europfy. Europfy est une institution spécialisée dans l'intermédiation financière à l'échelle européenne.\n\nDénomination sociale : Europfy SAS\nSiège social : 1 Place de la Bourse, 69002 Lyon, France\nCapital social : [Montant du capital] euros\nImmatriculation : Inscrite au Registre du Commerce et des Sociétés (RCS) de Lyon sous le numéro 891 733 009.\nIdentifiant SIRET : 891 785 359 01527\n\nRégulation et Agrément : Europfy SAS est enregistrée auprès de l'ORIAS sous le numéro 21950679 en qualité d'Intermédiaire en Opérations de Banque et en Services de Paiement (IOBSP). Cette immatriculation garantit que l'entreprise répond aux exigences de compétence, de capacité professionnelle et de responsabilité civile imposées par les autorités financières européennes.\n\nAutorité de Tutelle : Nos activités sont placées sous le contrôle de l'Autorité de Contrôle Prudentiel et de Résolution (ACPR), située au 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09.\n\nContact : Pour toute demande d'ordre juridique ou administratif, vous pouvez nous contacter via l'adresse e-mail dédiée : [email_contact@europfy.com]." 
+          p: "Le présent site internet, accessible à l’adresse [URL du site], est la propriété exclusive de la société Europcapital SAS, opérant sous le nom commercial Europcapital. Europcapital est une institution spécialisée dans l'intermédiation financière à l'échelle européenne.\n\nDénomination sociale : Europcapital SAS\nSiège social : 1 Place de la Bourse, 69002 Lyon, France\nCapital social : [Montant du capital] euros\nImmatriculation : Inscrite au Registre du Commerce et des Sociétés (RCS) de Lyon sous le numéro 891 733 009.\nIdentifiant SIRET : 891 785 359 01527\n\nRégulation et Agrément : Europcapital SAS est enregistrée auprès de l'ORIAS sous le numéro 21950679 en qualité d'Intermédiaire en Opérations de Banque et en Services de Paiement (IOBSP). Cette immatriculation garantit que l'entreprise répond aux exigences de compétence, de capacité professionnelle et de responsabilité civile imposées par les autorités financières européennes.\n\nAutorité de Tutelle : Nos activités sont placées sous le contrôle de l'Autorité de Contrôle Prudentiel et de Résolution (ACPR), située au 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09.\n\nContact : Pour toute demande d'ordre juridique ou administratif, vous pouvez nous contacter via l'adresse e-mail dédiée : [email_contact@europcapital.com]." 
         },
         { 
           icon: "UserCheck", 
           h3: "2. Directeur de la Publication et Responsabilité éditoriale", 
-          p: "Le Directeur de la Publication est [Nom complet], agissant en qualité de Représentant Légal de Europfy SAS. Il est responsable de la stratégie de communication et de la vérification de la véracité des offres financières présentées sur le site, notamment le maintien de l'offre commerciale unique à taux fixe de 2%." 
+          p: "Le Directeur de la Publication est [Nom complet], agissant en qualité de Représentant Légal de Europcapital SAS. Il est responsable de la stratégie de communication et de la vérification de la véracité des offres financières présentées sur le site, notamment le maintien de l'offre commerciale unique à taux fixe de 2%." 
         },
         { 
           icon: "Lock", 
           h3: "3. Propriété Intellectuelle et Droits d'Auteur", 
-          p: "L’ensemble de la structure du site Europfy, incluant de manière non exhaustive les codes sources, l'architecture graphique, les bases de données, les algorithmes de simulation, les logotypes, les textes, les icônes et les éléments multimédias, est protégé par les lois internationales sur la propriété intellectuelle et le droit d'auteur.\n\nToute extraction, reproduction, représentation, adaptation ou modification, qu'elle soit totale ou partielle, par quelque procédé que ce soit, est strictement interdite sans l'accord préalable, écrit et exprès de Europfy SAS. Le non-respect de cette clause constitue une contrefaçon pouvant engager la responsabilité civile et pénale de l'auteur de l'infraction, conformément aux articles L.335-2 et suivants du Code de la propriété intellectuelle." 
+          p: "L’ensemble de la structure du site Europcapital, incluant de manière non exhaustive les codes sources, l'architecture graphique, les bases de données, les algorithmes de simulation, les logotypes, les textes, les icônes et les éléments multimédias, est protégé par les lois internationales sur la propriété intellectuelle et le droit d'auteur.\n\nToute extraction, reproduction, représentation, adaptation ou modification, qu'elle soit totale ou partielle, par quelque procédé que ce soit, est strictement interdite sans l'accord préalable, écrit et exprès de Europcapital SAS. Le non-respect de cette clause constitue une contrefaçon pouvant engager la responsabilité civile et pénale de l'auteur de l'infraction, conformément aux articles L.335-2 et suivants du Code de la propriété intellectuelle." 
         },
         { 
           icon: "FileText", 
           h3: "4. Conditions d'Utilisation et Nature de l'Offre", 
-          p: "Le site Europfy propose des outils de simulation de prêt au taux fixe de 2%. Les informations obtenues via ces simulateurs ne constituent pas une offre contractuelle mais une indication pré-contractuelle. Europfy se réserve le droit de modifier les caractéristiques de ses offres à tout moment, sous réserve du respect des contrats déjà signés. L'acceptation de tout dossier de financement est soumise à l'analyse de la solvabilité de l'emprunteur et au paiement des frais de dossier prévus par la société après validation définitive." 
+          p: "Le site Europcapital propose des outils de simulation de prêt au taux fixe de 2%. Les informations obtenues via ces simulateurs ne constituent pas une offre contractuelle mais une indication pré-contractuelle. Europcapital se réserve le droit de modifier les caractéristiques de ses offres à tout moment, sous réserve du respect des contrats déjà signés. L'acceptation de tout dossier de financement est soumise à l'analyse de la solvabilité de l'emprunteur et au paiement des frais de dossier prévus par la société après validation définitive." 
         }
       ]
     },
@@ -167,7 +167,7 @@ export const basePackFR = {
         { 
           icon: "Shield", 
           h3: "Engagement Général", 
-          p: "Europfy (Europfy SAS) place la protection de la vie privée au cœur de ses services financiers. En tant qu'opérateur européen, nous appliquons strictement le Règlement Général sur la Protection des Données (RGPD 2016/679)." 
+          p: "Europcapital (Europcapital SAS) place la protection de la vie privée au cœur de ses services financiers. En tant qu'opérateur européen, nous appliquons strictement le Règlement Général sur la Protection des Données (RGPD 2016/679)." 
         },
         { 
           icon: "Database", 
@@ -187,7 +187,7 @@ export const basePackFR = {
         { 
           icon: "Scale", 
           h3: "4. Vos Droits", 
-          p: "Vous disposez d'un droit d'accès, de rectification, d'effacement et d'opposition. Contactez notre DPO à : [email_dpo@europfy.com]." 
+          p: "Vous disposez d'un droit d'accès, de rectification, d'effacement et d'opposition. Contactez notre DPO à : [email_dpo@europcapital.com]." 
         }
       ]
     },
@@ -197,8 +197,8 @@ export const basePackFR = {
       sections: [
         { 
           icon: "Cookie", 
-          h3: "1. Usage des Cookies sur Europfy", 
-          p: "Afin de sécuriser vos simulations à 2%, le site Europfy utilise des cookies pour reconnaître votre navigation et mémoriser vos saisies." 
+          h3: "1. Usage des Cookies sur Europcapital", 
+          p: "Afin de sécuriser vos simulations à 2%, le site Europcapital utilise des cookies pour reconnaître votre navigation et mémoriser vos saisies." 
         },
         { 
           icon: "Settings", 
@@ -228,7 +228,7 @@ export const basePackFR = {
       privacy: 'Vie privée', 
       cookies: 'Cookies' 
     }, 
-    rights: '© 2026 Europfy. Tous droits réservés.' 
+    rights: '© 2026 Europcapital. Tous droits réservés.' 
   },
   loans_section: { 
     h2: 'Nos Solutions de Financement', 
@@ -248,10 +248,10 @@ export const basePackFR = {
     interested_subtitle: "Réponse de principe immédiate en ligne.",
     labels: { maxAmount: 'Montant Max', maxDuration: 'Durée Max' }, 
     best_offer: "La meilleure offre", 
-    why_title: "Pourquoi choisir Europfy ?", 
+    why_title: "Pourquoi choisir Europcapital ?", 
     why_subtitle: "Le financement intelligent pour votre succès.", 
     why_props: [
-      { title: "Europfy Secure", desc: "Taux fixe de 2% garanti par contrat." },
+      { title: "Europcapital Secure", desc: "Taux fixe de 2% garanti par contrat." },
       { title: "Analyse Humaine", desc: "Votre dossier est étudié par un expert." },
       { title: "Zéro Frais Cachés", desc: "Transparence totale sur les conditions." }
     ],
@@ -278,7 +278,7 @@ export const basePackFR = {
     q1: "Quelles sont les conditions d'éligibilité ?", a1: "Être majeur, résider en Europe et justifier de revenus stables permettant le remboursement.",
     q2: "Quels documents dois-je fournir ?", a2: "Une pièce d'identité valide, un justificatif de domicile de moins de 3 mois et vos derniers relevés bancaires.",
     q3: "Quel est le délai de réponse définitif ?", a3: "Après réception de votre dossier complet, nous apportons une réponse définitive sous 24h ouvrées.",
-    q4: "Le taux de 2% est-il vraiment fixe ?", a4: "Oui, Europfy s'engage contractuellement sur un taux de 2% fixe qui ne variera jamais pendant toute la durée du prêt."
+    q4: "Le taux de 2% est-il vraiment fixe ?", a4: "Oui, Europcapital s'engage contractuellement sur un taux de 2% fixe qui ne variera jamais pendant toute la durée du prêt."
   },
   faq_page: {
     title: "Centre d'aide",
@@ -294,7 +294,7 @@ export const basePackFR = {
       title: "Nos coordonnées", 
       address: "1 Place de la Bourse, 69002 Lyon, France", 
       phone: "+33 7 54 09 50 27", 
-      email: "contact@europfy.com", 
+      email: "contact@europcapital.com", 
       hours: "Lundi - Vendredi: 09:00 - 18:00" 
     },
     help: { 
@@ -427,7 +427,7 @@ export const basePackFR = {
   success_page: {
     title: "Demande Envoyée !",
     subtitle: "Votre dossier est désormais entre les mains de nos experts.",
-    message: "Nous avons bien reçu votre formulaire. Un conseiller Europfy va analyser vos pièces et vous contactera sous 24h.",
+    message: "Nous avons bien reçu votre formulaire. Un conseiller Europcapital va analyser vos pièces et vous contactera sous 24h.",
     steps_title: "Prochaines étapes",
     steps: ["Vérification de votre éligibilité", "Appel de confirmation d'un conseiller", "Envoi du contrat numérique"],
     trust_labels: { secured: "Sécurisé", email: "Email de suivi", advisor: "Conseiller dédié" },
@@ -448,9 +448,9 @@ export const basePackFR = {
   },
   comparison: { 
     h3: "Économisez sur votre crédit", 
-    p: "Europfy propose l'un des taux les plus bas d'Europe pour favoriser l'accès au crédit.", 
+    p: "Europcapital propose l'un des taux les plus bas d'Europe pour favoriser l'accès au crédit.", 
     market: "Taux moyen bancaire", 
-    ours: "Taux Europfy", 
+    ours: "Taux Europcapital", 
     saving: "Économie moyenne constatée" 
   },
   partners: { 
@@ -471,26 +471,26 @@ export const basePackFR = {
       {
         id: 'rate-2-percent',
         title: "Pourquoi le taux à 2% est l'avenir du crédit ?",
-        excerpt: "Dans un marché volatil, Europfy maintient un cap éthique. Découvrez pourquoi notre modèle fixe est une révolution.",
-        content: "Dans un contexte économique marqué par l'instabilité des taux directeurs, la question du coût du crédit est devenue centrale pour les ménages européens.\n\nLe modèle bancaire traditionnel, souvent indexé sur les fluctuations du marché, expose les emprunteurs à des variations imprévisibles. C'est ici qu'intervient la révolution Europfy : un taux fixe unique de 2%.\n\nUne stabilité garantie\n\nContrairement aux taux variables qui peuvent s'envoler, notre taux de 2% est contractuel. Il ne changera jamais, que vous remboursiez sur 12 mois ou 25 ans. Cette prévisibilité permet aux familles de planifier leur budget sur le long terme sans craindre les lendemains.\n\nL'éthique avant le profit\n\nComment faisons-nous ? En réduisant drastiquement nos coûts de structure (pas d'agences physiques coûteuses, digitalisation des processus) et en acceptant une marge plus faible pour favoriser le volume. Notre mission est sociale : permettre l'accès à la propriété et à l'entrepreneuriat au plus grand nombre.\n\nUn impact réel sur le pouvoir d'achat\n\nSur un prêt immobilier de 200 000 € sur 20 ans, la différence entre un taux de marché à 4.5% et notre taux à 2% représente une économie de plus de 50 000 € sur le coût total du crédit. C'est autant d'argent qui reste dans votre poche pour vos projets de vie."
+        excerpt: "Dans un marché volatil, Europcapital maintient un cap éthique. Découvrez pourquoi notre modèle fixe est une révolution.",
+        content: "Dans un contexte économique marqué par l'instabilité des taux directeurs, la question du coût du crédit est devenue centrale pour les ménages européens.\n\nLe modèle bancaire traditionnel, souvent indexé sur les fluctuations du marché, expose les emprunteurs à des variations imprévisibles. C'est ici qu'intervient la révolution Europcapital : un taux fixe unique de 2%.\n\nUne stabilité garantie\n\nContrairement aux taux variables qui peuvent s'envoler, notre taux de 2% est contractuel. Il ne changera jamais, que vous remboursiez sur 12 mois ou 25 ans. Cette prévisibilité permet aux familles de planifier leur budget sur le long terme sans craindre les lendemains.\n\nL'éthique avant le profit\n\nComment faisons-nous ? En réduisant drastiquement nos coûts de structure (pas d'agences physiques coûteuses, digitalisation des processus) et en acceptant une marge plus faible pour favoriser le volume. Notre mission est sociale : permettre l'accès à la propriété et à l'entrepreneuriat au plus grand nombre.\n\nUn impact réel sur le pouvoir d'achat\n\nSur un prêt immobilier de 200 000 € sur 20 ans, la différence entre un taux de marché à 4.5% et notre taux à 2% représente une économie de plus de 50 000 € sur le coût total du crédit. C'est autant d'argent qui reste dans votre poche pour vos projets de vie."
       },
       {
         id: 'real-estate-2026',
         title: "Investir dans l'immobilier en 2026",
         excerpt: "Les opportunités à ne pas manquer pour cette nouvelle année fiscale. Zoom sur les villes intelligentes et l'éco-rénovation.",
-        content: "L'année 2026 marque un tournant pour l'investissement immobilier en Europe. Après une période de correction, le marché offre de nouvelles opportunités pour les investisseurs avisés, notamment grâce à la transition énergétique.\n\nLa prime à l'éco-rénovation\n\nLes passoires thermiques voient leur prix baisser, offrant des opportunités d'achat à bas prix. Avec un financement travaux à 2% chez Europfy, acquérir un bien classé F ou G pour le rénover devient une stratégie très rentable. La valeur verte d'un bien est désormais un critère déterminant pour la revente.\n\nLes villes moyennes en plein essor\n\nOubliez les hyper-centres saturés. En 2026, la rentabilité se trouve dans les villes moyennes connectées (TGV, fibre) qui offrent une qualité de vie supérieure. Des villes comme Angers, Le Mans ou Valence tirent leur épingle du jeu avec des rendements locatifs bruts dépassant souvent les 6%.\n\nLe crowdfunding immobilier\n\nPour ceux qui ne souhaitent pas gérer de bien en direct, l'investissement participatif continue de croître. En combinant un petit prêt personnel à 2% pour constituer votre apport, vous pouvez diversifier vos placements dans plusieurs projets de promotion immobilière."
+        content: "L'année 2026 marque un tournant pour l'investissement immobilier en Europe. Après une période de correction, le marché offre de nouvelles opportunités pour les investisseurs avisés, notamment grâce à la transition énergétique.\n\nLa prime à l'éco-rénovation\n\nLes passoires thermiques voient leur prix baisser, offrant des opportunités d'achat à bas prix. Avec un financement travaux à 2% chez Europcapital, acquérir un bien classé F ou G pour le rénover devient une stratégie très rentable. La valeur verte d'un bien est désormais un critère déterminant pour la revente.\n\nLes villes moyennes en plein essor\n\nOubliez les hyper-centres saturés. En 2026, la rentabilité se trouve dans les villes moyennes connectées (TGV, fibre) qui offrent une qualité de vie supérieure. Des villes comme Angers, Le Mans ou Valence tirent leur épingle du jeu avec des rendements locatifs bruts dépassant souvent les 6%.\n\nLe crowdfunding immobilier\n\nPour ceux qui ne souhaitent pas gérer de bien en direct, l'investissement participatif continue de croître. En combinant un petit prêt personnel à 2% pour constituer votre apport, vous pouvez diversifier vos placements dans plusieurs projets de promotion immobilière."
       },
       {
         id: 'debt-consolidation-2026',
         title: "Rachat de crédit : Divisez vos mensualités par 3",
         excerpt: "Ne laissez pas vos dettes étouffer votre budget. Le regroupement de crédits à 2% est la solution pour respirer.",
-        content: "L'accumulation de crédits (auto, conso, travaux, revolving) peut rapidement peser sur le budget mensuel d'un foyer. Lorsque le taux d'endettement dépasse 33%, le risque de surchauffe financière est réel.\n\nLe principe du regroupement\n\nL'opération est simple : Europfy rachète l'ensemble de vos dettes auprès de vos différents créanciers. Nous soldons ces prêts pour vous, et nous mettons en place un nouveau crédit unique qui les remplace tous.\n\nL'effet levier du taux à 2%\n\nLa magie opère grâce à notre taux. Souvent, les crédits à la consommation ou renouvelables ont des taux avoisinant les 5%, 10%, voire 20%. En les remplaçant par un prêt unique à 2%, vous réduisez mécaniquement le coût de votre dette.\n\nAllonger pour mieux respirer\n\nEn plus de baisser le taux, nous pouvons allonger la durée de remboursement. Résultat : votre mensualité peut être divisée par 2 ou par 3. Cela libère un 'reste à vivre' immédiat pour financer les études des enfants, épargner ou simplement faire face à l'inflation."
+        content: "L'accumulation de crédits (auto, conso, travaux, revolving) peut rapidement peser sur le budget mensuel d'un foyer. Lorsque le taux d'endettement dépasse 33%, le risque de surchauffe financière est réel.\n\nLe principe du regroupement\n\nL'opération est simple : Europcapital rachète l'ensemble de vos dettes auprès de vos différents créanciers. Nous soldons ces prêts pour vous, et nous mettons en place un nouveau crédit unique qui les remplace tous.\n\nL'effet levier du taux à 2%\n\nLa magie opère grâce à notre taux. Souvent, les crédits à la consommation ou renouvelables ont des taux avoisinant les 5%, 10%, voire 20%. En les remplaçant par un prêt unique à 2%, vous réduisez mécaniquement le coût de votre dette.\n\nAllonger pour mieux respirer\n\nEn plus de baisser le taux, nous pouvons allonger la durée de remboursement. Résultat : votre mensualité peut être divisée par 2 ou par 3. Cela libère un 'reste à vivre' immédiat pour financer les études des enfants, épargner ou simplement faire face à l'inflation."
       },
       {
         id: 'ai-finance-2026',
         title: "L'IA au service de votre dossier",
-        excerpt: "Comment Europfy utilise l'intelligence artificielle pour valider votre prêt en 24h chrono, sans déshumaniser la relation.",
-        content: "Chez Europfy, nous croyons que la technologie doit servir l'humain, et non le remplacer. Notre promesse de réponse en 24h repose sur une infrastructure technologique de pointe.\n\nAnalyse instantanée\n\nDès que vous téléchargez vos pièces justificatives, nos algorithmes sécurisés vérifient leur authenticité en quelques secondes. Ils analysent votre capacité d'emprunt et votre reste à vivre avec une précision chirurgicale, éliminant les erreurs humaines de calcul.\n\nLe conseiller reste maître\n\nL'IA prépare le terrain, mais la décision finale appartient toujours à un expert humain. Si l'algorithme détecte une anomalie ou un profil atypique (intermittents, entrepreneurs), il alerte un conseiller spécialisé qui prendra le temps d'étudier le dossier manuellement.\n\nSécurité renforcée\n\nL'intelligence artificielle nous permet aussi de lutter efficacement contre la fraude à l'identité, protégeant ainsi l'ensemble de notre communauté d'emprunteurs et garantissant la pérennité de notre modèle à taux bas."
+        excerpt: "Comment Europcapital utilise l'intelligence artificielle pour valider votre prêt en 24h chrono, sans déshumaniser la relation.",
+        content: "Chez Europcapital, nous croyons que la technologie doit servir l'humain, et non le remplacer. Notre promesse de réponse en 24h repose sur une infrastructure technologique de pointe.\n\nAnalyse instantanée\n\nDès que vous téléchargez vos pièces justificatives, nos algorithmes sécurisés vérifient leur authenticité en quelques secondes. Ils analysent votre capacité d'emprunt et votre reste à vivre avec une précision chirurgicale, éliminant les erreurs humaines de calcul.\n\nLe conseiller reste maître\n\nL'IA prépare le terrain, mais la décision finale appartient toujours à un expert humain. Si l'algorithme détecte une anomalie ou un profil atypique (intermittents, entrepreneurs), il alerte un conseiller spécialisé qui prendra le temps d'étudier le dossier manuellement.\n\nSécurité renforcée\n\nL'intelligence artificielle nous permet aussi de lutter efficacement contre la fraude à l'identité, protégeant ainsi l'ensemble de notre communauté d'emprunteurs et garantissant la pérennité de notre modèle à taux bas."
       }
     ] 
   }

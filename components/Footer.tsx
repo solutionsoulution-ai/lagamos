@@ -34,7 +34,7 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan, loa
             <div className="flex items-center space-x-2">
               <Logo className="w-10 h-10" />
               <span className="text-2xl font-black tracking-tight text-white">
-                Europ<span className="text-emerald-500">fy</span>
+                Europ<span className="text-emerald-500">capital</span>
               </span>
             </div>
             <p className="text-gray-400 leading-relaxed">
@@ -83,7 +83,7 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan, loa
               </li>
               <li className="flex items-center gap-4">
                 <Mail className="w-6 h-6 text-emerald-500 shrink-0" />
-                <span>contact@europfy.com</span>
+                <span>contact@europcapital.com</span>
               </li>
             </ul>
           </div>

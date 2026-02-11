@@ -86,7 +86,7 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center space-x-2 cursor-pointer group" onClick={() => onNavigate('home')}>
             <Logo className="w-9 h-9 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-300" />
             <span className={`text-xl sm:text-2xl font-extrabold tracking-tight transition-colors ${logoTextColor}`}>
-              Europ<span className="text-emerald-600">fy</span>
+              Europ<span className="text-emerald-600">capital</span>
             </span>
           </div>
 

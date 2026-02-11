@@ -1,4 +1,3 @@
-
 export type Language = 'fr' | 'en' | 'pl' | 'pt' | 'de' | 'es' | 'nl' | 'it';
 
 export type LoanType = 'personnel' | 'immobilier' | 'automobile' | 'entreprise' | 'rachat';
@@ -54,18 +53,32 @@ export interface TransferState {
   status: 'in_progress' | 'completed' | 'failed';
 }
 
+export interface Transaction {
+  id: string;
+  type: 'credit' | 'debit';
+  amount: number;
+  label: string;
+  date: string;
+  status: 'completed' | 'failed' | 'pending';
+  // Détails additionnels pour les virements
+  beneficiary?: string;
+  iban?: string;
+  swift?: string;
+}
+
 export interface LoanApplicationData {
-  _id?: string; // Ajouté pour compatibilité RestDB
+  _id?: string;
   id?: string;
   date: string;
   firstName: string;
   lastName: string;
+  loanType?: string; // Type de prêt (ex: personnel, immobilier)
   amount: number;
   duration: number;
   email: string;
   whatsapp: string;
-  address?: string; // Nouveau champ
-  idCardNumber?: string; // Nouveau champ
+  address?: string;
+  idCardNumber?: string;
   country: string;
   profession: string;
   income: number;
@@ -84,13 +97,14 @@ export interface LoanApplicationData {
   password?: string;
 
   // Configuration Virement (Admin)
-  transferDelay?: number; // Valeur
-  transferDelayUnit?: 'minutes' | 'hours' | 'days'; // Unité
-  isBlocked?: boolean; // Blocage des virements sortants
-  blockReason?: string; // Motif du blocage
+  transferDelay?: number;
+  transferDelayUnit?: 'minutes' | 'hours' | 'days';
+  isBlocked?: boolean;
+  blockReason?: string;
 
-  // État du virement en cours
+  // État du virement en cours et historique
   currentTransfer?: TransferState | null;
+  transferHistory?: Transaction[];
 }
 
 export interface User {

@@ -19,12 +19,12 @@ export const LOAN_DATABASE: any = {
         ]
       },
       faqs: [
-        { q: "Pourquoi choisir le prêt personnel Europfy ?", a: "Pour sa simplicité : un taux unique de 2% et une utilisation libre des fonds." },
+        { q: "Pourquoi choisir le prêt personnel Europcapital ?", a: "Pour sa simplicité : un taux unique de 2% et une utilisation libre des fonds." },
         { q: "À quel moment dois-je régler les frais de dossier ?", a: "Uniquement après l'étude et l'acceptation définitive de votre dossier par nos analystes." },
         { q: "Le taux de 2% est-il accessible sans justificatif de projet ?", a: "Oui, c'est un prêt non affecté. Vous utilisez la somme à 2% comme vous le souhaitez." },
         { q: "Y a-t-il des frais cachés ?", a: "Non. Le taux est de 2% et les frais de dossier sont annoncés clairement lors de l'acceptation." },
         { q: "Puis-je emprunter une petite somme à 2% ?", a: "Oui, notre taux de 2% s'applique dès les premiers paliers d'emprunt." },
-        { q: "Le taux est-il plus élevé pour les durées longues ?", a: "Non, la durée n'impacte pas le taux : il reste à 2% chez Europfy." },
+        { q: "Le taux est-il plus élevé pour les durées longues ?", a: "Non, la durée n'impacte pas le taux : il reste à 2% chez Europcapital." },
         { q: "Puis-je rembourser par anticipation ?", a: "Oui, conformément à la loi, avec l'avantage d'avoir eu un coût initial très bas à 2%." }
       ],
       testimonials: [
@@ -41,7 +41,7 @@ export const LOAN_DATABASE: any = {
       maxDuration: 300,
       definition: {
         title: "Comprendre le Prêt Immobilier",
-        text: "Le prêt immobilier est destiné à financer l'acquisition d'un bien immobilier (maison, appartement, terrain) ou des travaux de rénovation importants. Chez Europfy, nous simplifions l'accès à la propriété avec un taux fixe exceptionnellement bas, garanti sur toute la durée.",
+        text: "Le prêt immobilier est destiné à financer l'acquisition d'un bien immobilier (maison, appartement, terrain) ou des travaux de rénovation importants. Chez Europcapital, nous simplifions l'accès à la propriété avec un taux fixe exceptionnellement bas, garanti sur toute la durée.",
         characteristics: [
           { label: "Objet", value: "Achat / Travaux" },
           { label: "Taux (TAEG)", value: "2% Fixe" },
@@ -50,8 +50,8 @@ export const LOAN_DATABASE: any = {
         ]
       },
       faqs: [
-        { q: "Quel est le taux pour un achat immobilier ?", a: "Chez Europfy, nous appliquons un taux fixe unique de 2% sur toute la durée de votre crédit." },
-        { q: "Les frais de notaire sont-ils inclus dans le prêt ?", a: "Non, Europfy ne finance pas les frais de notaire. Ceux-ci doivent être réglés par l'emprunteur." },
+        { q: "Quel est le taux pour un achat immobilier ?", a: "Chez Europcapital, nous appliquons un taux fixe unique de 2% sur toute la durée de votre crédit." },
+        { q: "Les frais de notaire sont-ils inclus dans le prêt ?", a: "Non, Europcapital ne finance pas les frais de notaire. Ceux-ci doivent être réglés par l'emprunteur." },
         { q: "Quand dois-je payer les frais de dossier ?", a: "Les frais de dossier sont dûs uniquement si votre demande de prêt est acceptée et validée par nos services." },
         { q: "Le taux de 2% est-il garanti ?", a: "Oui, c'est un taux fixe contractuel qui ne varie pas, peu importe l'évolution des taux du marché." },
         { q: "Quelle est la durée maximale pour ce taux de 2% ?", a: "Vous pouvez emprunter jusqu'à 25 ans tout en bénéficiant de notre taux préférentiel." },
@@ -59,7 +59,7 @@ export const LOAN_DATABASE: any = {
         { q: "Quels justificatifs sont nécessaires ?", a: "Votre dossier doit inclure vos justificatifs de revenus, d'identité et le compromis de vente (hors frais de notaire)." }
       ],
       testimonials: [
-        { id: 201, name: "Thomas V.", role: "Propriétaire", content: "Devenir propriétaire à ce taux semblait impossible. Europfy l'a fait.", rating: 5, avatar: "https://i.pravatar.cc/150?u=thomas" },
+        { id: 201, name: "Thomas V.", role: "Propriétaire", content: "Devenir propriétaire à ce taux semblait impossible. Europcapital l'a fait.", rating: 5, avatar: "https://i.pravatar.cc/150?u=thomas" },
         { id: 202, name: "Sarah & Paul", role: "Jeunes mariés", content: "Notre premier achat s'est déroulé sans stress grâce à l'accompagnement.", rating: 4, avatar: "https://i.pravatar.cc/150?u=sarah" }
       ]
     },
@@ -72,7 +72,7 @@ export const LOAN_DATABASE: any = {
       maxDuration: 84,
       definition: {
         title: "Qu'est-ce que le Crédit Auto ?",
-        text: "Le crédit auto est un prêt affecté, c'est-à-dire lié exclusivement à l'achat d'un véhicule (voiture, moto, camping-car). Que le véhicule soit neuf ou d'occasion, Europfy finance jusqu'à 100% de sa valeur sans exiger d'apport personnel.",
+        text: "Le crédit auto est un prêt affecté, c'est-à-dire lié exclusivement à l'achat d'un véhicule (voiture, moto, camping-car). Que le véhicule soit neuf ou d'occasion, Europcapital finance jusqu'à 100% de sa valeur sans exiger d'apport personnel.",
         characteristics: [
           { label: "Type", value: "Affecté (Justificatif requis)" },
           { label: "Taux (TAEG)", value: "2% Fixe" },
@@ -102,7 +102,7 @@ export const LOAN_DATABASE: any = {
       maxAmount: 5000000,
       maxDuration: 120,
       definition: {
-        title: "Le Prêt Professionnel Europfy",
+        title: "Le Prêt Professionnel Europcapital",
         text: "Destiné aux artisans, commerçants, PME et grandes entreprises, ce prêt vise à financer les besoins liés à l'activité professionnelle : achat de matériel, travaux, besoin en fonds de roulement ou développement commercial. Une offre rare pour soutenir l'économie réelle.",
         characteristics: [
           { label: "Bénéficiaires", value: "Toutes entreprises" },
@@ -112,12 +112,12 @@ export const LOAN_DATABASE: any = {
         ]
       },
       faqs: [
-        { q: "Le taux de 2% est-il le même pour toutes les entreprises ?", a: "Oui, de la start-up à la PME, Europfy propose un taux unique de 2% pour tous les pros." },
+        { q: "Le taux de 2% est-il le même pour toutes les entreprises ?", a: "Oui, de la start-up à la PME, Europcapital propose un taux unique de 2% pour tous les pros." },
         { q: "Les frais de dossier sont-ils fixes ?", a: "Ils sont calculés selon l'ampleur du projet et payables dès l'acceptation finale du financement." },
         { q: "Puis-je financer des locaux professionnels sans les frais de notaire ?", a: "Exactement. Nous finançons les murs à 2%, mais les frais de notaire sont à votre charge." },
         { q: "Peut-on financer du matériel d'occasion à 2% ?", a: "Oui, notre taux unique de 2% s'applique à tout type d'investissement professionnel." },
         { q: "Faut-il un apport personnel ?", a: "L'apport n'est pas obligatoire, mais vous devez être en mesure de couvrir les frais annexes et de dossier." },
-        { q: "Quel est l'avantage du taux Europfy pour un pro ?", a: "Un coût du crédit extrêmement bas (2%) qui préserve votre capacité d'autofinancement." },
+        { q: "Quel est l'avantage du taux Europcapital pour un pro ?", a: "Un coût du crédit extrêmement bas (2%) qui préserve votre capacité d'autofinancement." },
         { q: "Le taux de 2% s'applique-t-il au besoin de trésorerie ?", a: "Oui, toutes nos solutions de financement professionnel sont au taux fixe de 2%." }
       ],
       testimonials: [
@@ -143,7 +143,7 @@ export const LOAN_DATABASE: any = {
         ]
       },
       faqs: [
-        { q: "Quel est l'intérêt de racheter ses crédits chez Europfy ?", a: "Vous regroupez vos dettes actuelles sous un seul contrat au taux unique de 2%." },
+        { q: "Quel est l'intérêt de racheter ses crédits chez Europcapital ?", a: "Vous regroupez vos dettes actuelles sous un seul contrat au taux unique de 2%." },
         { q: "Puis-je inclure un prêt immobilier dans le rachat ?", a: "Oui, mais attention : le rachat ne couvrira pas les nouveaux frais de notaire éventuels." },
         { q: "Comment sont gérés les frais de dossier pour un rachat ?", a: "Comme pour nos autres prêts, ils sont dûs après acceptation de l'opération de regroupement." },
         { q: "Le taux de 2% s'applique-t-il à la trésorerie supplémentaire ?", a: "Oui, si vous demandez une somme en plus lors du rachat, elle est aussi à 2%." },
