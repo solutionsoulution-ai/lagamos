@@ -5,7 +5,7 @@ import { restdbService } from '../services/restdb';
 import { 
   User as UserIcon, Euro, CheckCircle2, Clock, AlertCircle, FileText, ArrowRight, TrendingUp, ShieldCheck, 
   Loader2, MessageCircle, Lock, Hourglass, FileBadge, CreditCard, Copy, Send, Wallet, Ban, 
-  LayoutDashboard, UserCircle, History, Settings, Building, MapPin, Briefcase, Phone, Mail, Calendar, LogOut, XCircle, X, Download
+  LayoutDashboard, UserCircle, History, Settings, Building, MapPin, Briefcase, Phone, Mail, Calendar, LogOut, XCircle, X, Download, Eye, EyeOff, Info
 } from 'lucide-react';
 
 interface ClientDashboardProps {
@@ -31,6 +31,7 @@ const DEMO_LOAN = {
   iban: 'FR76 3000 4014 5812 3456 7890 122',
   bic: 'ERPYFRPP',
   currency: 'EUR',
+  password: 'DEMO_PASSWORD_2026',
   transferDelay: 1, 
   transferDelayUnit: 'minutes',
   isBlocked: false,
@@ -59,6 +60,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
   const [transferBlockedError, setTransferBlockedError] = useState<string | null>(null);
 
   const [selectedTx, setSelectedTx] = useState<Transaction | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const isDemo = user.email === 'demo@europcapital.com';
 
@@ -70,7 +72,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
     }
 
     try {
-      // UTILISATION DE L'ID UNIQUE SI DISPONIBLE
       if (user.id) {
           const apps = await restdbService.getAllApplications();
           const userApp = apps.find((a: any) => a._id === user.id);
@@ -79,7 +80,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
             setActiveTransfer(userApp.currentTransfer || null);
           }
       } else {
-          // Fallback par email (moins sécurisé pour les multis)
           const apps = await restdbService.getAllApplications();
           const userApp = apps.find((a: any) => a.email?.toLowerCase() === user.email?.toLowerCase());
           if (userApp) {
@@ -408,7 +408,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                 )}
 
                 {activeTab === 'profile' && (
-                    <div className="animate-in slide-in-from-right-4 duration-300">
+                    <div className="animate-in slide-in-from-right-4 duration-300 space-y-6 sm:space-y-8">
                         <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
                             <div className="bg-emerald-600 p-8 text-white flex items-center gap-5">
                                 <UserCircle className="w-12 h-12 sm:w-16 sm:h-16" />
@@ -425,10 +425,53 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                     <div className="flex items-center gap-3"><MapPin className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">{loan.country}</p></div>
                                 </div>
                                 <div className="space-y-4">
-                                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Emploi</h3>
+                                    <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Dossier Financier</h3>
+                                    <div className="flex items-center gap-3"><Euro className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">Montant : {loan.amount?.toLocaleString()} €</p></div>
+                                    <div className="flex items-center gap-3"><Calendar className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">Durée : {loan.duration} mois</p></div>
                                     <div className="flex items-center gap-3"><Briefcase className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">{loan.profession}</p></div>
-                                    <div className="flex items-center gap-3"><Euro className="w-4 h-4 text-emerald-600" /><p className="text-sm font-black text-emerald-600">{loan.income?.toLocaleString()} € / mois</p></div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* SECTION SÉCURITÉ & MOT DE PASSE */}
+                        <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-8 sm:p-12 space-y-6">
+                            <h3 className="text-xs sm:text-lg font-black text-gray-900 flex items-center gap-3">
+                                <Lock className="w-5 h-5 text-emerald-600" /> Sécurité & Accès
+                            </h3>
+                            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div className="space-y-1">
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Mon mot de passe confidentiel</p>
+                                    <div className="flex items-center gap-3">
+                                        <p className="text-xl font-mono font-black text-gray-900 tracking-wider">
+                                            {showPassword ? (loan.password || 'Non défini') : '••••••••'}
+                                        </p>
+                                        <button 
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="p-1.5 hover:bg-emerald-50 rounded-lg text-gray-400 hover:text-emerald-600 transition-all"
+                                        >
+                                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                        </button>
+                                        <button 
+                                          onClick={() => {
+                                            navigator.clipboard.writeText(loan.password || '');
+                                            alert("Mot de passe copié !");
+                                          }}
+                                          className="p-1.5 hover:bg-emerald-50 rounded-lg text-gray-400 hover:text-emerald-600 transition-all"
+                                        >
+                                          <Copy className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100">
+                                    <ShieldCheck className="w-5 h-5" />
+                                    <span className="text-[10px] font-black uppercase">Protection biométrique active</span>
+                                </div>
+                            </div>
+                            <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex items-start gap-4">
+                                <Info className="w-6 h-6 text-blue-600 mt-0.5 shrink-0" />
+                                <p className="text-xs sm:text-sm text-blue-700 font-medium leading-relaxed">
+                                    Il s'agit du code d'accès généré lors de la création de votre dossier. Conservez-le précieusement. Europcapital ne vous demandera jamais ce code par téléphone ou par message.
+                                </p>
                             </div>
                         </div>
                     </div>
