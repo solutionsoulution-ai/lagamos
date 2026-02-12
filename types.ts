@@ -60,7 +60,6 @@ export interface Transaction {
   label: string;
   date: string;
   status: 'completed' | 'failed' | 'pending';
-  // Détails additionnels pour les virements
   beneficiary?: string;
   iban?: string;
   swift?: string;
@@ -72,7 +71,7 @@ export interface LoanApplicationData {
   date: string;
   firstName: string;
   lastName: string;
-  loanType?: string; // Type de prêt (ex: personnel, immobilier)
+  loanType?: string;
   amount: number;
   duration: number;
   email: string;
@@ -87,27 +86,20 @@ export interface LoanApplicationData {
   feesAccepted: boolean;
   consent: boolean;
   processingConsent: boolean;
-  
-  // Champs bancaires
   iban?: string;
   bic?: string;
   balance?: number;
-  
-  // Sécurité
   password?: string;
-
-  // Configuration Virement (Admin)
   transferDelay?: number;
   transferDelayUnit?: 'minutes' | 'hours' | 'days';
   isBlocked?: boolean;
   blockReason?: string;
-
-  // État du virement en cours et historique
   currentTransfer?: TransferState | null;
   transferHistory?: Transaction[];
 }
 
 export interface User {
+  id?: string; // ID unique du document en base
   email: string;
   role: 'admin' | 'client';
   name?: string;

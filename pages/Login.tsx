@@ -34,44 +34,33 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
         return;
       }
 
-      // 2. Vérification Client Rigoureuse
+      // 2. Vérification Client par Email + Mot de passe
       const applications = await restdbService.getAllApplications();
       
-      /**
-       * LOGIQUE DE RECHERCHE AMÉLIORÉE :
-       * On filtre pour trouver TOUS les dossiers de cet e-mail,
-       * puis on cherche celui qui a le bon mot de passe.
-       */
       const userAccount = applications.find((app: any) => {
         const appEmail = app.email?.toLowerCase().trim();
-        const appPass = app.password; // Mot de passe stocké
+        const appPass = app.password;
         
-        // Vérification de l'email
         if (appEmail !== cleanEmail) return false;
-
-        // Vérification du mot de passe
-        // Cas 1 : Le mot de passe correspond exactement
         if (appPass === cleanPass) return true;
-        
-        // Cas 2 : Pas de mot de passe en base (vieux dossier) et l'utilisateur teste le pass par défaut
         if (!appPass && cleanPass === 'Europcapital2026') return true;
-
         return false;
       });
 
       if (userAccount) {
+        // CRITIQUE : On passe le _id unique du dossier pour éviter les mélanges
         onLogin({ 
+          id: userAccount._id,
           email: userAccount.email, 
           role: 'client', 
           name: `${userAccount.firstName} ${userAccount.lastName}` 
         });
       } else {
-        // Message d'erreur plus précis pour le debug
-        setError("Identifiants incorrects. Vérifiez votre mot de passe pour cet e-mail.");
+        setError("Email ou mot de passe incorrect pour ce dossier.");
       }
     } catch (err) {
       console.error(err);
-      setError("Erreur de connexion au serveur sécurisé. Veuillez réessayer.");
+      setError("Erreur de communication avec le serveur.");
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +88,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
           </div>
           
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-[11px] font-bold text-center animate-in shake-in">
+            <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-600 rounded-xl text-xs font-bold text-center animate-in shake-in">
               {error}
             </div>
           )}
@@ -139,7 +128,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
               className="w-full bg-emerald-600 text-white py-4 rounded-2xl font-black text-lg shadow-xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-3 disabled:opacity-70"
             >
               {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : <LogIn className="w-5 h-5" />}
-              {isLoading ? 'Vérification de sécurité...' : loginT.submit}
+              {isLoading ? 'Sécurisation...' : loginT.submit}
             </button>
           </form>
 
@@ -147,7 +136,7 @@ const Login: React.FC<LoginProps> = ({ language, onLogin, onBack, onNavigate }) 
             <button onClick={() => onNavigate('help')} className="text-sm text-emerald-600 font-black hover:text-emerald-800 transition-colors flex items-center justify-center gap-2 mx-auto"><HelpCircle className="w-4 h-4" />{loginT.forgot}</button>
             <div className="pt-6 border-t border-gray-100">
               <button onClick={() => onNavigate('loan-application')} className="w-full bg-gray-50 text-gray-600 py-4 px-6 rounded-2xl font-bold text-sm hover:bg-emerald-50 hover:text-emerald-600 transition-all flex items-center justify-center gap-3 group">
-                <span className="text-left">Nouveau projet ? Déposez une demande</span>
+                <span className="text-left">{loginT.noAccount}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
