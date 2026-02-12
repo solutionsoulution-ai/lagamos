@@ -16,7 +16,6 @@ import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
 import Faq from './pages/Faq';
-import AIAdvisor from './components/AIAdvisor';
 import LoanCalculator from './components/LoanCalculator';
 import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
@@ -259,9 +258,6 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      {/* Conseiller AI Global */}
-      <AIAdvisor />
-      
       <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} loans={loans} />
     </div>
   );
