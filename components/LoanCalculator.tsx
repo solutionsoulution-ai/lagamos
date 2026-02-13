@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FIXED_RATE } from '../constants';
@@ -32,7 +31,6 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ onApply }) => {
 
   return (
     <div className="relative z-20 bg-white rounded-[1.5rem] sm:rounded-3xl shadow-2xl overflow-hidden border border-gray-100 max-w-full">
-      {/* TAEG Badge Ultra Visible */}
       <div className="bg-emerald-600 p-4 sm:p-8 text-white relative">
         <div className="absolute top-0 right-0 p-3 sm:p-6 opacity-10">
           <Euro className="w-20 h-20 sm:w-32 sm:h-32 rotate-12" />
@@ -56,7 +54,6 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ onApply }) => {
       </div>
       
       <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
-        {/* Durée Min/Max Info Légale */}
         <div className="flex justify-between text-[9px] sm:text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-50 pb-2">
           <span>Min: 6 mois</span>
           <span>Max: 300 mois (25 ans)</span>
@@ -100,7 +97,6 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ onApply }) => {
           />
         </div>
 
-        {/* Coûts Principaux */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <div className="bg-emerald-50 p-4 sm:p-6 rounded-2xl border border-emerald-100 text-center">
             <p className="text-[9px] sm:text-[10px] text-emerald-600 font-black uppercase tracking-widest mb-1">{t('calculator.monthly')}</p>
@@ -112,13 +108,17 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ onApply }) => {
           </div>
         </div>
 
-        {/* Exemple Représentatif Ultra Visible */}
         <div className="bg-blue-50/50 rounded-2xl p-4 sm:p-6 border border-blue-100 space-y-3">
           <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest flex items-center gap-2">
-            <Info className="w-4 h-4" /> Exemple représentatif obligatoire
+            <Info className="w-4 h-4" /> {t('calculator.representative_example_title')}
           </p>
           <p className="text-[11px] sm:text-xs text-gray-700 leading-relaxed font-medium">
-            Pour un financement de <span className="font-bold text-gray-900">{amount.toLocaleString()} €</span> remboursable sur <span className="font-bold text-gray-900">{duration} mois</span> au <span className="font-black text-emerald-600">TAEG fixe de 2%</span> (incluant intérêts et frais annuels), la mensualité sera de <span className="font-bold text-gray-900">{monthlyPayment.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</span>. Le montant total dû par l'emprunteur est de <span className="font-black text-gray-900 underline underline-offset-4 decoration-emerald-500">{totalDue.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</span>.
+            {t('calculator.representative_example_text', {
+              amount: amount.toLocaleString(),
+              duration: duration,
+              monthly: monthlyPayment.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+              total: totalDue.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+            })}
           </p>
         </div>
 
@@ -131,7 +131,7 @@ const LoanCalculator: React.FC<LoanCalculatorProps> = ({ onApply }) => {
         </button>
 
         <p className="text-[10px] text-gray-400 text-center font-bold leading-relaxed italic px-4">
-          "Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager."
+          {t('calculator.legal_warning')}
         </p>
       </div>
     </div>

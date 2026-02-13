@@ -14,35 +14,9 @@ interface ClientDashboardProps {
   onNavigate: (page: string) => void;
 }
 
-const DEMO_LOAN = {
-  _id: 'demo-loan-123',
-  firstName: 'Jean',
-  lastName: 'Dupont',
-  email: 'demo@europcapital.com',
-  whatsapp: '+33 6 12 34 56 78',
-  country: 'FR',
-  profession: 'Ingénieur Informatique',
-  income: 4500,
-  reason: 'Achat immobilier résidence principale',
-  status: 'approved',
-  amount: 250000,
-  duration: 240,
-  balance: 258000.50,
-  iban: 'FR76 3000 4014 5812 3456 7890 122',
-  bic: 'ERPYFRPP',
-  currency: 'EUR',
-  password: 'DEMO_PASSWORD_2026',
-  transferDelay: 1, 
-  transferDelayUnit: 'minutes',
-  isBlocked: false,
-  feesAccepted: true,
-  consent: true,
-  date: '2023-10-15T10:00:00Z',
-  transferHistory: [] as Transaction[]
-};
-
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNavigate }) => {
   const { t } = useTranslation();
+  const dashT = t('client_dashboard', { returnObjects: true }) as any;
   
   const [loan, setLoan] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,23 +39,10 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
   const isDemo = user.email === 'demo@europcapital.com';
 
   const fetchData = async () => {
-    if (isDemo) {
-      setLoan(DEMO_LOAN);
-      setLoading(false);
-      return;
-    }
-
     try {
       if (user.id) {
           const apps = await restdbService.getAllApplications();
           const userApp = apps.find((a: any) => a._id === user.id);
-          if (userApp) {
-            setLoan(userApp);
-            setActiveTransfer(userApp.currentTransfer || null);
-          }
-      } else {
-          const apps = await restdbService.getAllApplications();
-          const userApp = apps.find((a: any) => a.email?.toLowerCase() === user.email?.toLowerCase());
           if (userApp) {
             setLoan(userApp);
             setActiveTransfer(userApp.currentTransfer || null);
@@ -99,16 +60,13 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
 
   useEffect(() => {
     if (!activeTransfer) return;
-
     const interval = setInterval(async () => {
         const now = Date.now();
         const start = activeTransfer.startTime;
         const end = activeTransfer.endTime;
-        
         if (now >= end) {
             clearInterval(interval);
             setProgress(100);
-
             const isBlocked = loan.isBlocked === true;
             const newHistory: Transaction = {
                 id: `TX-${Date.now()}`,
@@ -121,15 +79,12 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                 iban: activeTransfer.iban,
                 swift: activeTransfer.swift
             };
-
             const updatedHistory = [newHistory, ...(loan.transferHistory || [])];
             let newBalance = loan.balance || 0;
-
             if (isBlocked) {
                 setTransferBlockedError(loan.blockReason || "Virement bloqué par le service sécurité.");
                 newBalance += activeTransfer.amount;
             }
-
             if (!isDemo) {
                 await restdbService.updateApplication(loan._id, { 
                     balance: newBalance,
@@ -137,23 +92,14 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                     transferHistory: updatedHistory
                 });
             }
-
-            setLoan((prev: any) => ({ 
-                ...prev, 
-                balance: newBalance, 
-                currentTransfer: null, 
-                transferHistory: updatedHistory 
-            }));
-            
+            setLoan((prev: any) => ({ ...prev, balance: newBalance, currentTransfer: null, transferHistory: updatedHistory }));
             setActiveTransfer(null);
         } else {
             const totalDuration = end - start;
             const elapsed = now - start;
-            const percent = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
-            setProgress(percent);
+            setProgress(Math.min(100, Math.floor((elapsed / totalDuration) * 100)));
         }
     }, 2000); 
-
     return () => clearInterval(interval);
   }, [activeTransfer, loan, isDemo]);
 
@@ -176,62 +122,24 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
     setTransferError(null);
-
     if (!loan) return;
-
     const amount = parseFloat(transferAmount);
-    if (isNaN(amount) || amount <= 0) {
-      setTransferError("Montant invalide.");
-      return;
-    }
-
-    if (amount > (loan.balance || 0)) {
-      setTransferError("Solde insuffisant.");
-      return;
-    }
-
+    if (isNaN(amount) || amount <= 0) { setTransferError("Montant invalide."); return; }
+    if (amount > (loan.balance || 0)) { setTransferError("Solde insuffisant."); return; }
     setTransferLoading(true);
     try {
-      const delayVal = loan.transferDelay || 24;
-      const delayUnit = loan.transferDelayUnit || 'hours';
-      const durationMs = calculateDurationMs(delayVal, delayUnit);
-      
+      const durationMs = calculateDurationMs(loan.transferDelay || 24, loan.transferDelayUnit || 'hours');
       const startTime = Date.now();
       const endTime = startTime + durationMs;
       const newBalance = (loan.balance || 0) - amount;
-
-      const transferData = {
-          amount,
-          beneficiary: transferBeneficiary,
-          iban: transferIban,
-          swift: transferSwift,
-          startTime,
-          endTime,
-          status: 'in_progress'
-      };
-      
-      if (!isDemo) {
-          await restdbService.updateApplication(loan._id, { 
-              balance: newBalance,
-              currentTransfer: transferData
-          });
-      }
-      
+      const transferData = { amount, beneficiary: transferBeneficiary, iban: transferIban, swift: transferSwift, startTime, endTime, status: 'in_progress' };
+      if (!isDemo) { await restdbService.updateApplication(loan._id, { balance: newBalance, currentTransfer: transferData }); }
       setLoan({ ...loan, balance: newBalance });
       setActiveTransfer(transferData);
       setTransferBlockedError(null);
-      
-      setTransferAmount('');
-      setTransferIban('');
-      setTransferSwift('');
-      setTransferBeneficiary('');
+      setTransferAmount(''); setTransferIban(''); setTransferSwift(''); setTransferBeneficiary('');
       setActiveTab('overview');
-
-    } catch (error) {
-      setTransferError("Erreur lors de l'initiation du virement.");
-    } finally {
-      setTransferLoading(false);
-    }
+    } catch (error) { setTransferError("Erreur lors de l'initiation du virement."); } finally { setTransferLoading(false); }
   };
 
   if (loading) return <div className="h-screen flex items-center justify-center bg-gray-50"><Loader2 className="w-10 h-10 text-emerald-600 animate-spin" /></div>;
@@ -240,7 +148,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
       <div className="pt-24 sm:pt-32 pb-20 bg-gray-50 min-h-screen">
         <div className="max-w-3xl mx-auto px-4">
             <div className="text-center mb-12 space-y-2">
-                <h1 className="text-2xl sm:text-4xl font-black text-gray-900">Bienvenue, {loan.firstName}</h1>
+                <h1 className="text-2xl sm:text-4xl font-black text-gray-900">{dashT.welcome}, {loan.firstName}</h1>
                 <p className="text-gray-500 font-medium">Analyse de dossier en cours</p>
             </div>
             <div className="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100">
@@ -266,15 +174,15 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-4 sm:space-y-8">
         
         <div className="flex flex-col gap-1 sm:gap-2 mb-2 sm:mb-6">
-            <p className="text-gray-400 font-black uppercase tracking-widest text-[9px] sm:text-xs">Portail Bancaire Europcapital</p>
-            <h1 className="text-2xl sm:text-4xl font-black text-gray-900 truncate">Bonjour, {loan.firstName}</h1>
+            <p className="text-gray-400 font-black uppercase tracking-widest text-[9px] sm:text-xs">{dashT.portal_title}</p>
+            <h1 className="text-2xl sm:text-4xl font-black text-gray-900 truncate">{dashT.welcome}, {loan.firstName}</h1>
         </div>
 
         {transferBlockedError && (
             <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex items-start gap-3 animate-in slide-in-from-top-4 shadow-sm">
                 <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                 <div className="text-xs sm:text-sm">
-                    <h3 className="font-black text-red-900">Opération Refusée</h3>
+                    <h3 className="font-black text-red-900">{dashT.op_denied}</h3>
                     <p className="text-red-700 mt-1">{transferBlockedError}</p>
                 </div>
             </div>
@@ -286,7 +194,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                     <nav className="grid grid-cols-3 lg:grid-cols-1 gap-1 sm:gap-2">
                         {[
                             { id: 'overview', label: "Accueil", icon: LayoutDashboard },
-                            { id: 'transfer', label: "Virements", icon: Send },
+                            { id: 'transfer', label: dashT.external_transfer, icon: Send },
                             { id: 'profile', label: "Mon Profil", icon: UserCircle }
                         ].map((tab) => (
                             <button 
@@ -310,7 +218,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                 <div className="absolute top-0 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-emerald-500/10 rounded-full blur-[60px] sm:blur-[80px]"></div>
                                 <div className="relative z-10 flex justify-between items-start">
                                     <div>
-                                        <p className="text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-1">Disponible</p>
+                                        <p className="text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-widest mb-1">{dashT.available_label}</p>
                                         <h2 className="text-2xl sm:text-5xl font-black tracking-tight leading-none">
                                             {loan.balance?.toLocaleString('fr-FR', { minimumFractionDigits: 2 })} <span className="text-lg sm:text-3xl opacity-50">€</span>
                                         </h2>
@@ -320,7 +228,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                 <div className="relative z-10 space-y-4">
                                     <p className="font-mono text-gray-500 text-[10px] sm:text-sm tracking-[0.2em]">**** **** **** {loan.iban?.slice(-4)}</p>
                                     <button onClick={() => setActiveTab('transfer')} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-black text-[10px] sm:text-sm shadow-xl transition-all uppercase">
-                                        Virement externe
+                                        {dashT.external_transfer}
                                     </button>
                                 </div>
                             </div>
@@ -329,22 +237,22 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                 <div className="relative z-10 space-y-5 sm:space-y-6">
                                    <div className="flex justify-between items-center">
                                       <h3 className="text-xs sm:text-base font-black text-gray-900 flex items-center gap-2">
-                                        <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" /> Coordonnées RIB
+                                        <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600" /> {dashT.rib_details}
                                       </h3>
                                       <button onClick={handleCopyRib} className="p-2 bg-gray-50 rounded-lg hover:text-emerald-600 transition-colors"><Copy className="w-4 h-4" /></button>
                                    </div>
                                    <div className="space-y-3">
                                       <div className="bg-gray-50/50 p-3 sm:p-4 rounded-xl border border-gray-100">
-                                        <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">IBAN EUROPCAPITAL</p>
+                                        <p className="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">{dashT.iban_label}</p>
                                         <p className="font-mono font-bold text-emerald-800 text-[10px] sm:text-sm break-all">{loan.iban}</p>
                                       </div>
                                       <div className="flex gap-2 sm:gap-3">
                                          <div className="flex-1 bg-gray-50/50 p-2 sm:p-3 rounded-xl border border-gray-100">
-                                            <p className="text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">BIC / SWIFT</p>
+                                            <p className="text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">{dashT.bic_label}</p>
                                             <p className="font-mono font-bold text-gray-900 text-[9px] sm:text-xs">{loan.bic}</p>
                                          </div>
                                          <div className="flex-1 bg-gray-50/50 p-2 sm:p-3 rounded-xl border border-gray-100">
-                                            <p className="text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">DEVISE</p>
+                                            <p className="text-[7px] sm:text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">{dashT.currency_label}</p>
                                             <p className="font-bold text-gray-900 text-[9px] sm:text-xs">Euro (€)</p>
                                          </div>
                                       </div>
@@ -360,8 +268,8 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                         <div className="flex items-center gap-3">
                                             <Clock className="w-5 h-5 text-emerald-400 animate-pulse" />
                                             <div>
-                                                <h3 className="text-sm sm:text-lg font-black uppercase tracking-wider">Virement en cours</h3>
-                                                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-widest">Bénéficiaire : {activeTransfer.beneficiary}</p>
+                                                <h3 className="text-sm sm:text-lg font-black uppercase tracking-wider">{dashT.transfer_in_progress}</h3>
+                                                <p className="text-gray-400 text-[10px] uppercase font-bold tracking-widest">{dashT.beneficiary_label} : {activeTransfer.beneficiary}</p>
                                             </div>
                                         </div>
                                         <div className="bg-emerald-600 text-white px-3 py-1 rounded-full text-[10px] font-black">
@@ -373,7 +281,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                             <div className="bg-emerald-500 h-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
                                         </div>
                                         <div className="flex justify-between items-center text-[10px] font-black text-emerald-400 uppercase tracking-widest">
-                                            <span>Traitement sécurisé</span>
+                                            <span>{dashT.secure_processing}</span>
                                             <span>{progress}%</span>
                                         </div>
                                     </div>
@@ -382,10 +290,10 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                         )}
 
                         <div className="bg-white rounded-[2rem] p-6 sm:p-10 border border-gray-100 shadow-sm">
-                            <h3 className="text-xs sm:text-lg font-black text-gray-900 mb-6 flex items-center gap-2"><History className="w-5 h-5 text-gray-400" /> Historique transactions</h3>
+                            <h3 className="text-xs sm:text-lg font-black text-gray-900 mb-6 flex items-center gap-2"><History className="w-5 h-5 text-gray-400" /> {dashT.tx_history}</h3>
                             <div className="space-y-6">
                                 {(!loan.transferHistory || loan.transferHistory.length === 0) ? (
-                                    <p className="text-center py-10 text-gray-400 text-xs font-black uppercase tracking-widest">Aucun mouvement</p>
+                                    <p className="text-center py-10 text-gray-400 text-xs font-black uppercase tracking-widest">{dashT.no_tx}</p>
                                 ) : (
                                     loan.transferHistory.map((tx: Transaction) => (
                                         <div key={tx.id} onClick={() => setSelectedTx(tx)} className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-2xl transition-all">
@@ -426,51 +334,38 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                 </div>
                                 <div className="space-y-4">
                                     <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Dossier Financier</h3>
-                                    <div className="flex items-center gap-3"><Euro className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">Montant : {loan.amount?.toLocaleString()} €</p></div>
-                                    <div className="flex items-center gap-3"><Calendar className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">Durée : {loan.duration} mois</p></div>
+                                    <div className="flex items-center gap-3"><Euro className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">{dashT.amount} : {loan.amount?.toLocaleString()} €</p></div>
+                                    <div className="flex items-center gap-3"><Calendar className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">{dashT.duration} : {loan.duration} mois</p></div>
                                     <div className="flex items-center gap-3"><Briefcase className="w-4 h-4 text-emerald-600" /><p className="text-sm font-bold text-gray-900">{loan.profession}</p></div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* SECTION SÉCURITÉ & MOT DE PASSE */}
                         <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-8 sm:p-12 space-y-6">
                             <h3 className="text-xs sm:text-lg font-black text-gray-900 flex items-center gap-3">
-                                <Lock className="w-5 h-5 text-emerald-600" /> Sécurité & Accès
+                                <Lock className="w-5 h-5 text-emerald-600" /> {dashT.security_title}
                             </h3>
                             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                                 <div className="space-y-1">
-                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Mon mot de passe confidentiel</p>
+                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{dashT.my_password}</p>
                                     <div className="flex items-center gap-3">
                                         <p className="text-xl font-mono font-black text-gray-900 tracking-wider">
                                             {showPassword ? (loan.password || 'Non défini') : '••••••••'}
                                         </p>
-                                        <button 
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="p-1.5 hover:bg-emerald-50 rounded-lg text-gray-400 hover:text-emerald-600 transition-all"
-                                        >
+                                        <button onClick={() => setShowPassword(!showPassword)} className="p-1.5 hover:bg-emerald-50 rounded-lg text-gray-400 hover:text-emerald-600 transition-all">
                                             {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                                        </button>
-                                        <button 
-                                          onClick={() => {
-                                            navigator.clipboard.writeText(loan.password || '');
-                                            alert("Mot de passe copié !");
-                                          }}
-                                          className="p-1.5 hover:bg-emerald-50 rounded-lg text-gray-400 hover:text-emerald-600 transition-all"
-                                        >
-                                          <Copy className="w-4 h-4" />
                                         </button>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl border border-emerald-100">
                                     <ShieldCheck className="w-5 h-5" />
-                                    <span className="text-[10px] font-black uppercase">Protection biométrique active</span>
+                                    <span className="text-[10px] font-black uppercase">{dashT.biometric_active}</span>
                                 </div>
                             </div>
                             <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex items-start gap-4">
                                 <Info className="w-6 h-6 text-blue-600 mt-0.5 shrink-0" />
                                 <p className="text-xs sm:text-sm text-blue-700 font-medium leading-relaxed">
-                                    Il s'agit du code d'accès généré lors de la création de votre dossier. Conservez-le précieusement. Europcapital ne vous demandera jamais ce code par téléphone ou par message.
+                                    {dashT.security_info_box}
                                 </p>
                             </div>
                         </div>
@@ -481,18 +376,18 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 max-w-2xl mx-auto">
                         <div className="bg-white rounded-[2rem] border border-gray-100 shadow-2xl overflow-hidden">
                             <div className="bg-gray-900 p-6 sm:p-10 text-white">
-                                <h2 className="text-xl font-black flex items-center gap-3"><Send className="w-6 h-6 text-emerald-400" /> Transférer des fonds</h2>
+                                <h2 className="text-xl font-black flex items-center gap-3"><Send className="w-6 h-6 text-emerald-400" /> {dashT.transfer_funds_title}</h2>
                                 <p className="text-gray-400 text-xs mt-1 uppercase font-bold tracking-widest">Sécurisation bancaire Europcapital</p>
                             </div>
                             <div className="p-8 sm:p-12">
                                 <form onSubmit={handleTransfer} className="space-y-6">
                                     {transferError && <div className="p-4 bg-red-50 text-red-600 font-bold rounded-xl text-center text-xs">{transferError}</div>}
-                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">Nom du Bénéficiaire</label><input required value={transferBeneficiary} onChange={e => setTransferBeneficiary(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-bold text-gray-900 focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Jean Dupont" /></div>
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">{dashT.beneficiary_label}</label><input required value={transferBeneficiary} onChange={e => setTransferBeneficiary(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-bold text-gray-900 focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Jean Dupont" /></div>
                                     <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">IBAN de Destination</label><input required value={transferIban} onChange={e => setTransferIban(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-mono text-xs focus:ring-2 focus:ring-emerald-500 uppercase" placeholder="FR76 ..." /></div>
                                     <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">BIC / SWIFT</label><input required value={transferSwift} onChange={e => setTransferSwift(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-mono text-xs focus:ring-2 focus:ring-emerald-500 uppercase" placeholder="ABCDEFGH" /></div>
-                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">Montant (€)</label><input type="number" step="0.01" required value={transferAmount} onChange={e => setTransferAmount(e.target.value)} className="w-full bg-gray-50 border-none rounded-2xl px-4 py-6 font-black text-4xl text-emerald-600 focus:ring-2 focus:ring-emerald-500 text-center" placeholder="0.00" /></div>
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">{dashT.amount} (€)</label><input type="number" step="0.01" required value={transferAmount} onChange={e => setTransferAmount(e.target.value)} className="w-full bg-gray-50 border-none rounded-2xl px-4 py-6 font-black text-4xl text-emerald-600 focus:ring-2 focus:ring-emerald-500 text-center" placeholder="0.00" /></div>
                                     <button type="submit" disabled={transferLoading || activeTransfer !== null} className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-emerald-700 transition-all flex justify-center items-center gap-3 disabled:opacity-50">
-                                        {transferLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : activeTransfer ? "Virement déjà en cours" : "Confirmer le virement"}
+                                        {transferLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : activeTransfer ? "Virement déjà en cours" : dashT.transfer_confirm_btn}
                                     </button>
                                 </form>
                             </div>
@@ -511,15 +406,13 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
             </div>
             <div>
               <h2 className="text-2xl font-black text-gray-900">{selectedTx.label}</h2>
-              <p className="text-xs font-black text-gray-400 uppercase tracking-widest mt-1">Transaction ID: {selectedTx.id}</p>
+              <p className="text-xs font-black text-gray-400 uppercase tracking-widest mt-1">{dashT.tx_id} : {selectedTx.id}</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 text-left space-y-4">
-              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">Montant</span><span className="font-black text-gray-900">-{selectedTx.amount.toLocaleString()} €</span></div>
-              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">Bénéficiaire</span><span className="font-bold text-gray-900">{selectedTx.beneficiary}</span></div>
-              <div className="flex flex-col gap-1"><span className="text-xs font-bold text-gray-400 uppercase">IBAN Destination</span><span className="font-mono text-[10px] break-all text-emerald-700 font-bold">{selectedTx.iban}</span></div>
-              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">État</span><span className="text-[10px] font-black uppercase px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full">{selectedTx.status}</span></div>
+              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">{dashT.amount}</span><span className="font-black text-gray-900">-{selectedTx.amount.toLocaleString()} €</span></div>
+              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">{dashT.beneficiary_label}</span><span className="font-bold text-gray-900">{selectedTx.beneficiary}</span></div>
             </div>
-            <button onClick={() => setSelectedTx(null)} className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold">Fermer</button>
+            <button onClick={() => setSelectedTx(null)} className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold">{dashT.close_btn}</button>
           </div>
         </div>
       )}

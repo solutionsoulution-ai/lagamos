@@ -65,8 +65,6 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
-    
-    // Validation
     const requiredFields = ['firstName', 'lastName', 'amount', 'duration', 'email', 'country', 'profession', 'income', 'reason'];
     if (requiredFields.some(f => !formData[f as keyof typeof formData])) {
         setErrorMessage("Veuillez remplir tous les champs obligatoires.");
@@ -76,13 +74,10 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
         setErrorMessage("Veuillez accepter les conditions et les frais de dossier.");
         return;
     }
-
     setIsSubmitting(true);
-
     try {
       const generatedPassword = generatePassword();
       const generatedIban = generateIBAN();
-      
       const payload = { 
         ...formData, 
         loanType: loanType || 'personnel',
@@ -99,22 +94,10 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
         password: generatedPassword,
         transferHistory: []
       };
-
       await restdbService.submitApplication(payload);
-
-      try {
-        emailService.sendWelcomeEmail(formData.email, `${formData.firstName} ${formData.lastName}`, generatedPassword)
-          .catch(err => console.error("Erreur email (non-bloquante):", err));
-      } catch (mailErr) {}
-
       onSuccess({ email: formData.email, password: generatedPassword });
-      
     } catch (error: any) {
-      if (error.message === "CORS_ERROR") {
-        setErrorMessage("Problème de connexion sécurisée (CORS). Veuillez réessayer plus tard.");
-      } else {
-        setErrorMessage("Une erreur est survenue lors de l'enregistrement de votre dossier.");
-      }
+      setErrorMessage("Une erreur est survenue lors de l'enregistrement de votre dossier.");
     } finally {
       setIsSubmitting(false);
     }
@@ -132,12 +115,11 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
             <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-12 border border-gray-100 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-600 to-teal-400"></div>
-              
               <div className="mb-6 sm:mb-10 space-y-2 sm:space-y-4">
                 <h1 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">{formT.title}</h1>
                 <p className="text-base sm:text-xl text-gray-500 font-medium">
                     {loanType ? <span className="text-emerald-600 font-black uppercase mr-2">{loanType}</span> : null}
-                    Formulaire de demande sécurisé.
+                    {formT.subtitle}
                 </p>
               </div>
 
@@ -151,7 +133,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
               <div className="mb-8 sm:mb-10 bg-emerald-50 border border-emerald-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-2 sm:space-y-4">
                 <div className="flex items-center gap-2 sm:gap-3">
                    <div className="bg-emerald-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl"><FileCheck className="w-4 h-4 sm:w-6 sm:h-6 text-white" /></div>
-                   <h3 className="text-lg sm:text-xl font-black text-teal-900">Frais de dossier</h3>
+                   <h3 className="text-lg sm:text-xl font-black text-teal-900">{formT.processing_fees?.title}</h3>
                 </div>
                 <p className="text-sm sm:text-lg text-gray-700 leading-relaxed font-medium">
                     {formT.processing_fees?.text} {formT.processing_fees?.detail}
@@ -177,7 +159,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
                     </label>
                     <input required type="number" name="amount" value={formData.amount} onChange={handleChange} className="w-full bg-white border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-black text-emerald-600 text-lg sm:text-xl shadow-sm" />
                     <div className="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                       Mensualité estimée : <span className="text-emerald-600">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} €</span>
+                       {formT.sidebar?.monthly_label} : <span className="text-emerald-600">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} €</span>
                     </div>
                   </div>
                   <div className="space-y-1.5">
@@ -245,7 +227,7 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
                 </div>
 
                 <button type="submit" disabled={isSubmitting} className="w-full bg-emerald-600 text-white py-4 sm:py-6 rounded-2xl font-black text-base sm:text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 sm:gap-4 disabled:opacity-50">
-                  {isSubmitting ? <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" /> : <Send className="w-5 h-5 sm:w-6 sm:h-6" />}
+                  {isSubmitting ? <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" /> : <Send className="w-5 h-5" />}
                   {isSubmitting ? 'Traitement...' : formT.fields?.submit}
                 </button>
 
@@ -261,11 +243,11 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
                 <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500"><TrendingUp className="w-24 h-24 rotate-12" /></div>
                 <div className="relative z-10">
                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200 mb-4 flex items-center gap-2">
-                      <Zap className="w-3 h-3 fill-emerald-200" /> Récapitulatif
+                      <Zap className="w-3 h-3 fill-emerald-200" /> {formT.sidebar?.summary}
                    </p>
                    <div className="space-y-6">
                       <div className="border-b border-white/10 pb-4">
-                         <p className="text-xs font-bold text-emerald-100 opacity-80 mb-1">Mensualité estimée</p>
+                         <p className="text-xs font-bold text-emerald-100 opacity-80 mb-1">{formT.sidebar?.monthly_label}</p>
                          <div className="flex items-baseline gap-1">
                             <span className="text-3xl sm:text-4xl font-black">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</span>
                             <span className="text-lg font-bold opacity-60">€/mois</span>
@@ -273,11 +255,11 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                          <div>
-                            <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">Taux Fixe</p>
+                            <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">{formT.sidebar?.rate_label}</p>
                             <p className="text-xl font-black">2.00 %</p>
                          </div>
                          <div>
-                            <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">Montant dû</p>
+                            <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">{formT.sidebar?.total_label}</p>
                             <p className="text-xl font-black">{calculation.total.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €</p>
                          </div>
                       </div>

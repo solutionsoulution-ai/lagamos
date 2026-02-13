@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Language } from '../types';
 import { useTranslation } from 'react-i18next';
@@ -45,7 +44,6 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex flex-col lg:flex-row gap-12">
           
-          {/* Sidebar Navigation */}
           <aside className="hidden lg:block w-72 shrink-0 space-y-8 sticky top-32 h-fit">
             <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-8 transition-colors group">
               <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
@@ -57,7 +55,6 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
               {['terms', 'privacy', 'cookies'].map((linkType) => (
                 <button
                   key={linkType}
-                  // Simule une navigation simple puisque nous sommes en SPA
                   className={`w-full text-left px-5 py-4 rounded-xl font-bold transition-all border ${type === linkType ? 'bg-white border-emerald-500 text-emerald-600 shadow-md translate-x-2' : 'bg-transparent border-transparent text-gray-500 hover:bg-white hover:shadow-sm'}`}
                   disabled={type === linkType}
                 >
@@ -67,7 +64,6 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
             </nav>
           </aside>
 
-          {/* Main Content */}
           <main className="flex-grow">
             <button onClick={onBack} className="lg:hidden flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-8 transition-colors">
               <ChevronLeft className="w-5 h-5" />
@@ -76,11 +72,8 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
 
             <div className="bg-white rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-2xl">
               
-              {/* Header */}
               <div className={`bg-gradient-to-br ${headerInfo.gradient} p-12 sm:p-20 relative overflow-hidden`}>
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
-                
                 <div className="relative z-10 flex flex-col items-center text-center space-y-6">
                   <div className="bg-white/20 p-6 rounded-[2rem] backdrop-blur-md border border-white/20 shadow-xl">
                     {headerInfo.icon}
@@ -96,7 +89,6 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
                 </div>
               </div>
 
-              {/* Content Sections */}
               <div className="p-8 sm:p-16 space-y-12">
                 {pageContent.sections?.map((section: any, i: number) => {
                   const SectionIcon = ICON_MAP[section.icon] || Info;
@@ -121,9 +113,8 @@ const Legal: React.FC<LegalProps> = ({ type, language, onBack }) => {
                 })}
               </div>
 
-              {/* Footer of document */}
               <div className="bg-gray-50 p-8 text-center border-t border-gray-100">
-                <p className="text-sm text-gray-400 font-medium">Document officiel Europfy SAS • Tous droits réservés</p>
+                <p className="text-sm text-gray-400 font-medium">{t('legal.document_footer')}</p>
               </div>
             </div>
           </main>
