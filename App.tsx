@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -35,12 +36,64 @@ const App: React.FC = () => {
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
+  // Router Logic: Sync URL with State
+  const syncRouteWithState = useCallback(() => {
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(Boolean);
+
+    if (segments.length === 0) {
+      setCurrentPage('home');
+    } else if (segments[0] === 'about') {
+      setCurrentPage('about');
+    } else if (segments[0] === 'contact') {
+      setCurrentPage('contact');
+    } else if (segments[0] === 'login') {
+      setCurrentPage('login');
+    } else if (segments[0] === 'faq') {
+      setCurrentPage('faq');
+    } else if (segments[0] === 'simulator') {
+      setCurrentPage('simulator');
+    } else if (segments[0] === 'blog') {
+      if (segments[1]) {
+        setCurrentPage('blog-detail');
+        setSelectedPostId(segments[1]);
+      } else {
+        setCurrentPage('blog');
+      }
+    } else if (segments[0] === 'loan' && segments[1]) {
+      setCurrentPage('loan-detail');
+      setSelectedLoanId(segments[1]);
+    } else if (segments[0] === 'apply') {
+      setCurrentPage('loan-application');
+      if (segments[1]) setSelectedLoanId(segments[1]);
+    } else if (segments[0] === 'success') {
+      setCurrentPage('success');
+    } else if (segments[0] === 'dashboard') {
+      setCurrentPage('client-dashboard');
+    } else if (segments[0] === 'admin') {
+      setCurrentPage('admin-dashboard');
+    } else if (segments[0] === 'help') {
+      setCurrentPage('help');
+    } else if (segments[0] === 'legal' && segments[1]) {
+      setCurrentPage(`legal-${segments[1]}`);
+    } else {
+      setCurrentPage('home');
+    }
+  }, []);
+
   useEffect(() => {
     setLoans(buildLoansData(translations.fr.loan_specifics));
     if (translations.fr.blog && translations.fr.blog.posts) {
       setPosts(translations.fr.blog.posts);
     }
-  }, []);
+    
+    // Initial Route Sync
+    syncRouteWithState();
+
+    // Listen to browser navigation
+    window.addEventListener('popstate', syncRouteWithState);
+    return () => window.removeEventListener('popstate', syncRouteWithState);
+  }, [syncRouteWithState]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -49,34 +102,63 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const handleNavigate = (page: string, params?: string) => {
+    let url = '/';
+    switch (page) {
+      case 'home': url = '/'; break;
+      case 'about': url = '/about'; break;
+      case 'contact': url = '/contact'; break;
+      case 'login': url = '/login'; break;
+      case 'faq': url = '/faq'; break;
+      case 'simulator': url = '/simulator'; break;
+      case 'blog': url = '/blog'; break;
+      case 'blog-detail': url = `/blog/${params}`; break;
+      case 'loan-detail': url = `/loan/${params}`; break;
+      case 'loan-application': url = params ? `/apply/${params}` : '/apply'; break;
+      case 'success': url = '/success'; break;
+      case 'client-dashboard': url = '/dashboard'; break;
+      case 'admin-dashboard': url = '/admin'; break;
+      case 'help': url = '/help'; break;
+      case 'legal-terms': url = '/legal/terms'; break;
+      case 'legal-privacy': url = '/legal/privacy'; break;
+      case 'legal-cookies': url = '/legal/cookies'; break;
+      case 'loans': // Anchor handling
+        if (window.location.pathname !== '/') {
+           window.history.pushState({}, '', '/');
+           syncRouteWithState();
+           setTimeout(() => document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' }), 100);
+        } else {
+           document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' });
+        }
+        return;
+    }
+
+    window.history.pushState({}, '', url);
+    syncRouteWithState();
+    window.scrollTo(0, 0);
+  };
+
   const handleLanguageChange = async (lang: Language) => {
     if (lang === 'fr') {
       await i18n.changeLanguage('fr');
       setCurrentLanguage('fr');
       setLoans(buildLoansData(translations.fr.loan_specifics));
-      if (translations.fr.blog?.posts) {
-        setPosts(translations.fr.blog.posts);
-      }
+      if (translations.fr.blog?.posts) setPosts(translations.fr.blog.posts);
       return;
     }
 
     setIsLoading(true);
     try {
       const dbData = await redisService.getTranslation(lang);
-      
       if (dbData) {
         i18n.addResourceBundle(lang, 'translation', dbData, true, true);
         await i18n.changeLanguage(lang);
         setCurrentLanguage(lang);
-        if (dbData.loan_specifics) {
-          setLoans(buildLoansData(dbData.loan_specifics));
-        }
-        if (dbData.blog && dbData.blog.posts) {
-          setPosts(dbData.blog.posts);
-        }
+        if (dbData.loan_specifics) setLoans(buildLoansData(dbData.loan_specifics));
+        if (dbData.blog?.posts) setPosts(dbData.blog.posts);
       }
     } catch (error) {
-      console.error("Erreur lors du changement de langue :", error);
+      console.error("Erreur langue :", error);
     } finally {
       setIsLoading(false);
     }
@@ -85,46 +167,13 @@ const App: React.FC = () => {
   const handleLogin = (userData: User) => {
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
-    setCurrentPage(userData.role === 'admin' ? 'admin-dashboard' : 'client-dashboard');
+    handleNavigate(userData.role === 'admin' ? 'admin-dashboard' : 'client-dashboard');
   };
 
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    setCurrentPage('home');
-  };
-
-  const handleNavigate = (page: string) => {
-    if (page === 'loans') {
-      const element = document.getElementById('loans');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      } else {
-        setCurrentPage('home');
-        setTimeout(() => {
-          document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-    } else {
-      setCurrentPage(page);
-      if (page !== 'loan-application' && page !== 'loan-detail') {
-          setSelectedLoanId(null);
-      }
-      setSelectedPostId(null);
-      window.scrollTo(0, 0);
-    }
-  };
-
-  const handleSelectLoan = (loanId: string) => {
-    setSelectedLoanId(loanId);
-    setCurrentPage('loan-detail');
-    window.scrollTo(0, 0);
-  };
-
-  const handleSelectPost = (postId: string) => {
-    setSelectedPostId(postId);
-    setCurrentPage('blog-detail');
-    window.scrollTo(0, 0);
+    handleNavigate('home');
   };
 
   const renderContent = () => {
@@ -144,25 +193,19 @@ const App: React.FC = () => {
     }
 
     if (currentPage === 'admin-dashboard') {
-      if (user?.role !== 'admin') {
-        setCurrentPage('login');
-        return null;
-      }
+      if (user?.role !== 'admin') { handleNavigate('login'); return null; }
       return <AdminDashboard language={currentLanguage} />;
     }
 
     if (currentPage === 'client-dashboard') {
-      if (!user) {
-        setCurrentPage('login');
-        return null;
-      }
+      if (!user) { handleNavigate('login'); return null; }
       return <ClientDashboard language={currentLanguage} user={user} onNavigate={handleNavigate} />;
     }
 
     if (currentPage === 'loan-detail' && selectedLoanId) {
       const loan = loans.find(l => l.id === selectedLoanId);
       if (loan) {
-        return <LoanDetail loan={loan} onBack={() => handleNavigate('home')} language={currentLanguage} onApply={() => handleNavigate('loan-application')} />;
+        return <LoanDetail loan={loan} onBack={() => handleNavigate('home')} language={currentLanguage} onApply={() => handleNavigate('loan-application', selectedLoanId)} />;
       }
     }
 
@@ -170,7 +213,7 @@ const App: React.FC = () => {
       return <BlogPostDetail postId={selectedPostId} language={currentLanguage} onBack={() => handleNavigate('blog')} onNavigate={handleNavigate} />;
     }
 
-    if (currentPage === 'legal-terms' || currentPage === 'legal-privacy' || currentPage === 'legal-cookies') {
+    if (currentPage.startsWith('legal-')) {
       const type = currentPage.replace('legal-', '') as 'terms' | 'privacy' | 'cookies';
       return <Legal type={type} language={currentLanguage} onBack={() => handleNavigate('home')} />;
     }
@@ -179,7 +222,7 @@ const App: React.FC = () => {
       case 'home':
         return (
           <Home 
-            onSelectLoan={handleSelectLoan} 
+            onSelectLoan={(id) => handleNavigate('loan-detail', id)} 
             onNavigate={handleNavigate} 
             language={currentLanguage} 
             loans={loans} 
@@ -188,10 +231,8 @@ const App: React.FC = () => {
             onLanguageChange={handleLanguageChange}
           />
         );
-      case 'about':
-        return <About language={currentLanguage} onNavigate={handleNavigate} />;
-      case 'blog':
-        return <Blog language={currentLanguage} onSelectPost={handleSelectPost} postsData={posts} />;
+      case 'about': return <About language={currentLanguage} onNavigate={handleNavigate} />;
+      case 'blog': return <Blog language={currentLanguage} onSelectPost={(id) => handleNavigate('blog-detail', id)} postsData={posts} />;
       case 'loan-application':
         return (
           <LoanApplication 
@@ -200,17 +241,14 @@ const App: React.FC = () => {
             onBack={() => handleNavigate('home')} 
             onSuccess={(creds) => {
               setTempAccount(creds);
-              setCurrentPage('success');
+              handleNavigate('success');
             }} 
             onNavigate={handleNavigate} 
           />
         );
-      case 'success':
-        return <Success language={currentLanguage} onNavigate={handleNavigate} tempAccount={tempAccount} />;
-      case 'contact':
-        return <Contact language={currentLanguage} onNavigate={handleNavigate} />;
-      case 'faq':
-        return <Faq language={currentLanguage} onBack={() => handleNavigate('home')} />;
+      case 'success': return <Success language={currentLanguage} onNavigate={handleNavigate} tempAccount={tempAccount} />;
+      case 'contact': return <Contact language={currentLanguage} onNavigate={handleNavigate} />;
+      case 'faq': return <Faq language={currentLanguage} onBack={() => handleNavigate('home')} />;
       case 'simulator':
         return (
           <div className="pt-32 pb-20 max-w-4xl mx-auto px-4">
@@ -223,20 +261,8 @@ const App: React.FC = () => {
             </div>
           </div>
         );
-      case 'help':
-        return <Help language={currentLanguage} onBack={() => handleNavigate('login')} />;
-      default:
-        return (
-          <Home 
-            onSelectLoan={handleSelectLoan} 
-            onNavigate={handleNavigate} 
-            language={currentLanguage} 
-            loans={loans} 
-            user={user}
-            onLogout={handleLogout}
-            onLanguageChange={handleLanguageChange}
-          />
-        );
+      case 'help': return <Help language={currentLanguage} onBack={() => handleNavigate('login')} />;
+      default: return <Home onSelectLoan={(id) => handleNavigate('loan-detail', id)} onNavigate={handleNavigate} language={currentLanguage} loans={loans} user={user} onLogout={handleLogout} onLanguageChange={handleLanguageChange} />;
     }
   };
 
@@ -253,12 +279,8 @@ const App: React.FC = () => {
           onLanguageChange={handleLanguageChange}
         />
       )}
-      
-      <main className="flex-grow">
-        {renderContent()}
-      </main>
-
-      <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={handleSelectLoan} loans={loans} />
+      <main className="flex-grow">{renderContent()}</main>
+      <Footer language={currentLanguage} onNavigate={handleNavigate} onSelectLoan={(id) => handleNavigate('loan-detail', id)} loans={loans} />
     </div>
   );
 };
