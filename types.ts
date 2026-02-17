@@ -1,4 +1,5 @@
-export type Language = 'fr' | 'en' | 'pl' | 'pt' | 'de' | 'es' | 'nl' | 'it';
+
+export type Language = 'fr' | 'pt';
 
 export type LoanType = 'personnel' | 'immobilier' | 'automobile' | 'entreprise' | 'rachat';
 

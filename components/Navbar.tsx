@@ -38,7 +38,6 @@ const Navbar: React.FC<NavbarProps> = ({
     };
     window.addEventListener('scroll', handleScroll);
     
-    // Fermer le menu langue si on clique ailleurs
     const handleClickOutside = (event: MouseEvent) => {
       if (langMenuRef.current && !langMenuRef.current.contains(event.target as Node)) {
         setIsLangMenuOpen(false);
@@ -62,13 +61,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const languages: {code: Language, label: string, flag: string}[] = [
     { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'es', label: 'Español', flag: '🇪🇸' },
-    { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-    { code: 'it', label: 'Italiano', flag: '🇮🇹' },
     { code: 'pt', label: 'Português', flag: '🇵🇹' },
-    { code: 'nl', label: 'Nederlands', flag: '🇳🇱' },
-    { code: 'pl', label: 'Polski', flag: '🇵🇱' },
   ];
 
   const isActuallyTransparent = isTransparent && !isScrolled;
@@ -90,7 +83,6 @@ const Navbar: React.FC<NavbarProps> = ({
             </span>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button 
@@ -104,7 +96,6 @@ const Navbar: React.FC<NavbarProps> = ({
 
             <div className={`h-6 w-px mx-2 ${isActuallyTransparent ? 'bg-white/20' : 'bg-gray-200'}`}></div>
 
-            {/* Language Selector */}
             <div className="relative" ref={langMenuRef}>
               <button 
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
@@ -157,14 +148,11 @@ const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
 
-          {/* Mobile toggle */}
           <div className="md:hidden flex items-center gap-4">
-             {/* Language Selector Mobile */}
              <button 
                 onClick={() => {
-                   const currentIndex = languages.findIndex(l => l.code === currentLanguage);
-                   const nextIndex = (currentIndex + 1) % languages.length;
-                   if (onLanguageChange) onLanguageChange(languages[nextIndex].code);
+                   const nextLang = currentLanguage === 'fr' ? 'pt' : 'fr';
+                   if (onLanguageChange) onLanguageChange(nextLang);
                 }}
                 className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg transition-colors ${isActuallyTransparent ? 'text-white' : 'text-gray-700'}`}
               >
@@ -178,7 +166,6 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-100 animate-in slide-in-from-top-2">
           <div className="px-4 pt-2 pb-6 space-y-2">

@@ -21,7 +21,6 @@ import AdsCreator from './pages/AdsCreator';
 import LoanCalculator from './components/LoanCalculator';
 import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
-import { redisService } from './services/redis';
 import { translations } from './translations';
 import { ptManual } from './pt';
 
@@ -33,7 +32,6 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
@@ -85,6 +83,7 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Initialisation par défaut (FR)
     setLoans(buildLoansData(translations.fr.loan_specifics));
     if (translations.fr.blog && translations.fr.blog.posts) {
       setPosts(translations.fr.blog.posts);
@@ -139,41 +138,17 @@ const App: React.FC = () => {
   };
 
   const handleLanguageChange = async (lang: Language) => {
-    if (lang === 'fr') {
-      await i18n.changeLanguage(lang);
-      setCurrentLanguage(lang);
-      setLoans(buildLoansData(translations.fr.loan_specifics));
-      if (translations.fr.blog?.posts) setPosts(translations.fr.blog.posts);
-      return;
+    await i18n.changeLanguage(lang);
+    setCurrentLanguage(lang);
+    
+    // Extraction des données de prêt et de blog selon la langue locale
+    const data = lang === 'fr' ? translations.fr : ptManual.translation;
+    
+    if (data.loan_specifics) {
+      setLoans(buildLoansData(data.loan_specifics));
     }
-
-    if (lang === 'pt') {
-      await i18n.changeLanguage(lang);
-      setCurrentLanguage(lang);
-      const ptData = ptManual.translation;
-      if (ptData.loan_specifics) {
-        setLoans(buildLoansData(ptData.loan_specifics));
-      }
-      if (ptData.blog?.posts) {
-        setPosts(ptData.blog.posts);
-      }
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const dbData = await redisService.getTranslation(lang);
-      if (dbData) {
-        i18n.addResourceBundle(lang, 'translation', dbData, true, true);
-        await i18n.changeLanguage(lang);
-        setCurrentLanguage(lang);
-        if (dbData.loan_specifics) setLoans(buildLoansData(dbData.loan_specifics));
-        if (dbData.blog?.posts) setPosts(dbData.blog.posts);
-      }
-    } catch (error) {
-      console.error("Erreur langue :", error);
-    } finally {
-      setIsLoading(false);
+    if (data.blog?.posts) {
+      setPosts(data.blog.posts);
     }
   };
 
@@ -190,17 +165,6 @@ const App: React.FC = () => {
   };
 
   const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div className="h-screen flex items-center justify-center bg-gray-50">
-          <div className="flex flex-col items-center gap-6">
-            <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
-          </div>
-        </div>
-      );
-    }
-
     if (currentPage === 'login') {
       return <Login language={currentLanguage} onLogin={handleLogin} onBack={() => handleNavigate('home')} onNavigate={handleNavigate} />;
     }
