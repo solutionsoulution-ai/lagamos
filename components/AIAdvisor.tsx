@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI } from "@google/genai";
 import { MessageSquare, Send, X, Bot, Sparkles, Loader2, MinusCircle } from 'lucide-react';
@@ -69,6 +68,13 @@ const AIAdvisor: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="bg-white/20 p-2 rounded-xl">
                 <Bot className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-black text-sm">EuropBot AI</h3>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full animate-pulse"></span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">En ligne</span>
+                </div>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="hover:bg-white/10 p-2 rounded-lg transition-colors">

@@ -1,4 +1,3 @@
-
 import { LOAN_DATABASE } from './database';
 
 export const basePackFR = {
@@ -262,6 +261,5 @@ export const basePackFR = {
 };
 
 export const translations: any = {
-  fr: { ...basePackFR, loan_specifics: LOAN_DATABASE.fr },
-  pt: {} // Sera peuplé dynamiquement par Redis au chargement
+  fr: { ...basePackFR, loan_specifics: LOAN_DATABASE.fr }
 };

@@ -31,16 +31,15 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('pt');
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
-  // Router Logic: Sync Hash with State to prevent 404s
+  // Router Logic: Sync URL with State
   const syncRouteWithState = useCallback(() => {
-    // On récupère le hash (ex: #/about -> about)
-    const hash = window.location.hash.replace(/^#\//, '');
-    const segments = hash.split('/').filter(Boolean);
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(Boolean);
 
     if (segments.length === 0) {
       setCurrentPage('home');
@@ -83,36 +82,18 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const initDefaultLanguage = async () => {
-      setIsLoading(true);
-      try {
-        const ptData = await redisService.getTranslation('pt');
-        if (ptData) {
-          i18n.addResourceBundle('pt', 'translation', ptData, true, true);
-          await i18n.changeLanguage('pt');
-          setLoans(buildLoansData(ptData.loan_specifics || translations.fr.loan_specifics));
-          if (ptData.blog?.posts) setPosts(ptData.blog.posts);
-        } else {
-          await i18n.changeLanguage('pt');
-          setLoans(buildLoansData(translations.fr.loan_specifics));
-        }
-      } catch (error) {
-        console.error("Erreur chargement langue initiale PT:", error);
-        await i18n.changeLanguage('fr');
-        setCurrentLanguage('fr');
-        setLoans(buildLoansData(translations.fr.loan_specifics));
-      } finally {
-        setIsLoading(false);
-        syncRouteWithState();
-      }
-    };
+    setLoans(buildLoansData(translations.fr.loan_specifics));
+    if (translations.fr.blog && translations.fr.blog.posts) {
+      setPosts(translations.fr.blog.posts);
+    }
+    
+    // Initial Route Sync
+    syncRouteWithState();
 
-    initDefaultLanguage();
-
-    // Listen to hash changes instead of popstate
-    window.addEventListener('hashchange', syncRouteWithState);
-    return () => window.removeEventListener('hashchange', syncRouteWithState);
-  }, [i18n, syncRouteWithState]);
+    // Listen to browser navigation
+    window.addEventListener('popstate', syncRouteWithState);
+    return () => window.removeEventListener('popstate', syncRouteWithState);
+  }, [syncRouteWithState]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -122,28 +103,29 @@ const App: React.FC = () => {
   }, []);
 
   const handleNavigate = (page: string, params?: string) => {
-    let hash = '/';
+    let url = '/';
     switch (page) {
-      case 'home': hash = '/'; break;
-      case 'about': hash = '/about'; break;
-      case 'contact': hash = '/contact'; break;
-      case 'login': hash = '/login'; break;
-      case 'faq': hash = '/faq'; break;
-      case 'simulator': hash = '/simulator'; break;
-      case 'blog': hash = '/blog'; break;
-      case 'blog-detail': hash = `/blog/${params}`; break;
-      case 'loan-detail': hash = `/loan/${params}`; break;
-      case 'loan-application': hash = params ? `/apply/${params}` : '/apply'; break;
-      case 'success': hash = '/success'; break;
-      case 'client-dashboard': hash = '/dashboard'; break;
-      case 'admin-dashboard': hash = '/admin'; break;
-      case 'help': hash = '/help'; break;
-      case 'legal-terms': hash = '/legal/terms'; break;
-      case 'legal-privacy': hash = '/legal/privacy'; break;
-      case 'legal-cookies': hash = '/legal/cookies'; break;
-      case 'loans': 
-        if (window.location.hash !== '#/' && window.location.hash !== '') {
-           window.location.hash = '#/';
+      case 'home': url = '/'; break;
+      case 'about': url = '/about'; break;
+      case 'contact': url = '/contact'; break;
+      case 'login': url = '/login'; break;
+      case 'faq': url = '/faq'; break;
+      case 'simulator': url = '/simulator'; break;
+      case 'blog': url = '/blog'; break;
+      case 'blog-detail': url = `/blog/${params}`; break;
+      case 'loan-detail': url = `/loan/${params}`; break;
+      case 'loan-application': url = params ? `/apply/${params}` : '/apply'; break;
+      case 'success': url = '/success'; break;
+      case 'client-dashboard': url = '/dashboard'; break;
+      case 'admin-dashboard': url = '/admin'; break;
+      case 'help': url = '/help'; break;
+      case 'legal-terms': url = '/legal/terms'; break;
+      case 'legal-privacy': url = '/legal/privacy'; break;
+      case 'legal-cookies': url = '/legal/cookies'; break;
+      case 'loans': // Anchor handling
+        if (window.location.pathname !== '/') {
+           window.history.pushState({}, '', '/');
+           syncRouteWithState();
            setTimeout(() => document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' }), 100);
         } else {
            document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' });
@@ -151,8 +133,8 @@ const App: React.FC = () => {
         return;
     }
 
-    // Update the hash in URL
-    window.location.hash = `#${hash}`;
+    window.history.pushState({}, '', url);
+    syncRouteWithState();
     window.scrollTo(0, 0);
   };
 
@@ -174,12 +156,9 @@ const App: React.FC = () => {
         setCurrentLanguage(lang);
         if (dbData.loan_specifics) setLoans(buildLoansData(dbData.loan_specifics));
         if (dbData.blog?.posts) setPosts(dbData.blog.posts);
-      } else {
-        await i18n.changeLanguage(lang);
-        setCurrentLanguage(lang);
       }
     } catch (error) {
-      console.error("Erreur changement langue :", error);
+      console.error("Erreur langue :", error);
     } finally {
       setIsLoading(false);
     }
@@ -203,7 +182,7 @@ const App: React.FC = () => {
         <div className="h-screen flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-6">
             <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Carregando...</p>
+            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
           </div>
         </div>
       );
