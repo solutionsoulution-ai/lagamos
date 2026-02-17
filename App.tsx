@@ -31,76 +31,76 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('pt');
+  const [isLoading, setIsLoading] = useState(true); // Démarrer en chargement pour la langue
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('pt'); // Langue par défaut
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
+  // Router Logic: Sync URL with State
   const syncRouteWithState = useCallback(() => {
-    try {
-      const path = window.location.pathname;
-      const segments = path.split('/').filter(Boolean);
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(Boolean);
 
-      if (segments.length === 0) {
-        setCurrentPage('home');
-      } else if (segments[0] === 'about') {
-        setCurrentPage('about');
-      } else if (segments[0] === 'contact') {
-        setCurrentPage('contact');
-      } else if (segments[0] === 'login') {
-        setCurrentPage('login');
-      } else if (segments[0] === 'faq') {
-        setCurrentPage('faq');
-      } else if (segments[0] === 'simulator') {
-        setCurrentPage('simulator');
-      } else if (segments[0] === 'blog') {
-        if (segments[1]) {
-          setCurrentPage('blog-detail');
-          setSelectedPostId(segments[1]);
-        } else {
-          setCurrentPage('blog');
-        }
-      } else if (segments[0] === 'loan' && segments[1]) {
-        setCurrentPage('loan-detail');
-        setSelectedLoanId(segments[1]);
-      } else if (segments[0] === 'apply') {
-        setCurrentPage('loan-application');
-        if (segments[1]) setSelectedLoanId(segments[1]);
-      } else if (segments[0] === 'success') {
-        setCurrentPage('success');
-      } else if (segments[0] === 'dashboard') {
-        setCurrentPage('client-dashboard');
-      } else if (segments[0] === 'admin') {
-        setCurrentPage('admin-dashboard');
-      } else if (segments[0] === 'help') {
-        setCurrentPage('help');
-      } else if (segments[0] === 'legal' && segments[1]) {
-        setCurrentPage(`legal-${segments[1]}`);
+    if (segments.length === 0) {
+      setCurrentPage('home');
+    } else if (segments[0] === 'about') {
+      setCurrentPage('about');
+    } else if (segments[0] === 'contact') {
+      setCurrentPage('contact');
+    } else if (segments[0] === 'login') {
+      setCurrentPage('login');
+    } else if (segments[0] === 'faq') {
+      setCurrentPage('faq');
+    } else if (segments[0] === 'simulator') {
+      setCurrentPage('simulator');
+    } else if (segments[0] === 'blog') {
+      if (segments[1]) {
+        setCurrentPage('blog-detail');
+        setSelectedPostId(segments[1]);
       } else {
-        setCurrentPage('home');
+        setCurrentPage('blog');
       }
-    } catch (e) {
-      console.error("Router sync error:", e);
+    } else if (segments[0] === 'loan' && segments[1]) {
+      setCurrentPage('loan-detail');
+      setSelectedLoanId(segments[1]);
+    } else if (segments[0] === 'apply') {
+      setCurrentPage('loan-application');
+      if (segments[1]) setSelectedLoanId(segments[1]);
+    } else if (segments[0] === 'success') {
+      setCurrentPage('success');
+    } else if (segments[0] === 'dashboard') {
+      setCurrentPage('client-dashboard');
+    } else if (segments[0] === 'admin') {
+      setCurrentPage('admin-dashboard');
+    } else if (segments[0] === 'help') {
+      setCurrentPage('help');
+    } else if (segments[0] === 'legal' && segments[1]) {
+      setCurrentPage(`legal-${segments[1]}`);
+    } else {
       setCurrentPage('home');
     }
   }, []);
 
+  // Chargement initial de la langue par défaut (PT) depuis Redis
   useEffect(() => {
     const initDefaultLanguage = async () => {
       setIsLoading(true);
       try {
+        // On essaye de récupérer le Portugais depuis Redis
         const ptData = await redisService.getTranslation('pt');
-        if (ptData && typeof ptData === 'object') {
+        if (ptData) {
           i18n.addResourceBundle('pt', 'translation', ptData, true, true);
           await i18n.changeLanguage('pt');
           setLoans(buildLoansData(ptData.loan_specifics || translations.fr.loan_specifics));
           if (ptData.blog?.posts) setPosts(ptData.blog.posts);
         } else {
+          // Si Redis n'a pas encore de PT, on garde PT mais avec fallback FR
           await i18n.changeLanguage('pt');
           setLoans(buildLoansData(translations.fr.loan_specifics));
         }
       } catch (error) {
         console.error("Erreur chargement langue initiale PT:", error);
+        // Fallback ultime sur FR
         await i18n.changeLanguage('fr');
         setCurrentLanguage('fr');
         setLoans(buildLoansData(translations.fr.loan_specifics));
@@ -117,14 +117,9 @@ const App: React.FC = () => {
   }, [i18n, syncRouteWithState]);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('user');
-      if (savedUser && savedUser !== 'undefined') {
-        setUser(JSON.parse(savedUser));
-      }
-    } catch (e) {
-      console.error("User storage restore error:", e);
-      localStorage.removeItem('user');
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
     }
   }, []);
 
@@ -176,20 +171,19 @@ const App: React.FC = () => {
     setIsLoading(true);
     try {
       const dbData = await redisService.getTranslation(lang);
-      if (dbData && typeof dbData === 'object') {
+      if (dbData) {
         i18n.addResourceBundle(lang, 'translation', dbData, true, true);
         await i18n.changeLanguage(lang);
         setCurrentLanguage(lang);
         if (dbData.loan_specifics) setLoans(buildLoansData(dbData.loan_specifics));
         if (dbData.blog?.posts) setPosts(dbData.blog.posts);
       } else {
+        // Si pas en base, on change juste la langue i18n (fallback)
         await i18n.changeLanguage(lang);
         setCurrentLanguage(lang);
       }
     } catch (error) {
       console.error("Erreur changement langue :", error);
-      await i18n.changeLanguage('fr');
-      setCurrentLanguage('fr');
     } finally {
       setIsLoading(false);
     }
