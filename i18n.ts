@@ -7,8 +7,8 @@ i18n
   .use(initReactI18next)
   .init({
     debug: false,
-    lng: 'fr',
-    fallbackLng: false,
+    lng: 'pt', // Langue par défaut : Portugais
+    fallbackLng: 'fr', // Repli sur le Français si une clé manque
     interpolation: {
       escapeValue: false,
     },
@@ -16,6 +16,7 @@ i18n
       fr: {
         translation: translations.fr
       }
+      // Le pack 'pt' sera injecté dynamiquement depuis Redis dans App.tsx
     },
     react: {
       useSuspense: false,

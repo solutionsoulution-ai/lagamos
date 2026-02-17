@@ -31,74 +31,100 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('pt');
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
-  // Router Logic: Sync URL with State
   const syncRouteWithState = useCallback(() => {
-    const path = window.location.pathname;
-    const segments = path.split('/').filter(Boolean);
+    try {
+      const path = window.location.pathname;
+      const segments = path.split('/').filter(Boolean);
 
-    if (segments.length === 0) {
-      setCurrentPage('home');
-    } else if (segments[0] === 'about') {
-      setCurrentPage('about');
-    } else if (segments[0] === 'contact') {
-      setCurrentPage('contact');
-    } else if (segments[0] === 'login') {
-      setCurrentPage('login');
-    } else if (segments[0] === 'faq') {
-      setCurrentPage('faq');
-    } else if (segments[0] === 'simulator') {
-      setCurrentPage('simulator');
-    } else if (segments[0] === 'blog') {
-      if (segments[1]) {
-        setCurrentPage('blog-detail');
-        setSelectedPostId(segments[1]);
+      if (segments.length === 0) {
+        setCurrentPage('home');
+      } else if (segments[0] === 'about') {
+        setCurrentPage('about');
+      } else if (segments[0] === 'contact') {
+        setCurrentPage('contact');
+      } else if (segments[0] === 'login') {
+        setCurrentPage('login');
+      } else if (segments[0] === 'faq') {
+        setCurrentPage('faq');
+      } else if (segments[0] === 'simulator') {
+        setCurrentPage('simulator');
+      } else if (segments[0] === 'blog') {
+        if (segments[1]) {
+          setCurrentPage('blog-detail');
+          setSelectedPostId(segments[1]);
+        } else {
+          setCurrentPage('blog');
+        }
+      } else if (segments[0] === 'loan' && segments[1]) {
+        setCurrentPage('loan-detail');
+        setSelectedLoanId(segments[1]);
+      } else if (segments[0] === 'apply') {
+        setCurrentPage('loan-application');
+        if (segments[1]) setSelectedLoanId(segments[1]);
+      } else if (segments[0] === 'success') {
+        setCurrentPage('success');
+      } else if (segments[0] === 'dashboard') {
+        setCurrentPage('client-dashboard');
+      } else if (segments[0] === 'admin') {
+        setCurrentPage('admin-dashboard');
+      } else if (segments[0] === 'help') {
+        setCurrentPage('help');
+      } else if (segments[0] === 'legal' && segments[1]) {
+        setCurrentPage(`legal-${segments[1]}`);
       } else {
-        setCurrentPage('blog');
+        setCurrentPage('home');
       }
-    } else if (segments[0] === 'loan' && segments[1]) {
-      setCurrentPage('loan-detail');
-      setSelectedLoanId(segments[1]);
-    } else if (segments[0] === 'apply') {
-      setCurrentPage('loan-application');
-      if (segments[1]) setSelectedLoanId(segments[1]);
-    } else if (segments[0] === 'success') {
-      setCurrentPage('success');
-    } else if (segments[0] === 'dashboard') {
-      setCurrentPage('client-dashboard');
-    } else if (segments[0] === 'admin') {
-      setCurrentPage('admin-dashboard');
-    } else if (segments[0] === 'help') {
-      setCurrentPage('help');
-    } else if (segments[0] === 'legal' && segments[1]) {
-      setCurrentPage(`legal-${segments[1]}`);
-    } else {
+    } catch (e) {
+      console.error("Router sync error:", e);
       setCurrentPage('home');
     }
   }, []);
 
   useEffect(() => {
-    setLoans(buildLoansData(translations.fr.loan_specifics));
-    if (translations.fr.blog && translations.fr.blog.posts) {
-      setPosts(translations.fr.blog.posts);
-    }
-    
-    // Initial Route Sync
-    syncRouteWithState();
+    const initDefaultLanguage = async () => {
+      setIsLoading(true);
+      try {
+        const ptData = await redisService.getTranslation('pt');
+        if (ptData && typeof ptData === 'object') {
+          i18n.addResourceBundle('pt', 'translation', ptData, true, true);
+          await i18n.changeLanguage('pt');
+          setLoans(buildLoansData(ptData.loan_specifics || translations.fr.loan_specifics));
+          if (ptData.blog?.posts) setPosts(ptData.blog.posts);
+        } else {
+          await i18n.changeLanguage('pt');
+          setLoans(buildLoansData(translations.fr.loan_specifics));
+        }
+      } catch (error) {
+        console.error("Erreur chargement langue initiale PT:", error);
+        await i18n.changeLanguage('fr');
+        setCurrentLanguage('fr');
+        setLoans(buildLoansData(translations.fr.loan_specifics));
+      } finally {
+        setIsLoading(false);
+        syncRouteWithState();
+      }
+    };
 
-    // Listen to browser navigation
+    initDefaultLanguage();
+
     window.addEventListener('popstate', syncRouteWithState);
     return () => window.removeEventListener('popstate', syncRouteWithState);
-  }, [syncRouteWithState]);
+  }, [i18n, syncRouteWithState]);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    try {
+      const savedUser = localStorage.getItem('user');
+      if (savedUser && savedUser !== 'undefined') {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch (e) {
+      console.error("User storage restore error:", e);
+      localStorage.removeItem('user');
     }
   }, []);
 
@@ -122,7 +148,7 @@ const App: React.FC = () => {
       case 'legal-terms': url = '/legal/terms'; break;
       case 'legal-privacy': url = '/legal/privacy'; break;
       case 'legal-cookies': url = '/legal/cookies'; break;
-      case 'loans': // Anchor handling
+      case 'loans': 
         if (window.location.pathname !== '/') {
            window.history.pushState({}, '', '/');
            syncRouteWithState();
@@ -150,15 +176,20 @@ const App: React.FC = () => {
     setIsLoading(true);
     try {
       const dbData = await redisService.getTranslation(lang);
-      if (dbData) {
+      if (dbData && typeof dbData === 'object') {
         i18n.addResourceBundle(lang, 'translation', dbData, true, true);
         await i18n.changeLanguage(lang);
         setCurrentLanguage(lang);
         if (dbData.loan_specifics) setLoans(buildLoansData(dbData.loan_specifics));
         if (dbData.blog?.posts) setPosts(dbData.blog.posts);
+      } else {
+        await i18n.changeLanguage(lang);
+        setCurrentLanguage(lang);
       }
     } catch (error) {
-      console.error("Erreur langue :", error);
+      console.error("Erreur changement langue :", error);
+      await i18n.changeLanguage('fr');
+      setCurrentLanguage('fr');
     } finally {
       setIsLoading(false);
     }
@@ -182,7 +213,7 @@ const App: React.FC = () => {
         <div className="h-screen flex items-center justify-center bg-gray-50">
           <div className="flex flex-col items-center gap-6">
             <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin"></div>
-            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Chargement...</p>
+            <p className="text-emerald-800 font-black text-lg animate-pulse tracking-widest uppercase">Carregando...</p>
           </div>
         </div>
       );
