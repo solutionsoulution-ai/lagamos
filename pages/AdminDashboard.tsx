@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Language } from '../types';
+import { Language, Transaction } from '../types';
 import { restdbService } from '../services/restdb';
 import { emailService } from '../services/email';
 import { seedSanityData } from '../sanity-seed-script';
@@ -13,7 +13,6 @@ import {
   Save, Trash2, XCircle, RefreshCw, Database, 
   UserPlus, ShieldAlert, FileText, CheckCircle,
   Clock, Hash, BadgeCheck, FileSignature, Euro, Plus, CreditCard, Landmark, Copy, Lock, EyeOff,
-  // Fix: Add TrendingUp to the imports
   TrendingUp
 } from 'lucide-react';
 
@@ -30,7 +29,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [showAdminPass, setShowAdminPass] = useState(false);
   
-  // États pour la création de compte bancaire
   const [isCreatingClient, setIsCreatingClient] = useState(false);
   const [newClient, setNewClient] = useState({
     firstName: '', lastName: '', email: '', whatsapp: '',
@@ -39,14 +37,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
     amount: 0, duration: 0, reason: 'Ouverture de compte bancaire manuel'
   });
 
-  // États Email Test
   const [testEmail, setTestEmail] = useState('');
   const [testLoading, setTestLoading] = useState(false);
   const [logs, setLogs] = useState<string[]>([]);
   const [result, setResult] = useState<any>(null);
   const logEndRef = useRef<HTMLDivElement>(null);
 
-  // États Outils (Sync)
   const [syncStatus, setSyncStatus] = useState<string[]>([]);
   const [isSyncing, setIsSyncing] = useState(false);
 
@@ -79,20 +75,42 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
     if (!selectedLoan) return;
     setIsSaving(true);
     try {
+      const original = loans.find(l => l._id === selectedLoan._id);
+      const oldBalance = Number(original?.balance || 0);
+      const newBalance = Number(selectedLoan.balance || 0);
+      let updatedHistory = [...(selectedLoan.transferHistory || [])];
+
+      if (newBalance !== oldBalance) {
+        const diff = newBalance - oldBalance;
+        const newTx: Transaction = {
+          id: `ADM-${Date.now()}`,
+          type: diff > 0 ? 'credit' : 'debit',
+          amount: Math.abs(diff),
+          label: diff > 0 
+            ? (language === 'pt' ? 'Creditado por Europcapital' : 'Credité par Europcapital') 
+            : (language === 'pt' ? 'Débito Administrativo' : 'Débit Administratif'),
+          date: new Date().toISOString(),
+          status: 'completed'
+        };
+        updatedHistory.unshift(newTx);
+      }
+
       await restdbService.updateApplication(selectedLoan._id, {
         status: selectedLoan.status,
-        balance: Number(selectedLoan.balance),
+        balance: newBalance,
         isBlocked: selectedLoan.isBlocked,
         blockReason: selectedLoan.blockReason,
         transferDelay: Number(selectedLoan.transferDelay || 24),
         transferDelayUnit: selectedLoan.transferDelayUnit || 'hours',
         password: selectedLoan.password,
         amount: Number(selectedLoan.amount),
-        duration: Number(selectedLoan.duration)
+        duration: Number(selectedLoan.duration),
+        transferHistory: updatedHistory
       });
+
       await fetchData();
       setSelectedLoan(null);
-      alert("Dossier mis à jour avec succès !");
+      alert(language === 'pt' ? "Dados atualizados com sucesso!" : "Dossier mis à jour avec succès !");
     } catch (e) {
       alert("Erreur lors de la mise à jour.");
     } finally {
@@ -121,10 +139,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
     try {
       const generatedPassword = generatePassword();
       const generatedIban = generateIBAN();
+      const initialBalance = Number(newClient.balance || 0);
+      
+      const initialHistory: Transaction[] = [];
+      if (initialBalance > 0) {
+        initialHistory.push({
+          id: `INIT-${Date.now()}`,
+          type: 'credit',
+          amount: initialBalance,
+          label: language === 'pt' ? 'Creditado por Europcapital' : 'Credité par Europcapital',
+          date: new Date().toISOString(),
+          status: 'completed'
+        });
+      }
       
       const payload = { 
         ...newClient, 
-        balance: Number(newClient.balance || 0),
+        balance: initialBalance,
         status: 'approved',
         feesAccepted: true, 
         consent: true, 
@@ -133,7 +164,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
         iban: generatedIban,
         bic: 'ERPYFRPP',
         password: generatedPassword,
-        transferHistory: [],
+        transferHistory: initialHistory,
         transferDelay: 24,
         transferDelayUnit: 'hours'
       };
@@ -232,7 +263,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
 
         <div className="space-y-8">
           
-          {/* 1. COMPTES CLIENTS & PRÊTS */}
           {activeTab === 'loans' && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm gap-4">
@@ -292,7 +322,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
             </div>
           )}
 
-          {/* 2. MESSAGES CONTACTS */}
           {activeTab === 'contacts' && (
             <div className="grid gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
                {isLoading ? (
@@ -322,7 +351,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
             </div>
           )}
 
-          {/* 3. EMAIL BRIDGE TESTER */}
           {activeTab === 'email_test' && (
             <div className="grid lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
               <div className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl border border-gray-100 space-y-8">
@@ -355,7 +383,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
             </div>
           )}
 
-          {/* 4. OUTILS & CONFIGURATION */}
           {activeTab === 'config' && (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -378,7 +405,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
         </div>
       </div>
 
-      {/* --- MODALE DE CRÉATION DE COMPTE BANCAIRE --- */}
       {isCreatingClient && (
         <div className="fixed inset-0 z-[300] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col animate-in zoom-in duration-300 my-8">
@@ -453,7 +479,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
         </div>
       )}
 
-      {/* --- MODALE DE DÉTAIL / MODIFICATION --- */}
       {selectedLoan && (
         <div className="fixed inset-0 z-[300] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white w-full max-w-5xl rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in duration-300 my-8">
@@ -499,7 +524,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
                  </div>
               </div>
 
-              {/* PARAMÈTRES DU PRÊT / DOSSIER */}
               <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
                 <h4 className="text-xs font-black text-gray-900 uppercase tracking-[0.2em] border-b border-gray-100 pb-3 flex items-center gap-2">
                    <TrendingUp className="w-4 h-4 text-emerald-600" /> Paramètres Financiers du Dossier
@@ -526,7 +550,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
                 </div>
               </div>
 
-              {/* SECTION SÉCURITÉ ADMIN (MOT DE PASSE VISIBLE) */}
               <div className="bg-amber-50 border border-amber-100 rounded-3xl p-6 sm:p-8 space-y-4">
                  <div className="flex items-center gap-3 text-amber-800">
                     <Lock className="w-6 h-6" />
@@ -647,7 +670,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ language }) => {
                     </div>
                     {selectedLoan.isBlocked && (
                       <div className="space-y-2 animate-in slide-in-from-top-2">
-                         <label className="text-[10px] font-black uppercase text-red-400 tracking-widest">Message pour le client</label>
+                         <label className="text-[10px] font-black uppercase text-red-400 tracking-widest">Raison du blocage</label>
                          <textarea value={selectedLoan.blockReason} onChange={e => setSelectedLoan({...selectedLoan, blockReason: e.target.value})} placeholder="Raison du blocage..." className="w-full bg-red-500/10 border-red-500/30 rounded-xl px-4 py-3 text-white font-medium resize-none" rows={2} />
                       </div>
                     )}

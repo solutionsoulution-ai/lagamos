@@ -8,8 +8,8 @@ i18n
   .use(initReactI18next)
   .init({
     debug: false,
-    lng: 'fr',
-    fallbackLng: 'fr',
+    lng: 'pt',
+    fallbackLng: 'pt',
     interpolation: {
       escapeValue: false,
     },

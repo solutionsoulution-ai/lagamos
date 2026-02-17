@@ -32,7 +32,7 @@ const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loans, setLoans] = useState<LoanInfo[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>('fr');
+  const [currentLanguage, setCurrentLanguage] = useState<Language>('pt');
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
@@ -83,10 +83,11 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Initialisation par défaut (FR)
-    setLoans(buildLoansData(translations.fr.loan_specifics));
-    if (translations.fr.blog && translations.fr.blog.posts) {
-      setPosts(translations.fr.blog.posts);
+    // Initialisation par défaut (PT désormais)
+    const initialData = ptManual.translation;
+    setLoans(buildLoansData(initialData.loan_specifics));
+    if (initialData.blog && initialData.blog.posts) {
+      setPosts(initialData.blog.posts);
     }
     
     syncRouteWithState();
