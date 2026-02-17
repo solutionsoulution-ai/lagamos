@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Language } from '../types';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ShieldCheck, Send, FileCheck, Loader2, AlertCircle, Euro, Calendar, Zap, Info, TrendingUp, Calculator } from 'lucide-react';
+import { ChevronLeft, ShieldCheck, Send, FileCheck, Loader2, AlertCircle, Euro, Calendar, Zap, Info, TrendingUp, Calculator, Lock } from 'lucide-react';
 import { restdbService } from '../services/restdb';
 import { emailService } from '../services/email';
 import { FIXED_RATE } from '../constants';
@@ -22,8 +23,8 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    firstName: '', lastName: '', amount: '15000', duration: '48', email: '', whatsapp: '',
-    country: '', profession: '', income: '', reason: '', consent: false, processingConsent: false
+    firstName: '', lastName: '', amount: '50000', duration: '120', email: '', whatsapp: '',
+    country: '', profession: '', income: '3000', reason: '', consent: false, processingConsent: false
   });
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -106,83 +107,102 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
   return (
     <div className="pt-24 sm:pt-32 pb-24 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button onClick={onBack} className="flex items-center gap-2 text-gray-500 hover:text-emerald-600 font-bold mb-6 sm:mb-12 transition-colors group">
+        <button onClick={onBack} className="flex items-center gap-2 text-gray-400 hover:text-emerald-600 font-black mb-6 sm:mb-12 transition-all group uppercase tracking-widest text-xs">
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           {t('nav.home')}
         </button>
 
         <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-2 space-y-6 sm:space-y-8">
-            <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-12 border border-gray-100 shadow-2xl relative overflow-hidden">
+            <div className="bg-white rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-12 border border-gray-100 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-600 to-teal-400"></div>
-              <div className="mb-6 sm:mb-10 space-y-2 sm:space-y-4">
+              <div className="mb-10 space-y-4">
                 <h1 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight leading-tight">{formT.title}</h1>
-                <p className="text-base sm:text-xl text-gray-500 font-medium">
+                <p className="text-base sm:text-xl text-gray-500 font-medium italic">
                     {loanType ? <span className="text-emerald-600 font-black uppercase mr-2">{loanType}</span> : null}
                     {formT.subtitle}
                 </p>
               </div>
 
+              {/* SECTION TRANSPARENCE ET SÉCURITÉ AJOUTÉE */}
+              <div className="mb-10 p-6 bg-emerald-50 rounded-2xl border border-emerald-100 space-y-3">
+                 <div className="flex items-center gap-3 text-emerald-700">
+                    <Lock className="w-6 h-6" />
+                    <h3 className="text-xl font-black">{formT.trust_title}</h3>
+                 </div>
+                 <p className="text-sm sm:text-base text-emerald-800 font-medium leading-relaxed">
+                   {formT.trust_text}
+                 </p>
+              </div>
+
               {errorMessage && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-xl flex items-center gap-3 animate-in shake-in shadow-sm text-sm">
+                <div className="mb-8 p-4 bg-red-50 border border-red-100 text-red-700 rounded-2xl flex items-center gap-3 animate-in shake-in shadow-sm text-sm font-bold">
                   <AlertCircle className="w-5 h-5 shrink-0" />
-                  <p className="font-bold">{errorMessage}</p>
+                  <p>{errorMessage}</p>
                 </div>
               )}
 
-              <div className="mb-8 sm:mb-10 bg-emerald-50 border border-emerald-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 space-y-2 sm:space-y-4">
-                <div className="flex items-center gap-2 sm:gap-3">
-                   <div className="bg-emerald-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl"><FileCheck className="w-4 h-4 sm:w-6 sm:h-6 text-white" /></div>
-                   <h3 className="text-lg sm:text-xl font-black text-teal-900">{formT.processing_fees?.title}</h3>
-                </div>
-                <p className="text-sm sm:text-lg text-gray-700 leading-relaxed font-medium">
-                    {formT.processing_fees?.text} {formT.processing_fees?.detail}
-                </p>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.firstName} <span className="text-red-500">*</span></label>
-                    <input required name="firstName" value={formData.firstName} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Identité */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.firstName} *</label>
+                    <input required name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Jean" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.lastName} <span className="text-red-500">*</span></label>
-                    <input required name="lastName" value={formData.lastName} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.lastName} *</label>
+                    <input required name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Dupont" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
                   </div>
                 </div>
                 
-                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 bg-emerald-50/30 p-4 sm:p-6 rounded-3xl border border-emerald-100">
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-emerald-900 ml-1 flex items-center gap-2">
-                        <Euro className="w-4 h-4" /> {formT.fields?.amount} <span className="text-red-500">*</span>
-                    </label>
-                    <input required type="number" name="amount" value={formData.amount} onChange={handleChange} className="w-full bg-white border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-black text-emerald-600 text-lg sm:text-xl shadow-sm" />
-                    <div className="mt-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
-                       {formT.sidebar?.monthly_label} : <span className="text-emerald-600">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} €</span>
+                {/* Paramètres financiers */}
+                <div className="bg-emerald-50/50 p-6 sm:p-10 rounded-[2.5rem] border border-emerald-100 space-y-8">
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-emerald-700 uppercase tracking-widest ml-1 flex items-center gap-2">
+                          <Euro className="w-4 h-4" /> {formT.fields?.amount} *
+                      </label>
+                      <input required type="number" name="amount" value={formData.amount} onChange={handleChange} placeholder="50000" className="w-full bg-white border-none px-6 py-5 rounded-2xl focus:ring-2 focus:ring-emerald-500 transition-all font-black text-emerald-600 text-xl sm:text-3xl shadow-md" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-black text-emerald-700 uppercase tracking-widest ml-1 flex items-center gap-2">
+                          <Calendar className="w-4 h-4" /> {formT.fields?.duration} *
+                      </label>
+                      <input required type="number" name="duration" value={formData.duration} onChange={handleChange} placeholder="120" className="w-full bg-white border-none px-6 py-5 rounded-2xl focus:ring-2 focus:ring-emerald-500 transition-all font-black text-emerald-600 text-xl sm:text-3xl shadow-md" />
                     </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-emerald-900 ml-1 flex items-center gap-2">
-                        <Calendar className="w-4 h-4" /> {formT.fields?.duration} <span className="text-red-500">*</span>
-                    </label>
-                    <input required type="number" name="duration" value={formData.duration} onChange={handleChange} className="w-full bg-white border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-black text-emerald-600 text-lg sm:text-xl shadow-sm" />
+
+                  {/* Affichage Mensualité Estimée */}
+                  <div className="bg-white rounded-[2rem] p-6 border border-emerald-100 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner">
+                    <div className="flex items-center gap-3">
+                      <Calculator className="w-6 h-6 text-emerald-600" />
+                      <span className="text-lg font-black text-gray-900 uppercase tracking-tighter">{formT.sidebar?.monthly_label}</span>
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-black text-emerald-600 tracking-tighter">
+                        {calculation.monthly.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                      <span className="text-xl font-bold text-emerald-400">€/mois</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.email} <span className="text-red-500">*</span></label>
-                  <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
+                {/* Coordonnées */}
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.email} *</label>
+                    <input required type="email" name="email" value={formData.email} onChange={handleChange} placeholder="vous@exemple.com" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.whatsapp} *</label>
+                    <input required type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} placeholder="+33 6 12 34 56 78" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.whatsapp}</label>
-                  <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} placeholder="+33 6..." className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.country} <span className="text-red-500">*</span></label>
-                  <select required name="country" value={formData.country} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base">
+                {/* Localisation & Profession */}
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.country} *</label>
+                  <select required name="country" value={formData.country} onChange={handleChange} className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm appearance-none cursor-pointer">
                     <option value="">{formT.fields?.select_country}</option>
                     {Object.entries(countries || {}).map(([code, name]) => (
                       <option key={code} value={code}>{name}</option>
@@ -190,89 +210,96 @@ const LoanApplication: React.FC<LoanApplicationProps> = ({ language, loanType, o
                   </select>
                 </div>
 
-                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.profession} <span className="text-red-500">*</span></label>
-                    <input required name="profession" value={formData.profession} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.profession} *</label>
+                    <input required name="profession" value={formData.profession} onChange={handleChange} placeholder="Développeur" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.income} <span className="text-red-500">*</span></label>
-                    <input required type="number" name="income" value={formData.income} onChange={handleChange} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium text-sm sm:text-base" />
+                  <div className="space-y-2">
+                    <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.income} *</label>
+                    <input required type="number" name="income" value={formData.income} onChange={handleChange} placeholder="3000" className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm" />
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs sm:text-sm font-bold text-gray-700 ml-1">{formT.fields?.reason} <span className="text-red-500">*</span></label>
-                  <textarea required name="reason" value={formData.reason} onChange={handleChange} rows={4} placeholder={formT.fields?.reason_placeholder} className="w-full bg-gray-50 border-none px-4 sm:px-6 py-3 sm:py-4 rounded-xl focus:ring-2 focus:ring-emerald-500 transition-all font-medium resize-none text-sm sm:text-base"></textarea>
+                {/* Motif */}
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{formT.fields?.reason} *</label>
+                  <textarea required name="reason" value={formData.reason} onChange={handleChange} rows={4} placeholder={formT.fields?.reason_placeholder} className="w-full bg-gray-50 border-2 border-transparent px-6 py-4 rounded-2xl focus:bg-white focus:border-emerald-500 transition-all font-bold text-gray-900 shadow-sm resize-none"></textarea>
                 </div>
 
-                <div className="space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t border-gray-50">
-                  <div className={`flex gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl border transition-colors items-start ${!formData.processingConsent ? 'bg-emerald-50/50 border-emerald-100' : 'bg-emerald-100 border-emerald-200'}`}>
+                {/* Consentements */}
+                <div className="space-y-4 pt-6 border-t border-gray-100">
+                  <div className={`flex gap-4 p-5 rounded-2xl border transition-all items-start ${!formData.processingConsent ? 'bg-emerald-50/50 border-emerald-100' : 'bg-emerald-600 border-emerald-700 text-white'}`}>
                     <div className="pt-1">
-                        <input type="checkbox" required name="processingConsent" checked={formData.processingConsent} onChange={handleChange} className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600 rounded-lg focus:ring-emerald-500 border-emerald-200 cursor-pointer" />
+                        <input type="checkbox" required name="processingConsent" checked={formData.processingConsent} onChange={handleChange} className="w-6 h-6 text-emerald-500 rounded-lg focus:ring-emerald-500 border-emerald-200 cursor-pointer" />
                     </div>
-                    <label className="text-[11px] sm:text-sm text-emerald-900 font-bold leading-relaxed cursor-pointer">
-                        {formT.fields?.processing_consent} <span className="text-red-600">*</span>
+                    <label className="text-xs sm:text-sm font-bold leading-relaxed cursor-pointer">
+                        {formT.fields?.processing_consent} <span className="text-red-500">*</span>
                     </label>
                   </div>
                   
-                  <div className="flex gap-3 sm:gap-4 items-start px-1">
+                  <div className="flex gap-4 items-start px-2">
                     <div className="pt-1">
-                        <input type="checkbox" required name="consent" checked={formData.consent} onChange={handleChange} className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 rounded-lg focus:ring-emerald-500 cursor-pointer" />
+                        <input type="checkbox" required name="consent" checked={formData.consent} onChange={handleChange} className="w-5 h-5 text-emerald-600 rounded-lg focus:ring-emerald-500 cursor-pointer" />
                     </div>
-                    <label className="text-[11px] sm:text-sm text-gray-500 leading-relaxed font-medium cursor-pointer">
+                    <label className="text-xs font-bold text-gray-500 leading-relaxed cursor-pointer italic">
                         {formT.fields?.consent1} {formT.fields?.consent2} <span className="text-red-500">*</span>
                     </label>
                   </div>
                 </div>
 
-                <button type="submit" disabled={isSubmitting} className="w-full bg-emerald-600 text-white py-4 sm:py-6 rounded-2xl font-black text-base sm:text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 sm:gap-4 disabled:opacity-50">
-                  {isSubmitting ? <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" /> : <Send className="w-5 h-5" />}
-                  {isSubmitting ? 'Traitement...' : formT.fields?.submit}
+                <button type="submit" disabled={isSubmitting} className="w-full bg-emerald-600 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-4 disabled:opacity-50">
+                  {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : <Send className="w-6 h-6" />}
+                  {isSubmitting ? 'Transmission...' : formT.fields?.submit}
                 </button>
 
-                <p className="text-[10px] text-gray-400 text-center font-bold leading-relaxed italic px-4">
+                <p className="text-[10px] text-gray-400 text-center font-bold leading-relaxed italic px-8">
                   {formT.fields?.warning}
                 </p>
               </form>
             </div>
           </div>
           
-          <div className="space-y-6 sm:space-y-8 sticky top-32">
-             <div className="bg-emerald-600 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 text-white space-y-6 shadow-2xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500"><TrendingUp className="w-24 h-24 rotate-12" /></div>
+          <div className="space-y-8 sticky top-32 hidden lg:block">
+             <div className="bg-emerald-600 rounded-[2.5rem] p-8 text-white space-y-8 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500"><TrendingUp className="w-24 h-24 rotate-12" /></div>
                 <div className="relative z-10">
-                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200 mb-4 flex items-center gap-2">
+                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-200 mb-6 flex items-center gap-2">
                       <Zap className="w-3 h-3 fill-emerald-200" /> {formT.sidebar?.summary}
                    </p>
-                   <div className="space-y-6">
-                      <div className="border-b border-white/10 pb-4">
-                         <p className="text-xs font-bold text-emerald-100 opacity-80 mb-1">{formT.sidebar?.monthly_label}</p>
+                   <div className="space-y-8">
+                      <div className="border-b border-white/10 pb-6">
+                         <p className="text-xs font-bold text-emerald-100 opacity-80 mb-2">{formT.sidebar?.monthly_label}</p>
                          <div className="flex items-baseline gap-1">
-                            <span className="text-3xl sm:text-4xl font-black">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</span>
-                            <span className="text-lg font-bold opacity-60">€/mois</span>
+                            <span className="text-5xl font-black">{calculation.monthly.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}</span>
+                            <span className="text-xl font-bold opacity-60">€/mois</span>
                          </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-2 gap-6">
                          <div>
                             <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">{formT.sidebar?.rate_label}</p>
-                            <p className="text-xl font-black">2.00 %</p>
+                            <p className="text-2xl font-black">2.00 %</p>
                          </div>
                          <div>
                             <p className="text-[10px] font-bold text-emerald-100 opacity-60 uppercase mb-1">{formT.sidebar?.total_label}</p>
-                            <p className="text-xl font-black">{calculation.total.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €</p>
+                            <p className="text-2xl font-black">{calculation.total.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €</p>
                          </div>
                       </div>
                    </div>
                 </div>
              </div>
 
-             <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-xl space-y-6">
-                <h3 className="text-xl font-black text-gray-900">{formT.trust_title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed font-medium">{formT.trust_text}</p>
+             <div className="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-xl space-y-6">
                 <div className="flex items-center gap-3 text-emerald-600">
-                   <ShieldCheck className="w-6 h-6" />
-                   <span className="text-xs font-black uppercase tracking-widest">Sécurisation SSL 256-bit</span>
+                   <ShieldCheck className="w-8 h-8" />
+                   <h3 className="text-xl font-black text-gray-900">Transparence Européenne</h3>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                   {formT.trust_text}
+                </p>
+                <div className="pt-4 border-t border-gray-50 flex items-center gap-2 text-emerald-600">
+                   <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                   <span className="text-[10px] font-black uppercase tracking-widest">Protocoles de sécurité active</span>
                 </div>
              </div>
           </div>

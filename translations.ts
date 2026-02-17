@@ -1,3 +1,4 @@
+
 import { LOAN_DATABASE } from './database';
 
 export const basePackFR = {
@@ -130,13 +131,63 @@ export const basePackFR = {
       sections: [
         { 
           icon: "Building", 
-          h3: "1. Identification de l'Éditeur et Informations Institutionnelles", 
-          p: "Le présent site internet, accessible à l’adresse [URL du site], est la propriété exclusive de la société Europcapital SAS, opérant sous le nom commercial Europcapital.\n\nSiège social : 1 Place de la Bourse, 69002 Lyon, France\nCapital social : [Montant du capital] euros\nImmatriculation : Inscrite au Registre du Commerce et des Sociétés (RCS) de Lyon sous le numéro 891 733 009." 
+          h3: "1. Identification de l'Éditeur", 
+          p: "Le présent site internet est édité par Europcapital SAS, immatriculée au RCS de Lyon sous le numéro 891 733 009. Siège social : 1 Place de la Bourse, 69002 Lyon." 
+        },
+        { 
+          icon: "Shield", 
+          h3: "2. Activité Réglementée", 
+          p: "Europcapital agit en tant qu'intermédiaire en opérations de banque et en services de paiement (IOBSP), dûment enregistré auprès des autorités de contrôle financier européennes." 
         }
       ]
     },
-    privacy: { title: "Politique de Confidentialité", subtitle: "Protection des Données (RGPD)", sections: [] },
-    cookies: { title: "Gestion des Cookies", subtitle: "Gestion et Transparence", sections: [] }
+    privacy: { 
+      title: "Politique de Confidentialité", 
+      subtitle: "Votre vie privée est notre priorité", 
+      sections: [
+        {
+          icon: "Database",
+          h3: "1. Données collectées",
+          p: "Nous collectons les données nécessaires à l'étude de votre solvabilité : identité, situation professionnelle, revenus et coordonnées de contact (Email, WhatsApp)."
+        },
+        {
+          icon: "Zap",
+          h3: "2. Utilisation des données",
+          p: "Vos données sont utilisées exclusivement pour le traitement de votre demande de prêt, la gestion de votre compte client et le respect de nos obligations légales de lutte contre le blanchiment."
+        },
+        {
+          icon: "Clock",
+          h3: "3. Durée de conservation",
+          p: "Les données des dossiers refusés sont supprimées après 6 mois. Les données des dossiers financés sont conservées pendant toute la durée contractuelle majorée de 5 ans."
+        },
+        {
+          icon: "UserCheck",
+          h3: "4. Vos droits (RGPD)",
+          p: "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données. Contactez-nous à dpo@europcapital.com."
+        }
+      ] 
+    },
+    cookies: { 
+      title: "Gestion des Cookies", 
+      subtitle: "Transparence sur votre navigation", 
+      sections: [
+        {
+          icon: "Cookie",
+          h3: "1. Qu'est-ce qu'un cookie ?",
+          p: "Un cookie est un petit fichier texte déposé sur votre terminal lors de la visite du site pour faciliter votre navigation et mémoriser vos préférences."
+        },
+        {
+          icon: "ShieldCheck",
+          h3: "2. Cookies essentiels",
+          p: "Ces cookies sont strictement nécessaires au fonctionnement du simulateur de prêt et de votre espace client sécurisé. Ils ne peuvent pas être désactivés."
+        },
+        {
+          icon: "BarChart",
+          h3: "3. Mesure d'audience",
+          p: "Nous utilisons des outils d'analyse anonymisés pour comprendre comment nos clients utilisent le site et améliorer nos services de financement."
+        }
+      ] 
+    }
   },
   footer: { 
     desc: 'Votre partenaire crédit à 2%. Un accompagnement transparent pour tous vos projets de vie.', 
@@ -193,7 +244,7 @@ export const basePackFR = {
     title: 'Demande de Prêt en Ligne', 
     subtitle: 'Une procédure rapide, simple et 100% sécurisée.', 
     trust_title: 'Transparence et Sécurité', 
-    trust_text: 'Les informations que vous nous confiez sont précieuses. Elles sont utilisées exclusivement pour l\'étude de votre dossier.',
+    trust_text: 'Les informations que vous nous confiez sont précieuses. Elles sont utilisées exclusivement pour l\'étude de votre dossier de financement. Toutes vos données sont transmises de manière sécurisée et stockées sur des serveurs en Europe, conformément au RGPD.',
     processing_fees: { title: 'Frais de dossier', text: 'Des frais d\'analyse technique s\'appliquent pour le traitement de votre dossier.', detail: 'Ces frais ne sont dus qu\'en cas d\'acceptation de votre demande.' },
     sidebar: {
       summary: "Récapitulatif",
@@ -202,9 +253,36 @@ export const basePackFR = {
       total_label: "Montant dû"
     },
     fields: { 
-      firstName: 'Prénom', lastName: 'Nom', amount: 'Montant souhaité (€)', duration: 'Durée (en mois)', email: 'Adresse Email', whatsapp: 'Numéro WhatsApp', country: 'Pays de résidence', profession: 'Profession actuelle', income: 'Revenu net mensuel', reason: 'Motif du prêt', reason_placeholder: 'Décrivez brièvement votre projet...', consent1: 'Je certifie l\'honneur l\'exactitude des informations fournies.', consent2: 'Vos données sont traitées conformément au RGPD.', processing_consent: 'J\'accepte les frais de gestion liés au dossier.', warning: 'Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.', submit: 'Soumettre mon dossier', select_country: 'Sélectionnez votre pays...', success: 'Félicitations' 
+      firstName: 'Prénom', 
+      lastName: 'Nom', 
+      amount: 'Montant du Prêt (€)', 
+      duration: 'Durée (mois)', 
+      email: 'Adresse Email', 
+      whatsapp: 'Numéro Whatsapp', 
+      country: 'Pays de résidence', 
+      profession: 'Profession', 
+      income: 'Revenu mensuel net (€)', 
+      reason: 'Motif de la demande', 
+      reason_placeholder: 'Décrivez brièvement votre projet...', 
+      consent1: 'Je certifie l\'honneur l\'exactitude des informations fournies.', 
+      consent2: 'Vos données sont traitées conformément au RGPD.', 
+      processing_consent: 'J\'accepte les frais de gestion liés au dossier.', 
+      warning: 'Un crédit vous engage et doit être remboursé. Vérifiez vos capacités de remboursement avant de vous engager.', 
+      submit: 'Soumettre mon dossier', 
+      select_country: 'Sélectionnez un pays', 
+      success: 'Félicitations' 
     },
-    countries: { FR: 'France', BE: 'Belgique', CH: 'Suisse', LU: 'Luxembourg', DE: 'Allemagne', ES: 'Espagne', IT: 'Italie', PT: 'Portugal' }
+    countries: {
+      AL: 'Albanie', AD: 'Andorre', AT: 'Autriche', BE: 'Belgique', BY: 'Biélorussie',
+      BA: 'Bosnie-Herzégovine', BG: 'Bulgarie', HR: 'Croatie', CY: 'Chypre', CZ: 'République Tchèque',
+      DK: 'Danemark', EE: 'Estonie', FI: 'Finlande', FR: 'France', DE: 'Allemagne',
+      GR: 'Grèce', HU: 'Hongrie', IS: 'Islande', IE: 'Irlande', IT: 'Italie',
+      LV: 'Lettonie', LI: 'Liechtenstein', LT: 'Lithuanie', LU: 'Luxembourg', MT: 'Malte',
+      MD: 'Moldavie', MC: 'Monaco', ME: 'Monténégro', NL: 'Pays-Bas', NO: 'Norvège',
+      PL: 'Pologne', PT: 'Portugal', RO: 'Roumanie', RU: 'Russie', SM: 'Saint-Marin',
+      RS: 'Serbie', SK: 'Slovaquie', SI: 'Slovénie', ES: 'Espagne', SE: 'Suède',
+      CH: 'Suisse', UA: 'Ukraine', GB: 'Royaume-Uni', VA: 'Vatican'
+    }
   },
   login: { 
     title: "Connexion Espace Client", subtitle: "Suivez l'état de votre demande en temps réel", email: "Email", password: "Mot de passe", submit: "Se connecter", error: "Identifiants invalides", forgot: "Mot de passe oublié ?", noAccount: "Pas encore de compte ? Déposez une demande." 
@@ -257,7 +335,50 @@ export const basePackFR = {
   comparison: { h3: "Économisez sur votre crédit", p: "Europcapital propose l'un des taux les plus bas d'Europe.", market: "Taux moyen bancaire", ours: "Taux Europcapital", saving: "Économie moyenne constatée" },
   partners: { h2: "Partenaires de Confiance", p: "Nous travaillons avec des institutions de renommée mondiale." },
   security: { rgpd: "Conformité RGPD", h24: "Surveillance 24/7", orias: "Régulation Européenne" },
-  blog: { title: "Actualités & Conseils", subtitle: "Tout ce qu'il faut savoir.", back: "Retour au blog", readMore: "Lire la suite", posts: [] }
+  blog: { 
+    title: "Actualités & Conseils", 
+    subtitle: "Tout ce qu'il faut savoir sur le crédit éthique.", 
+    back: "Retour au blog", 
+    readMore: "Lire la suite", 
+    posts: [
+      {
+        id: 'rate-2-percent',
+        title: "Pourquoi le taux de 2% est-il le plus avantageux en 2026 ?",
+        excerpt: "Dans un marché volatil, la stabilité d'un taux fixe à 2% est un atout majeur pour votre patrimoine.",
+        content: "Le marché financier de 2026 connaît des fluctuations sans précédent. Alors que les taux directeurs des banques centrales restent instables, Europcapital a fait le choix de la pérennité. \n\nUn taux fixe de 2% (TAEG) permet aux emprunteurs de planifier leur avenir sans crainte d'une inflation galopante ou d'une hausse des mensualités. Chez nous, la transparence n'est pas un slogan, c'est un contrat. \n\nEn choisissant un prêt à 2%, vous économisez en moyenne 3,45% par rapport aux offres bancaires traditionnelles. Sur un prêt immobilier de 200 000 €, cela représente des dizaines de milliers d'euros d'économies injectées directement dans votre pouvoir d'achat."
+      },
+      {
+        id: 'real-estate-2026',
+        title: "Achat immobilier : 5 conseils pour réussir votre projet cette année.",
+        excerpt: "Découvrez les clés d'un investissement immobilier serein malgré le contexte économique.",
+        content: "Acheter un bien immobilier en 2026 demande de la méthode. \n\n1. Vérifiez votre capacité d'emprunt : Utilisez notre simulateur pour connaître votre budget réel. \n2. Soignez votre dossier : Bien que nous soyons flexibles, un dossier clair accélère le déblocage des fonds. \n3. Ne négligez pas l'emplacement : La valeur d'un bien reste liée à sa proximité avec les services. \n4. Anticipez les frais annexes : Notaire, taxes, travaux. \n5. Optez pour Europcapital : Avec notre taux fixe de 2%, vous maximisez votre rentabilité locative ou minimisez le coût de votre résidence principale."
+      },
+      {
+        id: 'debt-consolidation-2026',
+        title: "Le rachat de crédit : une solution pour assainir vos finances.",
+        excerpt: "Comment regrouper vos dettes peut vous redonner de l'air financièrement.",
+        content: "Le cumul des crédits (auto, consommation, revolving) peut rapidement devenir pesant. Le rachat de crédit chez Europcapital permet de fusionner toutes vos créances en une seule mensualité unique. \n\nLe bénéfice est immédiat : votre reste à vivre augmente et la gestion de vos comptes devient limpide. En appliquant notre taux de 2% sur l'ensemble de votre de toute votre dette, vous réduisez souvent le coût global de vos financements tout en simplifiant votre quotidien."
+      },
+      {
+        id: 'ai-finance-2026',
+        title: "Comment l'IA révolutionne le traitement de votre demande de prêt.",
+        excerpt: "Découvrez comment nous utilisons la technologie pour vous répondre en moins de 24 heures.",
+        content: "La rapidité est au cœur de notre service. Grâce à nos algorithmes d'analyse sécurisés, nous sommes capables d'étudier les dossiers 10 fois plus vite qu'une banque traditionnelle. \n\nL'IA ne remplace pas l'humain chez Europcapital, elle le seconde. Elle permet à nos experts de se concentrer sur l'aspect relationnel et l'accompagnement personnalisé, tandis que le calcul de solvabilité et la vérification des documents sont automatisés pour une sécurité maximale."
+      },
+      {
+        id: 'new-regulations-2026',
+        title: "Nouvelles réglementations bancaires : quel impact sur vos crédits ?",
+        excerpt: "Comprendre les changements législatifs de 2026 et comment Europcapital vous protège.",
+        content: "L'année 2026 marque un tournant dans la protection des emprunteurs européens. De nouvelles directives imposent plus de transparence sur les coûts réels des crédits. \n\nChez Europcapital, nous avions anticipé ces mesures depuis longtemps avec notre taux unique de 2%. Nous accueillons ces changements avec enthousiasme car ils mettent en lumière les pratiques abusives de certains acteurs et valorisent notre modèle éthique. \n\nVotre sécurité financière est garantie par notre conformité stricte aux normes de l'Autorité Bancaire Européenne."
+      },
+      {
+        id: 'investing-low-rate',
+        title: "Investir avec un taux à 2% : les meilleures opportunités.",
+        excerpt: "Pourquoi emprunter à bas coût est la meilleure stratégie patrimoniale actuelle.",
+        content: "Dans un environnement où l'inflation dépasse souvent les 2%, emprunter à ce taux fixe revient à gagner de l'argent. C'est ce qu'on appelle l'effet de levier positif. \n\nQue ce soit pour investir dans l'immobilier locatif, moderniser votre outil de production ou lancer une nouvelle activité, le crédit à 2% d'Europcapital préserve votre cash-flow et accélère votre enrichissement personnel ou professionnel."
+      }
+    ] 
+  }
 };
 
 export const translations: any = {

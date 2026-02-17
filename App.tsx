@@ -36,10 +36,10 @@ const App: React.FC = () => {
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
-  // Router Logic: Sync URL with State
+  // Correction du Router : Utilisation du HASH (#/) pour éviter les 404
   const syncRouteWithState = useCallback(() => {
-    const path = window.location.pathname;
-    const segments = path.split('/').filter(Boolean);
+    const hash = window.location.hash.replace(/^#\//, '');
+    const segments = hash.split('/').filter(Boolean);
 
     if (segments.length === 0) {
       setCurrentPage('home');
@@ -87,12 +87,12 @@ const App: React.FC = () => {
       setPosts(translations.fr.blog.posts);
     }
     
-    // Initial Route Sync
+    // Synchronisation initiale au chargement
     syncRouteWithState();
 
-    // Listen to browser navigation
-    window.addEventListener('popstate', syncRouteWithState);
-    return () => window.removeEventListener('popstate', syncRouteWithState);
+    // Ecoute des changements d'URL via le HASH
+    window.addEventListener('hashchange', syncRouteWithState);
+    return () => window.removeEventListener('hashchange', syncRouteWithState);
   }, [syncRouteWithState]);
 
   useEffect(() => {
@@ -103,29 +103,28 @@ const App: React.FC = () => {
   }, []);
 
   const handleNavigate = (page: string, params?: string) => {
-    let url = '/';
+    let hashPath = '/';
     switch (page) {
-      case 'home': url = '/'; break;
-      case 'about': url = '/about'; break;
-      case 'contact': url = '/contact'; break;
-      case 'login': url = '/login'; break;
-      case 'faq': url = '/faq'; break;
-      case 'simulator': url = '/simulator'; break;
-      case 'blog': url = '/blog'; break;
-      case 'blog-detail': url = `/blog/${params}`; break;
-      case 'loan-detail': url = `/loan/${params}`; break;
-      case 'loan-application': url = params ? `/apply/${params}` : '/apply'; break;
-      case 'success': url = '/success'; break;
-      case 'client-dashboard': url = '/dashboard'; break;
-      case 'admin-dashboard': url = '/admin'; break;
-      case 'help': url = '/help'; break;
-      case 'legal-terms': url = '/legal/terms'; break;
-      case 'legal-privacy': url = '/legal/privacy'; break;
-      case 'legal-cookies': url = '/legal/cookies'; break;
-      case 'loans': // Anchor handling
-        if (window.location.pathname !== '/') {
-           window.history.pushState({}, '', '/');
-           syncRouteWithState();
+      case 'home': hashPath = '/'; break;
+      case 'about': hashPath = '/about'; break;
+      case 'contact': hashPath = '/contact'; break;
+      case 'login': hashPath = '/login'; break;
+      case 'faq': hashPath = '/faq'; break;
+      case 'simulator': hashPath = '/simulator'; break;
+      case 'blog': hashPath = '/blog'; break;
+      case 'blog-detail': hashPath = `/blog/${params}`; break;
+      case 'loan-detail': hashPath = `/loan/${params}`; break;
+      case 'loan-application': hashPath = params ? `/apply/${params}` : '/apply'; break;
+      case 'success': hashPath = '/success'; break;
+      case 'client-dashboard': hashPath = '/dashboard'; break;
+      case 'admin-dashboard': hashPath = '/admin'; break;
+      case 'help': hashPath = '/help'; break;
+      case 'legal-terms': hashPath = '/legal/terms'; break;
+      case 'legal-privacy': hashPath = '/legal/privacy'; break;
+      case 'legal-cookies': hashPath = '/legal/cookies'; break;
+      case 'loans': 
+        if (window.location.hash !== '#/' && window.location.hash !== '') {
+           window.location.hash = '#/';
            setTimeout(() => document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' }), 100);
         } else {
            document.getElementById('loans')?.scrollIntoView({ behavior: 'smooth' });
@@ -133,8 +132,8 @@ const App: React.FC = () => {
         return;
     }
 
-    window.history.pushState({}, '', url);
-    syncRouteWithState();
+    // On utilise window.location.hash pour changer d'URL sans recharger le serveur
+    window.location.hash = `#${hashPath}`;
     window.scrollTo(0, 0);
   };
 
