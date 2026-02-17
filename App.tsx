@@ -17,6 +17,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import Help from './pages/Help';
 import Faq from './pages/Faq';
+import AdsCreator from './pages/AdsCreator';
 import LoanCalculator from './components/LoanCalculator';
 import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
@@ -36,7 +37,6 @@ const App: React.FC = () => {
   
   const [tempAccount, setTempAccount] = useState<{email: string, password: string} | null>(null);
 
-  // Correction du Router : Utilisation du HASH (#/) pour éviter les 404
   const syncRouteWithState = useCallback(() => {
     const hash = window.location.hash.replace(/^#\//, '');
     const segments = hash.split('/').filter(Boolean);
@@ -53,6 +53,8 @@ const App: React.FC = () => {
       setCurrentPage('faq');
     } else if (segments[0] === 'simulator') {
       setCurrentPage('simulator');
+    } else if (segments[0] === 'ads-creator') {
+      setCurrentPage('ads-creator');
     } else if (segments[0] === 'blog') {
       if (segments[1]) {
         setCurrentPage('blog-detail');
@@ -87,10 +89,8 @@ const App: React.FC = () => {
       setPosts(translations.fr.blog.posts);
     }
     
-    // Synchronisation initiale au chargement
     syncRouteWithState();
 
-    // Ecoute des changements d'URL via le HASH
     window.addEventListener('hashchange', syncRouteWithState);
     return () => window.removeEventListener('hashchange', syncRouteWithState);
   }, [syncRouteWithState]);
@@ -119,6 +119,7 @@ const App: React.FC = () => {
       case 'client-dashboard': hashPath = '/dashboard'; break;
       case 'admin-dashboard': hashPath = '/admin'; break;
       case 'help': hashPath = '/help'; break;
+      case 'ads-creator': hashPath = '/ads-creator'; break;
       case 'legal-terms': hashPath = '/legal/terms'; break;
       case 'legal-privacy': hashPath = '/legal/privacy'; break;
       case 'legal-cookies': hashPath = '/legal/cookies'; break;
@@ -132,7 +133,6 @@ const App: React.FC = () => {
         return;
     }
 
-    // On utilise window.location.hash pour changer d'URL sans recharger le serveur
     window.location.hash = `#${hashPath}`;
     window.scrollTo(0, 0);
   };
@@ -248,6 +248,7 @@ const App: React.FC = () => {
       case 'success': return <Success language={currentLanguage} onNavigate={handleNavigate} tempAccount={tempAccount} />;
       case 'contact': return <Contact language={currentLanguage} onNavigate={handleNavigate} />;
       case 'faq': return <Faq language={currentLanguage} onBack={() => handleNavigate('home')} />;
+      case 'ads-creator': return <AdsCreator onBack={() => handleNavigate('home')} />;
       case 'simulator':
         return (
           <div className="pt-32 pb-20 max-w-4xl mx-auto px-4">

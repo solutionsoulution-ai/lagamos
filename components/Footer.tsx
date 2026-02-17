@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Smartphone, Sparkles } from 'lucide-react';
 import { Language, LoanInfo } from '../types';
 import Logo from './Logo';
 
@@ -67,6 +67,22 @@ const Footer: React.FC<FooterProps> = ({ language, onNavigate, onSelectLoan, loa
               <li><button onClick={() => onNavigate('blog')} className="hover:text-emerald-500 transition-colors">{footerT.links?.blog}</button></li>
               <li><button onClick={() => onNavigate('faq')} className="hover:text-emerald-500 transition-colors">{footerT.links?.faq}</button></li>
               <li><button onClick={() => onNavigate('contact')} className="hover:text-emerald-500 transition-colors">{t('nav.contact')}</button></li>
+              
+              <li className="pt-6 border-t border-gray-800 mt-4">
+                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">Outils Marketing</p>
+                <button 
+                  onClick={() => onNavigate('ads-creator')} 
+                  className="group flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-3 rounded-xl hover:bg-emerald-600 hover:border-emerald-500 transition-all w-full"
+                >
+                  <div className="bg-emerald-500/20 p-1.5 rounded-lg group-hover:bg-white/20">
+                    <Sparkles className="w-4 h-4 text-emerald-400 group-hover:text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-white font-black text-xs">Ads Creator Pro</p>
+                    <p className="text-[9px] text-gray-500 group-hover:text-emerald-100 font-bold">Générer vos affiches HD</p>
+                  </div>
+                </button>
+              </li>
             </ul>
           </div>
 
