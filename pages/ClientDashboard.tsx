@@ -74,7 +74,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                 id: `TX-${Date.now()}`,
                 type: 'debit',
                 amount: activeTransfer.amount,
-                label: `Virement vers ${activeTransfer.beneficiary}`,
+                label: language === 'pt' ? `Transferência para ${activeTransfer.beneficiary}` : `Virement vers ${activeTransfer.beneficiary}`,
                 date: new Date().toISOString(),
                 status: isBlocked ? 'failed' : 'completed',
                 beneficiary: activeTransfer.beneficiary,
@@ -103,7 +103,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
         }
     }, 2000); 
     return () => clearInterval(interval);
-  }, [activeTransfer, loan, isDemo]);
+  }, [activeTransfer, loan, isDemo, language]);
 
   const handleCopyRib = () => {
     if (loan && loan.iban) {
@@ -202,7 +202,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                             <button 
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id as any)}
-                                className={`flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-1 sm:gap-3 px-2 py-2.5 sm:py-4 rounded-xl font-black transition-all ${activeTab === tab.id ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 lg:text-gray-500 hover:bg-gray-50'}`}
+                                className={`flex items-center justify-center lg:justify-start gap-1 sm:gap-3 px-2 py-2.5 sm:py-4 rounded-xl font-black transition-all ${activeTab === tab.id ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-400 lg:text-gray-500 hover:bg-gray-50'}`}
                             >
                                 <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                                 <span className="text-[9px] sm:text-sm whitespace-nowrap">{tab.label}</span>
@@ -299,6 +299,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                 ) : (
                                     loan.transferHistory.map((tx: Transaction) => {
                                         const isCredit = tx.type === 'credit';
+                                        const amountSign = isCredit ? '+' : '-';
                                         return (
                                             <div key={tx.id} onClick={() => setSelectedTx(tx)} className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 -mx-4 px-4 py-2 rounded-2xl transition-all">
                                                 <div className="flex items-center gap-3">
@@ -323,7 +324,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                                                     tx.status === 'failed' ? 'text-gray-300' : 
                                                     isCredit ? 'text-emerald-600' : 'text-gray-900'
                                                 }`}>
-                                                    {isCredit ? '+' : '-'}{tx.amount.toLocaleString()} €
+                                                    {amountSign}{tx.amount.toLocaleString()} €
                                                 </span>
                                             </div>
                                         );
@@ -395,4 +396,51 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ language, user, onNav
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-300 max-w-2xl mx-auto">
                         <div className="bg-white rounded-[2rem] border border-gray-100 shadow-2xl overflow-hidden">
                             <div className="bg-gray-900 p-6 sm:p-10 text-white">
-                                <h2 className="text-xl font-black flex items-center gap-3"><Send className="w-6 h-6 text-emerald-
+                                <h2 className="text-xl font-black flex items-center gap-3"><Send className="w-6 h-6 text-emerald-400" /> {dashT.transfer_funds_title}</h2>
+                                <p className="text-gray-400 text-xs mt-1 uppercase font-bold tracking-widest">Sécurisation bancaire Europcapital</p>
+                            </div>
+                            <div className="p-8 sm:p-12">
+                                <form onSubmit={handleTransfer} className="space-y-6">
+                                    {transferError && <div className="p-4 bg-red-50 text-red-600 font-bold rounded-xl text-center text-xs">{transferError}</div>}
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">{dashT.beneficiary_label}</label><input required value={transferBeneficiary} onChange={e => setTransferBeneficiary(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-bold text-gray-900 focus:ring-2 focus:ring-emerald-500" placeholder="Ex: Jean Dupont" /></div>
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">IBAN de Destination</label><input required value={transferIban} onChange={e => setTransferIban(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-mono text-xs focus:ring-2 focus:ring-emerald-500 uppercase" placeholder="FR76 ..." /></div>
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">BIC / SWIFT</label><input required value={transferSwift} onChange={e => setTransferSwift(e.target.value)} className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 font-mono text-xs focus:ring-2 focus:ring-emerald-500 uppercase" placeholder="ABCDEFGH" /></div>
+                                    <div className="space-y-2"><label className="text-xs font-black text-gray-400 uppercase tracking-widest">{dashT.amount} (€)</label><input type="number" step="0.01" required value={transferAmount} onChange={e => setTransferAmount(e.target.value)} className="w-full bg-gray-50 border-none rounded-2xl px-4 py-6 font-black text-4xl text-emerald-600 focus:ring-2 focus:ring-emerald-500 text-center" placeholder="0.00" /></div>
+                                    <button type="submit" disabled={transferLoading || activeTransfer !== null} className="w-full bg-emerald-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-emerald-700 transition-all flex justify-center items-center gap-3 disabled:opacity-50">
+                                        {transferLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : activeTransfer ? "Virement déjà en cours" : dashT.transfer_confirm_btn}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+      </div>
+
+      {selectedTx && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+          <div className="bg-white w-full max-md rounded-[2rem] shadow-2xl overflow-hidden p-8 text-center space-y-6">
+            <div className={`w-16 h-16 rounded-3xl mx-auto flex items-center justify-center ${
+                selectedTx.status === 'failed' ? 'bg-red-50 text-red-600' : 
+                selectedTx.type === 'credit' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-50 text-gray-400'
+            }`}>
+              {selectedTx.type === 'credit' ? <ArrowDownLeft className="w-8 h-8" /> : <ArrowUpRight className="w-8 h-8" />}
+            </div>
+            <div>
+              <h2 className={`text-2xl font-black ${selectedTx.type === 'credit' ? 'text-emerald-700' : 'text-gray-900'}`}>{selectedTx.label}</h2>
+              <p className="text-xs font-black text-gray-400 uppercase tracking-widest mt-1">{dashT.tx_id} : {selectedTx.id}</p>
+            </div>
+            <div className="bg-gray-50 rounded-2xl p-6 text-left space-y-4">
+              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">{dashT.amount}</span><span className={`font-black ${selectedTx.type === 'credit' ? 'text-emerald-600' : 'text-gray-900'}`}>{selectedTx.type === 'credit' ? '+' : '-'}{selectedTx.amount.toLocaleString()} €</span></div>
+              <div className="flex justify-between"><span className="text-xs font-bold text-gray-400 uppercase">{dashT.beneficiary_label}</span><span className="font-bold text-gray-900">{selectedTx.beneficiary || 'Europcapital'}</span></div>
+            </div>
+            <button onClick={() => setSelectedTx(null)} className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold">{dashT.close_btn}</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ClientDashboard;
