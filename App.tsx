@@ -23,6 +23,7 @@ import { buildLoansData } from './constants';
 import { Language, User, LoanInfo } from './types';
 import { redisService } from './services/redis';
 import { translations } from './translations';
+import { ptManual } from './pt';
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -139,10 +140,23 @@ const App: React.FC = () => {
 
   const handleLanguageChange = async (lang: Language) => {
     if (lang === 'fr') {
-      await i18n.changeLanguage('fr');
-      setCurrentLanguage('fr');
+      await i18n.changeLanguage(lang);
+      setCurrentLanguage(lang);
       setLoans(buildLoansData(translations.fr.loan_specifics));
       if (translations.fr.blog?.posts) setPosts(translations.fr.blog.posts);
+      return;
+    }
+
+    if (lang === 'pt') {
+      await i18n.changeLanguage(lang);
+      setCurrentLanguage(lang);
+      const ptData = ptManual.translation;
+      if (ptData.loan_specifics) {
+        setLoans(buildLoansData(ptData.loan_specifics));
+      }
+      if (ptData.blog?.posts) {
+        setPosts(ptData.blog.posts);
+      }
       return;
     }
 

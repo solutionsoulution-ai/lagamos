@@ -1,0 +1,966 @@
+
+{
+  "translation": {
+    "nav": {
+      "home": "Início",
+      "loans": "Empréstimos",
+      "simulator": "Simulador",
+      "about": "Sobre",
+      "contact": "Contato",
+      "cta": "Pedido online",
+      "login": "Login",
+      "my_space": "Meu Espaço"
+    },
+    "hero": {
+      "badge": "Taxa Fixa 2%",
+      "h1": "O crédito que te respeita.",
+      "h1_variants": [
+        "Financiar a 2% fixo.",
+        "Resposta em 24h.",
+        "Parceiro de confiança."
+      ],
+      "p": "Empréstimo com taxa fixa de 2%. Simples, rápido e sem custos ocultos. Financie seus projetos imobiliários, pessoais, automotivos ou profissionais com total tranquilidade.",
+      "cta1": "Enviar um pedido",
+      "cta2": "Saber mais"
+    },
+    "feature_highlight": {
+      "badge": "Transparência total",
+      "title": "A clareza a serviço das suas ambições",
+      "p": "Eliminamos as taxas de processo ocultas e as condições complexas. Na Europcapital, você tem total visibilidade sobre o seu financiamento desde o primeiro dia.",
+      "audit_title": "Auditoria 2026",
+      "audit_subtitle": "100% Conforme",
+      "items": [
+        {
+          "title": "Zero surpresas",
+          "desc": "A taxa de 2% é garantida por contrato durante todo o período.",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Flexibilidade real",
+          "desc": "Altere suas mensalidades ou pague antecipadamente sem custos.",
+          "icon": "RefreshCcw"
+        },
+        {
+          "title": "Análise especializada",
+          "desc": "Um consultor dedicado acompanha você desde o estudo até a assinatura.",
+          "icon": "UserCheck"
+        }
+      ]
+    },
+    "calculator": {
+      "title": "Simulador Expresso",
+      "subtitle": "Calcule seu orçamento instantaneamente.",
+      "amount": "Valor desejado",
+      "duration": "Duração do empréstimo",
+      "months": "meses",
+      "monthly": "Mensalidade",
+      "total": "Custo total",
+      "cta": "Iniciar meu pedido",
+      "representative_example_title": "Exemplo representativo obrigatório",
+      "representative_example_text": "Para um financiamento de {{amount}} € reembolsável em {{duration}} meses com uma TAEG fixa de 2% (incluindo juros e despesas anuais), a mensalidade será de {{monthly}} €. O valor total devido pelo mutuário é de {{total}} €.",
+      "legal_warning": "\"Um crédito compromete você e deve ser reembolsado. Verifique sua capacidade de reembolso antes de se comprometer.\""
+    },
+    "stats": {
+      "badge": "Fiabilidade",
+      "title": "Confiança e resultados.",
+      "p": "Junte-se a milhares de europeus que confiam em nós para seus projetos financeiros.",
+      "clients": "Clientes",
+      "exp": "Experiência",
+      "rating": "Nota",
+      "safety": "Segurança"
+    },
+    "about_us_section": {
+      "badge": "Quem somos?",
+      "title": "O Espírito Europcapital",
+      "p": "Transformamos o empréstimo bancário em um serviço simples, humano e acessível a cada cidadão europeu.",
+      "trust_title": "Confiança Europeia",
+      "trust_subtitle": "Mais de 50.000 projetos financiados desde 2018.",
+      "items": [
+        {
+          "title": "Nossa Missão",
+          "desc": "Democratizar o acesso ao crédito com uma taxa única de 2% para estimular a economia real.",
+          "icon": "Target"
+        },
+        {
+          "title": "Nossa História",
+          "desc": "Fundada em Lyon em 2018, a Europcapital tornou-se em poucos anos a líder em empréstimos éticos online.",
+          "icon": "History"
+        },
+        {
+          "title": "Nossas Garantias",
+          "desc": "Segurança de nível bancário e total transparência em cada contrato assinado.",
+          "icon": "ShieldCheck"
+        }
+      ]
+    },
+    "identity": {
+      "title": "Nosso DNA",
+      "subtitle": "Mais que um banco, um parceiro de vida.",
+      "p": "Não nos limitamos a emprestar dinheiro. Investimos nos seus sonhos simplificando radicalmente o acesso ao financiamento.",
+      "pillars": [
+        {
+          "title": "Proximidade Europeia",
+          "desc": "Presentes em toda a União, dominamos as especificidades locais para oferecer um serviço sob medida em toda a Europa.",
+          "icon": "Globe"
+        },
+        {
+          "title": "Acompanhamento Humano",
+          "desc": "Conosco, sem robôs. Cada processo é analisado por um especialista dedicado que entende sua situação real.",
+          "icon": "Heart"
+        },
+        {
+          "title": "Simplicidade Radical",
+          "desc": "Eliminamos as letras miúdas e os termos complexos. Uma taxa fixa de 2%, ponto final.",
+          "icon": "Shield"
+        }
+      ]
+    },
+    "about_page": {
+      "title": "Sobre a Europcapital",
+      "subtitle": "Uma finança mais humana e acessível.",
+      "mission_text": "Nossa missão é quebrar as barreiras bancárias tradicionais, oferecendo um financiamento justo de 2% para todos os europeus, sem discriminação.",
+      "vision_title": "Nossa Visão 2030",
+      "vision_text": "Tornar-se o líder europeu em crédito ético e transparente, substituindo a complexidade pela clareza.",
+      "values": [
+        {
+          "title": "Transparência",
+          "desc": "Cada centavo é explicado, nenhuma taxa é escondida."
+        },
+        {
+          "title": "Reatividade",
+          "desc": "Seu tempo é precioso, respondemos em 24h."
+        },
+        {
+          "title": "Segurança",
+          "desc": "Seus dados e seus fundos são protegidos pelos melhores padrões."
+        }
+      ],
+      "cta_start": "Começar",
+      "cta_contact": "Contato",
+      "features": [
+        {
+          "title": "Transparência",
+          "desc": "Condições claras desde o primeiro dia.",
+          "icon": "Eye"
+        },
+        {
+          "title": "Segurança",
+          "desc": "Proteção bancária de alto nível.",
+          "icon": "Shield"
+        },
+        {
+          "title": "Acompanhamento",
+          "desc": "Especialistas à sua disposição 24/7.",
+          "icon": "HeartHandshake"
+        }
+      ],
+      "vision_badge_title": "Visão 2030",
+      "vision_badge_desc": "Tornar-se a primeira rede de crédito ético da Europa.",
+      "commitment_title": "Comprometidos com uma finança ética.",
+      "commitment_text": "Cada empréstimo concedido na Europcapital respeita critérios rigorosos de sustentabilidade e ética social. Não financiamos apenas projetos, construímos uma economia mais humana."
+    },
+    "legal": {
+      "document_footer": "Documento oficial Europfy SAS • Todos os direitos reservados",
+      "terms": {
+        "title": "Avisos Legais - Europcapital",
+        "subtitle": "Em vigor a partir de 29 de janeiro de 2026",
+        "sections": [
+          {
+            "icon": "Building",
+            "h3": "1. Identificação do Editor",
+            "p": "Este site é editado pela Europcapital SAS, registrada no RCS de Lyon sob o número 891 733 009. Sede social: 1 Place de la Bourse, 69002 Lyon."
+          },
+          {
+            "icon": "Shield",
+            "h3": "2. Atividade Regulamentada",
+            "p": "A Europcapital atua como intermediária em operações bancárias e serviços de pagamento (IOBSP), devidamente registrada junto às autoridades de supervisão financeira europeias."
+          }
+        ]
+      },
+      "privacy": {
+        "title": "Política de Privacidade",
+        "subtitle": "Sua privacidade é nossa prioridade",
+        "sections": [
+          {
+            "icon": "Database",
+            "h3": "1. Dados coletados",
+            "p": "Coletamos os dados necessários para a análise de sua solvência: identidade, situação profissional, renda e informações de contato (E-mail, WhatsApp)."
+          },
+          {
+            "icon": "Zap",
+            "h3": "2. Uso dos dados",
+            "p": "Seus dados são usados exclusivamente para processar seu pedido de empréstimo, gerenciar sua conta de cliente e cumprir nossas obrigações legais de combate à lavagem de dinheiro."
+          },
+          {
+            "icon": "Clock",
+            "h3": "3. Período de conservação",
+            "p": "Os dados dos processos recusados são excluídos após 6 meses. Os dados dos processos financiados são mantidos durante todo o período contratual mais 5 anos."
+          },
+          {
+            "icon": "UserCheck",
+            "h3": "4. Seus direitos (RGPD)",
+            "p": "De acordo com o RGPD, você tem o direito de acessar, retificar, excluir e portar seus dados. Entre em contato conosco em dpo@europcapital.com."
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Gerenciamento de Cookies",
+        "subtitle": "Transparência na sua navegação",
+        "sections": [
+          {
+            "icon": "Cookie",
+            "h3": "1. O que é um cookie?",
+            "p": "Um cookie é um pequeno arquivo de texto depositado em seu dispositivo ao visitar o site para facilitar sua navegação e lembrar suas preferências."
+          },
+          {
+            "icon": "ShieldCheck",
+            "h3": "2. Cookies essenciais",
+            "p": "Estes cookies são estritamente necessários para o funcionamento do simulador de empréstimo e de sua área de cliente segura. Eles não podem ser desativados."
+          },
+          {
+            "icon": "BarChart",
+            "h3": "3. Medição de audiência",
+            "p": "Usamos ferramentas de análise anônimas para entender como nossos clientes usam o site e melhorar nossos serviços de financiamento."
+          }
+        ]
+      }
+    },
+    "footer": {
+      "desc": "Seu parceiro de crédito a 2%. Um acompanhamento transparente para todos os seus projetos de vida.",
+      "titles": {
+        "loans": "Nossos Empréstimos",
+        "company": "Empresa",
+        "contact": "Contato"
+      },
+      "links": {
+        "about": "Sobre",
+        "blog": "Blog",
+        "faq": "FAQ",
+        "legal": "Avisos Legais",
+        "privacy": "Privacidade",
+        "cookies": "Cookies"
+      },
+      "rights": "© 2026 Europcapital. Todos os direitos reservados."
+    },
+    "loans_section": {
+      "h2": "Nossas Soluções de Financiamento",
+      "p": "Descubra nossas ofertas adaptadas com uma taxa fixa única de 2%.",
+      "discover": "Descobrir a oferta",
+      "fixed_rate": "2% Fixo"
+    },
+    "testimonials": {
+      "h2": "Opiniões dos nossos Clientes",
+      "p": "A satisfação dos nossos mutuários é a nossa prioridade número um."
+    },
+    "loan_detail": {
+      "back": "Voltar",
+      "advantages": "Vantagens do empréstimo",
+      "fixed": "Fixo",
+      "interested_title": "Interessado neste empréstimo?",
+      "interested_subtitle": "Resposta de princípio imediata online.",
+      "labels": {
+        "maxAmount": "Valor Máximo",
+        "maxDuration": "Duração Máxima"
+      },
+      "best_offer": "A melhor oferta",
+      "why_title": "Por que escolher a Europcapital?",
+      "why_subtitle": "O financiamento inteligente para o seu sucesso.",
+      "why_props": [
+        {
+          "title": "Europcapital Secure",
+          "desc": "Taxa fixa de 2% garantida por contrato."
+        },
+        {
+          "title": "Análise Humana",
+          "desc": "Seu processo é estudado por um especialista."
+        },
+        {
+          "title": "Zero Taxas Ocultas",
+          "desc": "Transparência total nas condições."
+        }
+      ],
+      "journey_title": "Sua jornada de empréstimo",
+      "journey_subtitle": "Um acompanhamento de A a Z.",
+      "steps": [
+        {
+          "t": "Pedido online",
+          "d": "Preencha o formulário em 5 minutos."
+        },
+        {
+          "t": "Análise do processo",
+          "d": "Resposta de princípio em 24 horas."
+        },
+        {
+          "t": "Assinatura Digital",
+          "d": "Assine seu contrato com total segurança."
+        },
+        {
+          "t": "Liberação",
+          "d": "Fundos disponíveis em 48-72 horas."
+        }
+      ]
+    },
+    "faq": {
+      "h2": "Perguntas Frequentes",
+      "p": "Todas as respostas para suas perguntas sobre crédito.",
+      "categories": {
+        "general": "Geral",
+        "immobilier": "Imobiliário",
+        "automobile": "Automóvel",
+        "entreprise": "Empresa",
+        "personnel": "Pessoal",
+        "rachat": "Consolidação de crédito"
+      },
+      "q1": "Quais são as condições de elegibilidade?",
+      "a1": "Ser maior de idade, residir na Europa e comprovar renda estável que permita o reembolso.",
+      "q2": "Quais documentos devo fornecer?",
+      "a2": "Um documento de identidade válido, um comprovante de residência com menos de 3 meses e seus últimos extratos bancários.",
+      "q3": "Qual é o prazo para a resposta final?",
+      "a3": "Após o recebimento do seu processo completo, damos uma resposta final em 24 horas úteis.",
+      "q4": "A taxa de 2% é realmente fixa?",
+      "a4": "Sim, a Europcapital se compromete contratualmente com uma taxa fixa de 2% que nunca mudará durante todo o período do empréstimo."
+    },
+    "faq_page": {
+      "title": "Centro de ajuda",
+      "subtitle": "Respondemos a todas as suas perguntas.",
+      "back": "Voltar ao início"
+    },
+    "contact_page": {
+      "title": "Contate-nos",
+      "subtitle": "Nossos especialistas respondem às suas perguntas em 24 horas.",
+      "form_title": "Envie uma mensagem",
+      "form_desc": "Use este formulário para qualquer pedido de informação adicional.",
+      "info": {
+        "title": "Nossos contatos",
+        "address": "1 Place de la Bourse, 69002 Lyon, França",
+        "phone": "+33 7 54 09 50 27",
+        "email": "contact@europcapital.com",
+        "hours": "Segunda - Sexta: 09:00 - 18:00"
+      },
+      "fields": {
+        "name": "Nome completo",
+        "email": "E-mail profissional",
+        "subject": "Assunto",
+        "message": "Mensagem",
+        "submit": "Enviar mensagem",
+        "success": "Mensagem enviada com sucesso!"
+      },
+      "back_btn": "Voltar"
+    },
+    "form": {
+      "title": "Pedido de Empréstimo Online",
+      "subtitle": "Um processo rápido, simples e 100% seguro.",
+      "trust_title": "Transparência e Segurança",
+      "trust_text": "As informações que você nos confia são preciosas. Elas são usadas exclusivamente para a análise do seu processo de financiamento. Todos os seus dados são transmitidos de forma segura e armazenados em servidores na Europa, em conformidade com o RGPD.",
+      "processing_fees": {
+        "title": "Taxas de processo",
+        "text": "Taxas de análise técnica são aplicadas para o processamento do seu dossiê.",
+        "detail": "Essas taxas só são devidas em caso de aceitação do seu pedido."
+      },
+      "sidebar": {
+        "summary": "Resumo",
+        "monthly_label": "Mensalidade estimada",
+        "rate_label": "Taxa Fixa",
+        "total_label": "Valor devido"
+      },
+      "fields": {
+        "firstName": "Nome",
+        "lastName": "Apelido",
+        "amount": "Valor do Empréstimo (€)",
+        "duration": "Duração (meses)",
+        "email": "Endereço de E-mail",
+        "whatsapp": "Número do Whatsapp",
+        "country": "País de residência",
+        "profession": "Profissão",
+        "income": "Renda mensal líquida (€)",
+        "reason": "Motivo do pedido",
+        "reason_placeholder": "Descreva brevemente seu projeto...",
+        "consent1": "Certifico, sob juramento, a exatidão das informações fornecidas.",
+        "consent2": "Seus dados são processados em conformidade com o RGPD.",
+        "processing_consent": "Aceito as taxas de gestão relacionadas ao dossiê.",
+        "warning": "Um crédito compromete você e deve ser reembolsado. Verifique sua capacidade de reembolso antes de se comprometer.",
+        "submit": "Enviar meu dossiê",
+        "select_country": "Selecione um país",
+        "success": "Parabéns"
+      },
+      "countries": {
+        "AL": "Albânia",
+        "AD": "Andorra",
+        "AT": "Áustria",
+        "BE": "Bélgica",
+        "BY": "Bielorrússia",
+        "BA": "Bósnia e Herzegovina",
+        "BG": "Bulgária",
+        "HR": "Croácia",
+        "CY": "Chipre",
+        "CZ": "República Checa",
+        "DK": "Dinamarca",
+        "EE": "Estónia",
+        "FI": "Finlândia",
+        "FR": "França",
+        "DE": "Alemanha",
+        "GR": "Grécia",
+        "HU": "Hungria",
+        "IS": "Islândia",
+        "IE": "Irlanda",
+        "IT": "Itália",
+        "LV": "Letónia",
+        "LI": "Liechtenstein",
+        "LT": "Lituânia",
+        "LU": "Luxemburgo",
+        "MT": "Malta",
+        "MD": "Moldávia",
+        "MC": "Mónaco",
+        "ME": "Montenegro",
+        "NL": "Países Baixos",
+        "NO": "Noruega",
+        "PL": "Polónia",
+        "PT": "Portugal",
+        "RO": "Roménia",
+        "RU": "Rússia",
+        "SM": "São Marinho",
+        "RS": "Sérvia",
+        "SK": "Eslováquia",
+        "SI": "Eslovénia",
+        "ES": "Espanha",
+        "SE": "Suécia",
+        "CH": "Suíça",
+        "UA": "Ucrânia",
+        "GB": "Reino Unido",
+        "VA": "Vaticano"
+      }
+    },
+    "login": {
+      "title": "Login Área do Cliente",
+      "subtitle": "Acompanhe o status do seu pedido em tempo real",
+      "email": "Email",
+      "password": "Senha",
+      "submit": "Conectar",
+      "error": "Credenciais inválidas",
+      "forgot": "Esqueceu a senha?",
+      "noAccount": "Ainda não tem conta? Faça um pedido."
+    },
+    "client_dashboard": {
+      "portal_title": "Portal Bancário Europcapital",
+      "welcome": "Bem-vindo",
+      "title": "Sua área pessoal",
+      "op_denied": "Operação Recusada",
+      "available_label": "Disponível",
+      "external_transfer": "Transferência externa",
+      "rib_details": "Detalhes do IBAN",
+      "iban_label": "IBAN EUROPCAPITAL",
+      "bic_label": "BIC / SWIFT",
+      "currency_label": "MOEDA",
+      "transfer_in_progress": "Transferência em andamento",
+      "beneficiary_label": "Beneficiário",
+      "secure_processing": "Processamento seguro",
+      "tx_history": "Histórico de transações",
+      "no_tx": "Nenhum movimento",
+      "tx_id": "ID da Transação",
+      "close_btn": "Fechar",
+      "security_title": "Segurança e Acesso",
+      "my_password": "Minha senha confidencial",
+      "biometric_active": "Proteção biométrica ativa",
+      "security_info_box": "Este é o código de acesso gerado na criação do seu dossiê. Guarde-o com cuidado.",
+      "transfer_funds_title": "Transferir fundos",
+      "transfer_confirm_btn": "Confirmar a transferência",
+      "amount": "Valor",
+      "duration": "Duração",
+      "fixed_rate": "Taxa Fixa"
+    },
+    "success_page": {
+      "congrats": "Parabéns!",
+      "recorded": "Seu pedido foi registrado com sucesso.",
+      "action_required": "Ação Necessária: Salve estes acessos agora",
+      "secure_access": "Seus acessos seguros",
+      "secure_note": "Anote-os bem, eles não serão mais exibidos para sua segurança.",
+      "copy_btn": "Copiar meus acessos",
+      "copied_btn": "Credenciais Copiadas!",
+      "email_title": "Ative seu dossiê por E-mail",
+      "email_text": "Escreva-nos agora para o seguinte endereço para confirmar seu pedido:",
+      "email_warning": "Atenção: use obrigatoriamente o endereço de e-mail {{email}} para nos escrever.",
+      "whatsapp_title": "Finalize no WhatsApp",
+      "whatsapp_text": "Envie uma foto do seu Documento de Identidade para acelerar o processamento.",
+      "whatsapp_btn": "ABRIR WHATSAPP OFICIAL",
+      "back_home": "Voltar à página inicial"
+    },
+    "cta_footer": {
+      "h2": "Pronto para lançar seu projeto?",
+      "p": "Obtenha uma resposta de princípio em menos de 2 minutos.",
+      "btn1": "Enviar meu dossiê",
+      "btn2": "Contate-nos"
+    },
+    "comparison": {
+      "h3": "Economize no seu crédito",
+      "p": "A Europcapital oferece uma das taxas mais baixas da Europa.",
+      "market": "Taxa média bancária",
+      "ours": "Taxa Europcapital",
+      "saving": "Economia média observada"
+    },
+    "partners": {
+      "h2": "Parceiros de Confiança",
+      "p": "Trabalhamos com instituições de renome mundial."
+    },
+    "security": {
+      "rgpd": "Conformidade RGPD",
+      "h24": "Vigilância 24/7",
+      "orias": "Regulação Europeia"
+    },
+    "blog": {
+      "title": "Notícias e Dicas",
+      "subtitle": "Tudo o que você precisa saber sobre crédito ético.",
+      "back": "Voltar ao blog",
+      "readMore": "Ler mais",
+      "posts": [
+        {
+          "id": "rate-2-percent",
+          "title": "Por que a taxa de 2% é a mais vantajosa em 2026?",
+          "excerpt": "Em um mercado volátil, a estabilidade de uma taxa fixa de 2% é uma grande vantagem para o seu patrimônio.",
+          "content": "O mercado financeiro de 2026 está passando por flutuações sem precedentes. Enquanto as taxas diretoras dos bancos centrais permanecem instáveis, a Europcapital optou pela perenidade. \n\nUma taxa fixa de 2% (TAEG) permite que os mutuários planejem seu futuro sem medo de uma inflação galopante ou de um aumento das mensalidades. Conosco, a transparência não é um slogan, é um contrato. \n\nAo escolher um empréstimo a 2%, você economiza em média 3,45% em comparação com as ofertas bancárias tradicionais. Em um empréstimo imobiliário de 200.000 €, isso representa dezenas de milhares de euros em economias injetadas diretamente no seu poder de compra."
+        },
+        {
+          "id": "real-estate-2026",
+          "title": "Compra de imóvel: 5 dicas para ter sucesso no seu projeto este ano.",
+          "excerpt": "Descubra as chaves para um investimento imobiliário tranquilo, apesar do contexto econômico.",
+          "content": "Comprar um imóvel em 2026 exige método. \n\n1. Verifique sua capacidade de empréstimo: Use nosso simulador para saber seu orçamento real. \n2. Cuide do seu dossiê: Embora sejamos flexíveis, um dossiê claro acelera a liberação dos fundos. \n3. Não negligencie a localização: O valor de um imóvel está ligado à sua proximidade com os serviços. \n4. Antecipe os custos adicionais: Notário, impostos, obras. \n5. Opte pela Europcapital: Com nossa taxa fixa de 2%, você maximiza sua rentabilidade de aluguel ou minimiza o custo de sua residência principal."
+        },
+        {
+          "id": "debt-consolidation-2026",
+          "title": "A consolidação de crédito: uma solução para sanear suas finanças.",
+          "excerpt": "Como agrupar suas dívidas pode te dar um alívio financeiro.",
+          "content": "A acumulação de créditos (automóvel, consumo, rotativo) pode rapidamente se tornar pesada. A consolidação de crédito na Europcapital permite fundir todas as suas dívidas em uma única mensalidade. \n\nO benefício é imediato: sua renda disponível aumenta e a gestão de suas contas se torna límpida. Ao aplicar nossa taxa de 2% sobre o total de sua dívida, você frequentemente reduz o custo global de seus financiamentos enquanto simplifica seu dia a dia."
+        },
+        {
+          "id": "ai-finance-2026",
+          "title": "Como a IA revoluciona o processamento do seu pedido de empréstimo.",
+          "excerpt": "Descubra como usamos a tecnologia para responder a você em menos de 24 horas.",
+          "content": "A rapidez está no cerne do nosso serviço. Graças aos nossos algoritmos de análise seguros, somos capazes de estudar os dossiês 10 vezes mais rápido que um banco tradicional. \n\nA IA não substitui o humano na Europcapital, ela o auxilia. Ela permite que nossos especialistas se concentrem no aspecto relacional e no acompanhamento personalizado, enquanto o cálculo de solvência e a verificação de documentos são automatizados para máxima segurança."
+        },
+        {
+          "id": "new-regulations-2026",
+          "title": "Novas regulamentações bancárias: qual o impacto nos seus créditos?",
+          "excerpt": "Entenda as mudanças legislativas de 2026 e como a Europcapital te protege.",
+          "content": "O ano de 2026 marca um ponto de virada na proteção dos mutuários europeus. Novas diretrizes impõem mais transparência sobre os custos reais dos créditos. \n\nNa Europcapital, antecipamos essas medidas há muito tempo com nossa taxa única de 2%. Acolhemos essas mudanças com entusiasmo, pois elas destacam as práticas abusivas de alguns atores e valorizam nosso modelo ético. \n\nSua segurança financeira é garantida por nossa estrita conformidade com as normas da Autoridade Bancária Europeia."
+        },
+        {
+          "id": "investing-low-rate",
+          "title": "Investir com uma taxa de 2%: as melhores oportunidades.",
+          "excerpt": "Por que tomar empréstimos a baixo custo é a melhor estratégia patrimonial atual.",
+          "content": "Em um ambiente onde a inflação frequentemente ultrapassa 2%, tomar um empréstimo a essa taxa fixa equivale a ganhar dinheiro. É o que chamamos de efeito de alavancagem positivo. \n\nSeja para investir em imóveis para alugar, modernizar sua ferramenta de produção ou iniciar uma nova atividade, o crédito a 2% da Europcapital preserva seu fluxo de caixa e acelera seu enriquecimento pessoal ou profissional."
+        }
+      ]
+    },
+    "loan_specifics": {
+      "personnel": {
+        "title": "Empréstimo Pessoal",
+        "description": "Realize seus projetos de vida livremente.",
+        "longDescription": "Casamento, viagens, estudos ou imprevistos, tenha os fundos de que você precisa rapidamente.",
+        "features": [
+          "2% Fixo",
+          "Sem comprovantes",
+          "Transferência expressa"
+        ],
+        "maxAmount": 75000,
+        "maxDuration": 84,
+        "definition": {
+          "title": "O que é o Empréstimo Pessoal?",
+          "text": "O empréstimo pessoal é um crédito ao consumo não consignado. Ao contrário de um crédito para automóvel ou obras, você não precisa fornecer um comprovante de compra para usar os fundos. É a solução ideal para financiar uma necessidade de tesouraria, uma viagem, um casamento ou qualquer outro projeto pessoal.",
+          "characteristics": [
+            {
+              "label": "Tipo",
+              "value": "Não consignado"
+            },
+            {
+              "label": "Taxa (TAEG)",
+              "value": "2% Fixo"
+            },
+            {
+              "label": "Valor Máximo",
+              "value": "75.000 €"
+            },
+            {
+              "label": "Duração",
+              "value": "6 a 84 meses"
+            }
+          ]
+        },
+        "faqs": [
+          {
+            "q": "Por que escolher o empréstimo pessoal Europcapital?",
+            "a": "Pela sua simplicidade: uma taxa única de 2% e uso livre dos fundos."
+          },
+          {
+            "q": "Quando devo pagar as taxas de processo?",
+            "a": "Apenas após a análise e aceitação final do seu processo por nossos analistas."
+          },
+          {
+            "q": "A taxa de 2% é acessível sem comprovante de projeto?",
+            "a": "Sim, é um empréstimo não consignado. Você usa o valor a 2% como desejar."
+          },
+          {
+            "q": "Existem taxas ocultas?",
+            "a": "Não. A taxa é de 2% e as taxas de processo são anunciadas claramente na aceitação."
+          },
+          {
+            "q": "Posso pegar um pequeno valor emprestado a 2%?",
+            "a": "Sim, nossa taxa de 2% se aplica desde os primeiros níveis de empréstimo."
+          },
+          {
+            "q": "A taxa é mais alta para durações mais longas?",
+            "a": "Não, a duração não afeta a taxa: ela permanece em 2% na Europcapital."
+          },
+          {
+            "q": "Posso pagar antecipadamente?",
+            "a": "Sim, de acordo com a lei, com a vantagem de ter tido um custo inicial muito baixo de 2%."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": 101,
+            "name": "Claire Dupont",
+            "role": "Professora",
+            "content": "Pude financiar o casamento da minha filha sem tocar nas minhas economias. Rápido e eficiente.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=claire"
+          },
+          {
+            "id": 102,
+            "name": "Marc Leroy",
+            "role": "Engenheiro",
+            "content": "Sem perguntas indiscretas sobre o uso dos fundos. A taxa de 2% é real.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=marc"
+          }
+        ]
+      },
+      "immobilier": {
+        "title": "Empréstimo Imobiliário",
+        "description": "Taxa fixa de 2% para o seu futuro lar.",
+        "longDescription": "Financie a aquisição de sua residência principal, secundária ou seu investimento para aluguel com total tranquilidade.",
+        "features": [
+          "2% Fixo",
+          "Seguro flexível",
+          "Resposta em 24h"
+        ],
+        "maxAmount": 1500000,
+        "maxDuration": 300,
+        "definition": {
+          "title": "Entender o Empréstimo Imobiliário",
+          "text": "O empréstimo imobiliário destina-se a financiar a aquisição de um imóvel (casa, apartamento, terreno) ou grandes obras de renovação. Na Europcapital, simplificamos o acesso à propriedade com uma taxa fixa excepcionalmente baixa, garantida por toda a duração.",
+          "characteristics": [
+            {
+              "label": "Objeto",
+              "value": "Compra / Obras"
+            },
+            {
+              "label": "Taxa (TAEG)",
+              "value": "2% Fixo"
+            },
+            {
+              "label": "Valor Máximo",
+              "value": "1.500.000 €"
+            },
+            {
+              "label": "Duração Máxima",
+              "value": "25 anos (300 meses)"
+            }
+          ]
+        },
+        "faqs": [
+          {
+            "q": "Qual é a taxa para uma compra imobiliária?",
+            "a": "Na Europcapital, aplicamos uma taxa fixa única de 2% durante toda a duração do seu crédito."
+          },
+          {
+            "q": "As despesas de notário estão incluídas no empréstimo?",
+            "a": "Não, a Europcapital não financia as despesas de notário. Estas devem ser pagas pelo mutuário."
+          },
+          {
+            "q": "Quando devo pagar as taxas de processo?",
+            "a": "As taxas de processo são devidas apenas se o seu pedido de empréstimo for aceito e validado por nossos serviços."
+          },
+          {
+            "q": "A taxa de 2% é garantida?",
+            "a": "Sim, é uma taxa fixa contratual que não varia, independentemente da evolução das taxas de mercado."
+          },
+          {
+            "q": "Qual é a duração máxima para esta taxa de 2%?",
+            "a": "Você pode pegar emprestado por até 25 anos, beneficiando-se de nossa taxa preferencial."
+          },
+          {
+            "q": "Posso modular minhas mensalidades?",
+            "a": "Sim, nossos contratos a 2% permitem flexibilidade para aumentar ou reduzir seus pagamentos."
+          },
+          {
+            "q": "Quais comprovantes são necessários?",
+            "a": "Seu processo deve incluir seus comprovantes de renda, identidade e o contrato de promessa de compra e venda (excluindo despesas de notário)."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": 201,
+            "name": "Thomas V.",
+            "role": "Proprietário",
+            "content": "Tornar-se proprietário a essa taxa parecia impossível. A Europcapital conseguiu.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=thomas"
+          },
+          {
+            "id": 202,
+            "name": "Sarah & Paul",
+            "role": "Recém-casados",
+            "content": "Nossa primeira compra ocorreu sem estresse graças ao acompanhamento.",
+            "rating": 4,
+            "avatar": "https://i.pravatar.cc/150?u=sarah"
+          }
+        ]
+      },
+      "automobile": {
+        "title": "Empréstimo Automóvel",
+        "description": "Financie sua mobilidade pelo melhor preço.",
+        "longDescription": "Seja para um carro novo, usado ou elétrico, aproveite um financiamento vantajoso.",
+        "features": [
+          "2% Fixo",
+          "Sem entrada obrigatória",
+          "Todos os tipos de veículos"
+        ],
+        "maxAmount": 80000,
+        "maxDuration": 84,
+        "definition": {
+          "title": "O que é o Crédito Automóvel?",
+          "text": "O crédito automóvel é um empréstimo consignado, ou seja, exclusivamente ligado à compra de um veículo (carro, moto, autocaravana). Seja o veículo novo ou usado, a Europcapital financia até 100% do seu valor sem exigir entrada pessoal.",
+          "characteristics": [
+            {
+              "label": "Tipo",
+              "value": "Consignado (Comprovante necessário)"
+            },
+            {
+              "label": "Taxa (TAEG)",
+              "value": "2% Fixo"
+            },
+            {
+              "label": "Veículos",
+              "value": "Novos e Usados"
+            },
+            {
+              "label": "Entrada",
+              "value": "Não obrigatória"
+            }
+          ]
+        },
+        "faqs": [
+          {
+            "q": "Qual taxa se aplica para um veículo novo ou usado?",
+            "a": "A taxa é a mesma para todos: 2% fixa."
+          },
+          {
+            "q": "Vocês financiam o valor total do veículo?",
+            "a": "Sim, financiamos 100% do valor do veículo, mas as taxas de processo ficam a seu cargo após a aceitação."
+          },
+          {
+            "q": "Quando ocorre o pagamento das taxas de processo?",
+            "a": "Elas são faturadas assim que seu empréstimo para automóvel é oficialmente concedido."
+          },
+          {
+            "q": "Posso comprar um veículo de um particular a 2%?",
+            "a": "Sim, a taxa de 2% se aplica quer o vendedor seja um profissional ou um particular."
+          },
+          {
+            "q": "A taxa de 2% muda de acordo com a duração?",
+            "a": "Não, quer você pague em 12 ou 84 meses, a taxa permanece bloqueada em 2%."
+          },
+          {
+            "q": "Podemos incluir o registro no empréstimo?",
+            "a": "Não, o empréstimo cobre o veículo. As taxas acessórias (documento do carro, processo) devem ser pagas separadamente."
+          },
+          {
+            "q": "Qual é o prazo para a liberação dos fundos?",
+            "a": "Uma vez que o processo é aceito e as taxas de processo são pagas, os fundos são transferidos em 7 a 14 dias."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": 301,
+            "name": "Karim B.",
+            "role": "Motorista de VTC",
+            "content": "Consegui trocar meu veículo profissional rapidamente. A taxa é incrível.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=karim"
+          },
+          {
+            "id": 302,
+            "name": "Élise M.",
+            "role": "Estudante",
+            "content": "Meu primeiro carro financiado sem pressão. Obrigado!",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=elise"
+          }
+        ]
+      },
+      "entreprise": {
+        "title": "Empréstimo Empresarial",
+        "description": "Apoie o crescimento da sua atividade.",
+        "longDescription": "Necessidades de tesouraria, investimento em equipamentos ou desenvolvimento comercial, nós financiamos suas ambições.",
+        "features": [
+          "2% Fixo",
+          "Análise humana especializada",
+          "Pagamento diferido"
+        ],
+        "maxAmount": 5000000,
+        "maxDuration": 120,
+        "definition": {
+          "title": "O Empréstimo Profissional Europcapital",
+          "text": "Destinado a artesãos, comerciantes, PMEs e grandes empresas, este empréstimo visa financiar as necessidades relacionadas à atividade profissional: compra de equipamentos, obras, necessidade de capital de giro ou desenvolvimento comercial. Uma oferta rara para apoiar a economia real.",
+          "characteristics": [
+            {
+              "label": "Beneficiários",
+              "value": "Todas as empresas"
+            },
+            {
+              "label": "Taxa (TAEG)",
+              "value": "2% Fixo"
+            },
+            {
+              "label": "Limite",
+              "value": "5.000.000 €"
+            },
+            {
+              "label": "Flexibilidade",
+              "value": "Diferido possível"
+            }
+          ]
+        },
+        "faqs": [
+          {
+            "q": "A taxa de 2% é a mesma para todas as empresas?",
+            "a": "Sim, da start-up à PME, a Europcapital oferece uma taxa única de 2% para todos os profissionais."
+          },
+          {
+            "q": "As taxas de processo são fixas?",
+            "a": "Elas são calculadas de acordo com a magnitude do projeto e pagáveis na aceitação final do financiamento."
+          },
+          {
+            "q": "Posso financiar instalações profissionais sem as despesas de notário?",
+            "a": "Exatamente. Financiamos as paredes a 2%, mas as despesas de notário são por sua conta."
+          },
+          {
+            "q": "Podemos financiar equipamentos usados a 2%?",
+            "a": "Sim, nossa taxa única de 2% se aplica a todos os tipos de investimento profissional."
+          },
+          {
+            "q": "É necessário ter capital próprio?",
+            "a": "A entrada não é obrigatória, mas você deve ser capaz de cobrir as despesas acessórias e de processo."
+          },
+          {
+            "q": "Qual é a vantagem da taxa Europcapital para um profissional?",
+            "a": "Um custo de crédito extremamente baixo (2%) que preserva sua capacidade de autofinanciamento."
+          },
+          {
+            "q": "A taxa de 2% se aplica à necessidade de tesouraria?",
+            "a": "Sim, todas as nossas soluções de financiamento profissional têm uma taxa fixa de 2%."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": 401,
+            "name": "Stéphane R.",
+            "role": "Restaurador",
+            "content": "Renovei minha cozinha graças a este empréstimo. Processo simples e rápido.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=stephane"
+          },
+          {
+            "id": 402,
+            "name": "Julie T.",
+            "role": "CEO de Start-up",
+            "content": "Um fôlego para minha tesouraria. Parceiro de confiança.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=julie"
+          }
+        ]
+      },
+      "rachat": {
+        "title": "Consolidação de Crédito",
+        "description": "Simplifique suas finanças e reduza suas mensalidades.",
+        "longDescription": "Agrupe todos os seus créditos em um só para pagar uma única mensalidade a uma taxa reduzida de 2%.",
+        "features": [
+          "2% Fixo",
+          "Uma única mensalidade",
+          "Gestão simplificada"
+        ],
+        "maxAmount": 250000,
+        "maxDuration": 180,
+        "definition": {
+          "title": "Entender a Consolidação de Créditos",
+          "text": "A consolidação de crédito (ou agrupamento) consiste em fundir vários empréstimos existentes (imobiliário, consumo, rotativo) em um único contrato. O objetivo é reduzir sua mensalidade global, alongando o prazo de reembolso e aproveitando nossa taxa excepcional de 2%.",
+          "characteristics": [
+            {
+              "label": "Objetivo",
+              "value": "Redução das mensalidades"
+            },
+            {
+              "label": "Nova Taxa",
+              "value": "2% Fixo"
+            },
+            {
+              "label": "Gestão",
+              "value": "Débito único"
+            },
+            {
+              "label": "Incluído",
+              "value": "Tesouraria possível"
+            }
+          ]
+        },
+        "faqs": [
+          {
+            "q": "Qual é o interesse de consolidar seus créditos na Europcapital?",
+            "a": "Você agrupa suas dívidas atuais sob um único contrato com a taxa única de 2%."
+          },
+          {
+            "q": "Posso incluir um empréstimo imobiliário na consolidação?",
+            "a": "Sim, mas atenção: a consolidação não cobrirá eventuais novas despesas de notário."
+          },
+          {
+            "q": "Como são gerenciadas as taxas de processo para uma consolidação?",
+            "a": "Como em nossos outros empréstimos, elas são devidas após a aceitação da operação de agrupamento."
+          },
+          {
+            "q": "A taxa de 2% se aplica à tesouraria adicional?",
+            "a": "Sim, se você solicitar um valor extra durante a consolidação, ele também terá a taxa de 2%."
+          },
+          {
+            "q": "Realmente reduzimos as mensalidades a 2%?",
+            "a": "Sim, a taxa de 2% é muitas vezes bem inferior às taxas de créditos rotativos ou empréstimos antigos."
+          },
+          {
+            "q": "A consolidação a 2% também abrange dívidas fiscais?",
+            "a": "Sim, podemos integrar diversas dívidas no agrupamento com a taxa de 2%."
+          },
+          {
+            "q": "Quais são as etapas?",
+            "a": "Simulação, análise, aceitação, pagamento das taxas de processo e, em seguida, reembolso de seus antigos credores."
+          }
+        ],
+        "testimonials": [
+          {
+            "id": 501,
+            "name": "Michel D.",
+            "role": "Aposentado",
+            "content": "Minhas mensalidades caíram 40%. Finalmente respiro.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=michel"
+          },
+          {
+            "id": 502,
+            "name": "Valérie K.",
+            "role": "Funcionária de banco",
+            "content": "Mesmo conhecendo o sistema, esta oferta a 2% é imbatível.",
+            "rating": 5,
+            "avatar": "https://i.pravatar.cc/150?u=valerie"
+          }
+        ]
+      }
+    }
+  }
+}
